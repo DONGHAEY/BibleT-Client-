@@ -1,0 +1,41 @@
+* {
+    margin:0;
+    padding:0;
+    box-sizing : border-box;
+  }
+  
+  body {
+    background : rgb(236, 236, 236);
+  }
+
+.login__form {
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.login__form h1 {
+    font-size: 35px;
+    padding:60px;
+}
+
+.login__form input {
+    width:180px;
+    padding-inline:10px;
+    height:35px;
+    margin: 5px;
+    border:0;
+    border-radius:5%;
+}
+
+.login__form button {
+    width:180px;
+    height:40px;
+    border:0;
+    margin:5px;
+    background-color: black;
+    color:white;
+    border-radius: 5%;
+    cursor:pointer;
+}
