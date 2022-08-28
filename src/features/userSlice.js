@@ -72,3 +72,5 @@ export const userSlice = createSlice({
 export const selectUser = (state) => state.user.user;
 
 export default userSlice.reducer;
+
+// https://blog.logrocket.com/handling-user-authentication-redux-toolkit/
