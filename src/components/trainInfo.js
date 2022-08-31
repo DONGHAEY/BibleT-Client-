@@ -19,14 +19,36 @@ export const TrainInfo = () => {
         });
     }
 
-    const checkHandler = (async(e, date) => {
+    // const checkHandler = (async(e, date) => {
+    //     if(e.target.checked) {
+    //         await axios.post(`/api/bible-track/${trainId}/${date}/complete`);
+    //     } else {
+    //         await axios.post(`/api/bible-track/${trainId}/${date}/cancelStamp`);
+    //     }
+    //     loadContent();
+    // })
+
+    const checkHandler = (async(e, date, idx) => {
         if(e.target.checked) {
             await axios.post(`/api/bible-track/${trainId}/${date}/complete`);
         } else {
             await axios.post(`/api/bible-track/${trainId}/${date}/cancelStamp`);
         }
-        loadContent()
-    })
+        const {data} = await axios.get(`/api/bible-track/${trainId}/${date}}`);
+        setTracks((oldTracks) => {
+            const newArray = [];
+            for (let i = 0; i < oldTracks.length; i++) {
+              const oldNote = oldTracks[i];
+              if (i===idx) {
+                newArray.push(data[0]);
+              } else {
+                newArray.push(oldNote);
+              }
+            }
+            return newArray;
+          });
+        })
+
 
     const trackComponents = tracks.map((track, i) => {
             const trackDate = new Date(track.date);
@@ -39,12 +61,12 @@ export const TrainInfo = () => {
                 <input 
                     type="checkbox"
                     defaultChecked={track.status === "COMPLETE" ? true : false}
-                    onClick={async(e) => checkHandler(e, `${trackDate.getFullYear()}.${trackDate.getMonth()+1}.${trackDate.getDate()}`)}
-                >
+                    onClick={async(e) => checkHandler(e, `${trackDate.getFullYear()}.${trackDate.getMonth()+1}.${trackDate.getDate()}`, i)}>
                 </input>
             </div>
             )
         })
+        // console.log(trackComponents)
 
     return (
         <div style={{display:"flex", flexDirection:"column", alignItems:"center", justifyContent:"center"}}>
