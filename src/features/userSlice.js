@@ -1,27 +1,11 @@
 import {createSlice, createAsyncThunk} from '@reduxjs/toolkit';
-import axios from "axios";
+import { userAuth } from '../actions/userAuth';
+import { userLogin } from '../actions/userLogin';
+// import { userLogout } from '../actions/userLogout';
 
-export const userLogin = createAsyncThunk(
-    'user/login',
-    async ({ username, password }, { rejectWithValue }) => {
-      try {
-        const { data } = await axios.post(
-          '/api/auth/login',
-          { username, password }
-        )
-        localStorage.setItem('userToken', data.token)
-        return data
-      } catch (error) {
-        // return custom error message from API if any
-        if (error.response && error.response.data.message) {
-          return rejectWithValue(error.response.data.message)
-        } else {
-          return rejectWithValue(error.message)
-        }
-      }
-    }
-  )
-
+const userToken = localStorage.getItem('userToken')
+  ? localStorage.getItem('userToken')
+  : null
 
 export const userSlice = createSlice({
     name: "User",
@@ -29,28 +13,14 @@ export const userSlice = createSlice({
     initialState:{
         loading: false,
         user: null,
-        userToken : null,
+        userToken,
         error: null,
         success: false,
     },
 
     reducers : {
-        // login : async (state, action) => {
-        //     try {
-        //         const res =  await axios.post("/api/auth/login", {
-        //             username:action.payload.username,
-        //             password : action.payload.password
-        //         }, {withCredentials : true});
-        //         const res2 =  await axios.post("/api/auth/authenticate", {withCredentials : true});
-        //         state.user = res2.data;
-        //     } catch(e) {
-        //         console.log(e);
-        //     }
-        // },
-        // logout : (state, action) => {
-        //     state.user = null;
-        // }
     },
+
     extraReducers : {
         [userLogin.pending]: (state) => {
             state.loading = true
@@ -59,12 +29,27 @@ export const userSlice = createSlice({
         [userLogin.fulfilled]: (state, { payload }) => {
             state.loading = false
             state.user = payload.user
-            state.userToken = payload.token
+            state.userToken = payload.token;
+            state.success = payload.success;
         },
+
         [userLogin.rejected]: (state, { payload }) => {
             state.loading = false
             state.error = payload
         },
+        [userAuth.pending] : (state) => {
+          state.loading =true;
+          state.error = null;
+        },
+        [userAuth.fulfilled] : (state, { payload }) => {
+          state.loading = false;
+          state.success = payload.success;
+          state.user = payload.user;
+        },
+        [userAuth.rejected] : (state, {payload}) => {
+          state.loading = false;
+          state.error = payload;
+        }
     }
 })
 

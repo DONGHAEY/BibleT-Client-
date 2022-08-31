@@ -1,12 +1,15 @@
 import "./css/Login.css"
-import { useDispatch } from "react-redux";
-import {userLogin} from "../features/userSlice";
+import { useDispatch, useSelector } from "react-redux";
+import {userLogin} from "../actions/userLogin"
 import React, { useCallback, useState } from "react"
+import { useNavigate } from "react-router-dom";
 
 export const Login = () => {
+    const { loading, user, error } = useSelector((state) => state.user);
 
     const dispatch = useDispatch();
-
+    const navigate = useNavigate();
+    
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -16,8 +19,13 @@ export const Login = () => {
         dispatch(userLogin({
             username:name,
             password:password,
-        }));
-
+        })).then(response => {
+            if(response.payload.success) {
+                navigate("/userProfile");
+            } else {
+                alert("유저네임이 올바르지 않거나 비밀번호가 올바르지 않습니다")
+            }
+        })
     }
 
     return (
