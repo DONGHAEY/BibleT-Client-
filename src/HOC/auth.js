@@ -1,12 +1,26 @@
+import React, {Component, useEffect} from 'react';
+import { useDispatch } from 'react-redux';
+import { Navigate, useNavigate } from 'react-router-dom';
+import { userAuth } from '../actions/userAuth';
 
-import React from 'react';
-// Take in a component as argument WrappedComponent
-export const higherOrderComponent = (WrappedComponent) => {
-// And return another component
-  class HOC extends React.Component {
-    render() {
-      return <WrappedComponent />;
-    }
-  }
-  return HOC;
-};
+export default function Hoc(HocComponent){
+    return function AUTH() {
+
+        const dispatch = useDispatch();
+        const navigate = useNavigate();
+
+        useEffect(() => {
+          dispatch(userAuth()).then(response => {
+            console.log(response);
+            if(response.payload && !response.payload.success) {
+              navigate('/login');
+              alert("로그인하세요");
+            }
+          })
+        }, [])
+      
+            return (
+                <HocComponent />
+            );
+        }
+    } 

@@ -6,25 +6,20 @@ import { userLogout } from "../actions/userLogout";
 import { useNavigate } from "react-router-dom";
 import { userAuth } from "../actions/userAuth";
 import axios from "axios";
+import Hoc from "../HOC/auth";
 
-export const UserProfile = () => {
+const UserProfile = () => {
 
     const dispatch = useDispatch();
     const [trainProfiles, setTrainProfiles] = useState([]);
     const navigate = useNavigate();
 
     useEffect(() => {
-        dispatch(userAuth()).then(async response => {
-            if(!response.payload.user) {
-                alert("로그인이 되어있지않습니다")
-                navigate("/login")
-            } else {
-                const { data } = await axios.post("/api/train/trainProfiles");
-                setTrainProfiles(prev => {
-                    console.log([...prev, ...data])
-                    return [...prev, ...data]
-                });
-            }
+        axios.post("/api/train/trainProfiles").then(({data}) => {
+            setTrainProfiles(prev => {
+                console.log([...prev, ...data])
+                return [...prev, ...data]
+            });
         })
     }, []);
 
@@ -33,11 +28,14 @@ export const UserProfile = () => {
     const handleLogout = e => {
         e.preventDefault();
         dispatch(userLogout()).then(
-            (response) => {
+            () => {
                 navigate('/')
             }
-        )
+        ).catch(e => {
+            alert("알 수 없는 에러")
+        }) 
     }
+
     const role = {
         ROLE_CAPTAIN : "🧑‍✈️",
         ROLE_CREW : "🧑‍🏭",
@@ -45,7 +43,10 @@ export const UserProfile = () => {
     }
 
     const menuList = trainProfiles.map((menu, index) => (
-    <div key={menu.train.id} style={{backgroundColor:'ghostwhite', padding:"10px", width:'200px', margin:'30px', borderRadius:'5%', cursor:"pointer"}}>
+    <div key={menu.train.id} style={{backgroundColor:'ghostwhite', padding:"10px", width:'200px', margin:'30px', borderRadius:'5%', cursor:"pointer"}}
+        onClick={() => {
+            navigate(`/train/${menu.train.id}`);
+        }}>
         <h3>{menu.train.trainName}</h3>
         <p>{menu.nickName} {role[menu.role]}</p>
         <p>정원 : {menu.train.memberCount}</p>
@@ -63,6 +64,22 @@ export const UserProfile = () => {
                 menuList
             }
             </div>
+            <div>
+            <button 
+            onClick={() => {
+                navigate("/createTrain");
+                console.log("")
+            }}
+            style={{border:0, width:'130px', height:'30px', backgroundColor:'black', color:'white', borderRadius:'5px', marginInline:'5px'}}>성경 열차 가입하기</button>
+            <button 
+            onClick={() => {
+                navigate("/createTrain");
+                console.log("")
+            }}
+            style={{border:0, width:'130px', height:'30px', backgroundColor:'black', color:'white', borderRadius:'5px',marginInline:'5px'}}>성경 열차 만들기</button>
+            </div>
         </div>
     )
 }
+
+export default Hoc(UserProfile)

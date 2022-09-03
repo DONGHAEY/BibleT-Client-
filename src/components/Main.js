@@ -1,10 +1,13 @@
 import "./css/Main.css"
 import React, { useCallback, useState } from "react"
+import Header from "./Header"
 
 export const Main = () => {
     return (
+
         <div className="Main">
-            <h1>Hello Here is Main Page</h1>
+            <Header></Header>
+            <h1>성경열차</h1>
         </div>
     )
 }
