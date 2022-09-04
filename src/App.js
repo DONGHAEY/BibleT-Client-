@@ -18,6 +18,8 @@ import { Main } from './components/Main';
 import { DateEx } from './components/DateEx';
 import CreateTrain from './components/CreateTrain';
 import CreateTrack from './components/CreateTrack';
+import PopUp from './components/PopUpTest';
+import PopUpTest from './components/PopUpTest';
 
 
 function App() {
@@ -33,6 +35,7 @@ function App() {
           <Route path="/createTrain" element={ ((<CreateTrain />))} />
           {/* <Route path="/train/:trainId/createTrack" element={ ((<CreateTrack />))} /> */}
           {/* <Route path="/train/:trainId/현황" element={ ((<DateEx />))} /> */}
+          <Route path="/test" element={<PopUpTest/>}></Route>
         </Routes>
       </Router>
   );
