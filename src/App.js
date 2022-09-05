@@ -20,6 +20,7 @@ import CreateTrain from './components/CreateTrain';
 import CreateTrack from './components/CreateTrack';
 import PopUp from './components/PopUpTest';
 import PopUpTest from './components/PopUpTest';
+import Header from './components/Header';
 
 
 function App() {

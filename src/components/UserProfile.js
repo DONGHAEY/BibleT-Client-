@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { userAuth } from "../actions/userAuth";
 import axios from "axios";
 import Hoc from "../HOC/auth";
+import PopUpTest from "./PopUpTest";
 
 const UserProfile = () => {
 
@@ -54,9 +55,13 @@ const UserProfile = () => {
     ))
 
     return (
+        < >
+        <PopUpTest />
         <div className="logout">
             <h1>
-                Welcome <span className="user__name">{user&& user.username}</span>
+                <span className="user__name">{user&& user.username}</span>
+                <span>님</span>
+                <span>어서오세요</span>
             </h1>
             <button className="logout__button" onClick={handleLogout}>LOGOUT</button>
             <div>
@@ -67,18 +72,15 @@ const UserProfile = () => {
             <div>
             <button 
             onClick={() => {
-                navigate("/createTrain");
-                console.log("")
+                navigate("/createTrain")
             }}
             style={{border:0, width:'130px', height:'30px', backgroundColor:'black', color:'white', borderRadius:'5px', marginInline:'5px'}}>성경 열차 가입하기</button>
             <button 
-            onClick={() => {
-                navigate("/createTrain");
-                console.log("")
-            }}
-            style={{border:0, width:'130px', height:'30px', backgroundColor:'black', color:'white', borderRadius:'5px',marginInline:'5px'}}>성경 열차 만들기</button>
+                onClick={() => {
+                    navigate("/createTrain");
+                }} style={{border:0, width:'130px', height:'30px', backgroundColor:'black', color:'white', borderRadius:'5px',marginInline:'5px'}}>성경 열차 만들기</button>
             </div>
-        </div>
+        </div></>
     )
 }
 

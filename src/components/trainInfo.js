@@ -1,11 +1,14 @@
 import axios from "axios";
-import { useCallback, useEffect, useMemo, useState } from "react";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import Hoc from "../HOC/auth";
 import JoinTrain from "./JoinTrain";
 import PopUp from "./PopupContent";
 import { MdCancel } from '@react-icons/all-files/md/MdCancel';
+import { TiArrowBack } from '@react-icons/all-files/ti/TiArrowBack'
+import { Link } from "react-router-dom";
+// HiOutlineArrowUturnLeft
 
 
 const TrainInfo = () => {
@@ -111,18 +114,20 @@ const TrainInfo = () => {
                     onClick={async(e) => checkHandler(e, `${trackDate.getFullYear()}.${trackDate.getMonth()+1}.${trackDate.getDate()}`, i)}>
                 </input>
                 </div>
-                <X>
-                <MdCancel onClick={() => {
-                    deleteHandler(trackDate, i);
-                }} />
-                </X>
+                {
+                    trainProfile.role === 'ROLE_CAPTAIN' && <X>
+                    <MdCancel onClick={() => {
+                        deleteHandler(trackDate, i);
+                    }} />
+                    </X>
+                }
             </Container>
             )
         })
 
     return (
         <Container>
-            <div style={{display:"flex", flexDirection:"column", alignItems:"center", justifyContent:"center", textAlign:'center'}}>
+            <div style={{display:"flex", flexDirection:"column", alignItems:"center", justifyContent:"center", textAlign:'center', opacity:popup ? "25%" : "100%"}}>
             {
                 trainProfile ?
                 <div>
@@ -133,7 +138,8 @@ const TrainInfo = () => {
                             <h5>{role[trainProfile.role]}, {trainProfile.nickName}님</h5>
                             {trainProfile.role === "ROLE_CAPTAIN" && <div style={{marginTop:'15px'}}>
                                 <button style={{backgroundColor:'black', width:'130px', height:'30px', borderRadius:'5px', border:0, color:'white'}} onClick={() => handlePopup(true)}>track등록하기</button>
-                            </div>}
+                            </div>
+                            }
                     </div>
                     <div>
                     { trackComponents }
@@ -143,6 +149,7 @@ const TrainInfo = () => {
             }
         </div>
             { popup && <PopUp onClose={handlePopup} train={train} />}
+            <X2><TiArrowBack style={{fontSize:'30px'}} onClick={() => navigate(-1)} /></X2>
         </Container>
     )
 }
@@ -155,6 +162,13 @@ const X = styled.div`
     position:absolute;
     z-index : 100;
     cursor: pointer;
+`
+
+const X2 = styled.div`
+    position:fixed;
+    top:30px;
+    left:8%;
+    cursor:pointer;
 `
 
 export default Hoc(TrainInfo);

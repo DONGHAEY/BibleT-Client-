@@ -7,7 +7,7 @@ const Select = ({select}) => {
     const [selectedPage, setSelectedPage] = useState(1);
 
     const maxPage = useMemo(() => {
-        return chapt[selectedChapter].page;
+        return chapt[selectedChapter-1].page;
     }, [selectedChapter]);
 
     const chapters = chapt.map((cp, idx) => <option key={cp.id} value={cp.id} >{cp.chapter}</option>)

@@ -32,7 +32,7 @@ export default function PopUp({onClose, train}) {
 
     return (
         <Container >
-            <div style={{width:'60%', height:'80%', paddingInline:'30px', backgroundColor:"white", display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center', textAlign:'center', borderRadius:'2%'}}>
+            <div style={{width:'45%', height:'60%', paddingInline:'30px', backgroundColor:"white", display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center', textAlign:'center', borderRadius:'2%'}}>
                 <h1 style={{fontSize:'30px', marginBlock:'10px'}}>트랙 생성하기</h1>
                 <DatePicker
                     locale={ko} 
@@ -48,7 +48,7 @@ export default function PopUp({onClose, train}) {
                 <Select select={({selectedChapter, selectedPage}) => {
                     setSelected(prev => {
                         return {
-                        start:{
+                        start: {
                             selectedChapter,
                             selectedPage
                         },

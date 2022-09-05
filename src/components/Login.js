@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {userLogin} from "../actions/userLogin"
 import React, { useCallback, useState } from "react"
 import { useNavigate } from "react-router-dom";
+import PopUpTest from "./PopUpTest";
 
 export const Login = () => {
     const { loading, user, error } = useSelector((state) => state.user);
@@ -28,6 +29,8 @@ export const Login = () => {
     }
 
     return (
+        <>
+                <PopUpTest />
         <div>
             <form className="login__form" onSubmit={(e) => submit(e)}>
                 <h1>Login To DH</h1>
@@ -35,6 +38,6 @@ export const Login = () => {
                 <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)}></input>
                 <button className="submit__btn">submit</button>
             </form>
-        </div>
+        </div></>
     )
 }

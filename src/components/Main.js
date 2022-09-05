@@ -1,13 +1,16 @@
 import "./css/Main.css"
 import React, { useCallback, useState } from "react"
 import Header from "./Header"
+import PopUpTest from "./PopUpTest"
 
 export const Main = () => {
+    
     return (
-
-        <div className="Main">
-            <Header></Header>
-            <h1>성경열차</h1>
-        </div>
+        <>
+            <PopUpTest />
+            <div>
+                <h1>성경열차</h1>
+            </div>
+        </>
     )
 }

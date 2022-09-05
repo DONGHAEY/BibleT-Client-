@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import React, { useCallback, useState } from "react"
 import { useNavigate } from "react-router-dom";
 import { userRegister } from "../actions/userRegister";
+import PopUpTest from "./PopUpTest";
 
 export const Register = () => {
 
@@ -29,6 +30,8 @@ export const Register = () => {
     }
 
     return (
+        <>
+                <PopUpTest />
         <div>
             <form className="login__form" onSubmit={(e) => submit(e)}>
                 <h1>Register To DH</h1>
@@ -37,5 +40,6 @@ export const Register = () => {
                 <button className="submit__btn">submit</button>
             </form>
         </div>
+        </>
     )
 }
