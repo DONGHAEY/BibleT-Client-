@@ -30,10 +30,10 @@ export const Login = () => {
 
     return (
         <>
-                <PopUpTest />
+        <PopUpTest />
         <div>
             <form className="login__form" onSubmit={(e) => submit(e)}>
-                <h1>Login To DH</h1>
+                <h1>Login To BibleT</h1>
                 <input type="name" placeholder="Name" value={name} onChange={(e)=> setName(e.target.value)} ></input>
                 <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)}></input>
                 <button className="submit__btn">submit</button>

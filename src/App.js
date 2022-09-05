@@ -26,6 +26,7 @@ import Header from './components/Header';
 function App() {
   const user = useSelector((state) => state.user);
   return (
+    <div className="App">
       <Router>
         <Routes>
           <Route exact path="/" element={ <Main /> } />
@@ -34,11 +35,10 @@ function App() {
           <Route path="/userProfile" element={ (<UserProfile />)} />
           <Route path="/train/:trainId" element={ ((<TrainInfo />))} />
           <Route path="/createTrain" element={ ((<CreateTrain />))} />
-          {/* <Route path="/train/:trainId/createTrack" element={ ((<CreateTrack />))} /> */}
-          {/* <Route path="/train/:trainId/현황" element={ ((<DateEx />))} /> */}
           <Route path="/test" element={<PopUpTest/>}></Route>
         </Routes>
       </Router>
+    </div>
   );
 }
 

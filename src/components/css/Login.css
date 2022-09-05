@@ -4,10 +4,6 @@
     box-sizing : border-box;
   }
   
-  body {
-    background : rgb(236, 236, 236);
-  }
-
 .login__form {
     display:flex;
     flex-direction: column;
@@ -26,7 +22,9 @@
     height:35px;
     margin: 5px;
     border:0;
+    background-color: whitesmoke;
     border-radius:5%;
+    /* border: solid 1px black; */
 }
 
 .login__form button {

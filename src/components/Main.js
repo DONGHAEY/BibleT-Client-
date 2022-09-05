@@ -6,11 +6,11 @@ import PopUpTest from "./PopUpTest"
 export const Main = () => {
     
     return (
-        <>
+        <div>
             <PopUpTest />
             <div>
                 <h1>성경열차</h1>
             </div>
-        </>
+        </div>
     )
 }
