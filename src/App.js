@@ -14,13 +14,9 @@ import {
   Link
 } from "react-router-dom";
 import { Register } from './components/Register';
-import { Main } from './components/Main';
-import { DateEx } from './components/DateEx';
+import Main from './components/Main';
 import CreateTrain from './components/CreateTrain';
-import CreateTrack from './components/CreateTrack';
-import PopUp from './components/PopUpTest';
-import PopUpTest from './components/PopUpTest';
-import Header from './components/Header';
+import JoinTrain from './components/JoinTrain';
 
 
 function App() {
@@ -35,7 +31,7 @@ function App() {
           <Route path="/userProfile" element={ (<UserProfile />)} />
           <Route path="/train/:trainId" element={ ((<TrainInfo />))} />
           <Route path="/createTrain" element={ ((<CreateTrain />))} />
-          <Route path="/test" element={<PopUpTest/>}></Route>
+          <Route path="/joinTrain/:trainId" element={<JoinTrain/>}></Route>
         </Routes>
       </Router>
     </div>

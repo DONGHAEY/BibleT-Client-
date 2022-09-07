@@ -31,12 +31,12 @@ const Select = ({select}) => {
 
     return (
         <div>
-            <select onChange={(e) => {
+            <select style={{width:'100px', textAlign:'center', border:0, background:'rgba(255, 255, 255, 0.05)'}} onChange={(e) => {
             setSelectedChapter(parseInt(e.target.value));
         }}>
             {chapters}
         </select>
-        <select onChange={(e) => {
+        <select style={{width:'100px', textAlign:'center', border:0, background:'rgba(255, 255, 255, 0.05)'}} onChange={(e) => {
             setSelectedPage(parseInt(e.target.value));
         }}>
             {pagesComponents}

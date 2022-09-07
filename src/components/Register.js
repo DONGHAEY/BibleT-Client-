@@ -3,15 +3,18 @@ import { useDispatch, useSelector } from "react-redux";
 import React, { useCallback, useState } from "react"
 import { useNavigate } from "react-router-dom";
 import { userRegister } from "../actions/userRegister";
-import PopUpTest from "./PopUpTest";
+import { useLocation } from "react-router-dom";
+import HeaderWithBack from "./HeaderWithBack";
 
 export const Register = () => {
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const location = useLocation();
     
     const [name, setName] = useState("");
     const [password, setPassword] = useState("");
+    const { state } = useLocation();
 
     const submit =(e) => {
         e.preventDefault();
@@ -21,22 +24,25 @@ export const Register = () => {
         })).then(response => {
             if(response.payload.success) {
                 alert("회원가입에 성공하였습니다.")
-                navigate('/login');
+                navigate('/login', {
+                    state:{
+                        wait:state.wait
+                    }
+                });
             } else {
                 alert("회원가입에 실패하였습니다.")
-                navigate('/register')
             }
         })
     }
 
     return (
         <>
-                <PopUpTest />
+        <HeaderWithBack path={-1} />
         <div>
             <form className="login__form" onSubmit={(e) => submit(e)}>
-                <h1>Register To BibleT</h1>
-                <input type="name" placeholder="Name" value={name} onChange={(e)=> setName(e.target.value)} ></input>
-                <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)}></input>
+                <h1>BibleT 회원가입</h1>
+                <input type="name" placeholder="아이디" value={name} onChange={(e)=> setName(e.target.value)} ></input>
+                <input type="password" placeholder="비밀번호" value={password} onChange={(e) => setPassword(e.target.value)}></input>
                 <button className="submit__btn">submit</button>
             </form>
         </div>
