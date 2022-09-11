@@ -1,9 +1,5 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faApple } from "@fortawesome/free-brands-svg-icons";
-import { faBars, faUser, faTimes } from "@fortawesome/free-solid-svg-icons";
-import { Link } from "react-router-dom";
 import { TiArrowBack } from '@react-icons/all-files/ti/TiArrowBack'
 import { useNavigate } from "react-router-dom";
 
@@ -17,7 +13,7 @@ export default function HeaderWithBack({title, subtitle, path, right}) {
         <div style={{textAlign:'center', color:'black'}}><h2>{title}</h2><p>{subtitle}</p></div>
           <div div style={{width:'20%'}}>
             {
-              right && right
+              right
             }
           </div>
       </Header>

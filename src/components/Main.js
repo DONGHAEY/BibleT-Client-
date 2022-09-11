@@ -13,7 +13,6 @@ const Main = () => {
     const location = useLocation();
 
     useEffect(() => {
-        console.log(user);
     }, [])
 
     const handleLogout = e => {
