@@ -8,7 +8,7 @@ import HeaderWithBack from './HeaderWithBack';
 
 const JoinTrain = () => {
     const query = useQuery();
-    const { loading, user, error } = useSelector((state) => state.user);
+    // const { loading, user, error } = useSelector((state) => state.user);
     const [joinKey, setJoinKey] = useState(query.get("joinKey") || "");
     const [nickName, setNickName] = useState("");
     const navigate = useNavigate();

@@ -19,6 +19,7 @@ import CreateTrain from './components/CreateTrain';
 import JoinTrain from './components/JoinTrain';
 import ProfileDetail from './components/ProfileDetail';
 import { TEST } from './components/TEST';
+import Test2 from './components/TEST2';
 
 
 function App() {
@@ -29,6 +30,7 @@ function App() {
         <Routes>
           <Route exact path="/" element={ <Main /> } />
           <Route path="/test" element={<TEST/>} />
+          <Route path="/test2" element={<Test2/>} />
           <Route path="/login" element={ <Login /> } />
           <Route path="/register" element={ <Register /> } />
           <Route path="/userProfile" element={ (<UserProfile />)} />

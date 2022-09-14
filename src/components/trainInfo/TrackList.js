@@ -13,21 +13,25 @@ import { role } from '../util/role'
 import { useLocation } from "react-router-dom";
 const bible = bibleData();
 
-const TrackList = ({tracks, train, trainProfile, setTrain, setTracks, members}) => {
+
+const ProfileOne = ({mem}) => {
+    const [show, setShow] = useState(false);
+    return <span onMouseEnter={() => setShow(true)} onMouseLeave={() => setShow(false)}><img style={{width:'15px', height:'15px', borderRadius:'100%'}} src={mem && mem.profileImage}></img><span style={{fontSize:'10px', display:show ? "inline" : "none"}}>{mem && mem.nickName}</span></span>
+}
+
+const TrackList = ({tracks, train, trainProfile, setTrainProfile, setTrain, setTracks, members, setMembers}) => {
     // const [train, setTrain] = useState(null);
-    const [popup, handlePopup] = useState(false);
+    const [popup, handlePopup] = useState({
+        createTrack:false
+    });
     // const [trainProfile, setTrainProfile] = useState(null);
     // const [tracks, setTracks] = useState(tracks);
     const { trainId } = useParams();
-
 
     function useQuery() {
         const { search } = useLocation();
         return useMemo(() => new URLSearchParams(search), [search]);
     }
-
-
-    
 
     const deleteHandler = useCallback((async (date, idx) => {
         axios.post(`/api/bible-track/${trainId}/${date.getFullYear()}.${date.getMonth()+1}.${date.getDate()}/deleteTrack`).then((response) => {
@@ -50,6 +54,16 @@ const TrackList = ({tracks, train, trainProfile, setTrain, setTracks, members}) 
             await axios.post(`/api/bible-track/${trainId}/${date}/cancelStamp`);
         }
         await updateOne(date, idx);
+        const updatedUser = await axios.get(`/api/train/trainProfile/${trainId}`);
+            setTrainProfile(updatedUser.data);
+            setMembers(members => { //굳이 요청하지 않아도 되는 메서드 잘 정리하기 그리고 이 메서드는 Members컴포넌트에서 가져와야 편리하다
+                return members.map(member => {
+                    if(member.userId === updatedUser.data.userId) {
+                        return updatedUser.data;
+                    }
+                    return member;
+                });
+            })
     }, []);
 
     const updateOne = useCallback((async (date, idx) => {
@@ -68,6 +82,7 @@ const TrackList = ({tracks, train, trainProfile, setTrain, setTracks, members}) 
           });
         }), []);
 
+
     const addOne = useCallback(async (date) => {
         axios.get(`/api/train/${trainId}`).then(({data}) => {
             setTrain(data);
@@ -79,7 +94,7 @@ const TrackList = ({tracks, train, trainProfile, setTrain, setTracks, members}) 
                         if(a.date < b.date) return 1;
                         if(a.date === b.date) return 0;
                         if(a.date > b.date) return -1;
-                      });
+                    });
                     return newArray;
                 });
             })
@@ -98,25 +113,26 @@ const TrackList = ({tracks, train, trainProfile, setTrain, setTracks, members}) 
                 <h3>{bible[track.startChapter-1].chapter} {track.startPage}장 - {bible[track.endChapter-1].chapter} {track.endPage}장</h3>
                 <p style={{padding:'5px'}}>{track.content}</p>
                 <div>
-                    <span style={{padding:'5px'}}>총 {track.completeAmount}명 완료</span>
+                    <span style={{padding:'5px'}}>총 {track.checkStamps.length}명 완료</span>
                     {
                         track.checkStamps.map(stamp => {
                             const mem = members.find(member => member.userId === stamp.userId);
-                            return <span key={stamp.userId}><img style={{width:'15px', borderRadius:'100%'}} src={mem && mem.profileImage}></img></span>
+                            return <ProfileOne mem={mem} />
                         })
                     }
                 </div>
-                <div style={{padding:'3px'}} >
+                <div style={{padding:'3px'}}>
                 <span style={{padding:'5px'}} >{track.status === "COMPLETE" ? '완료' : '미완료'}</span>
                 <input
                     style={{padding:'5px'}}
                     type="checkbox"
-                    defaultChecked={track.status === "COMPLETE" ? true : false}
+
+                    checked={track.status === "COMPLETE" ? true : false}
                     onClick={async(e) => await checkHandler(e, `${track.date}`, i)}>
                 </input>
                 </div>
                 {
-                    trainProfile.role === "ROLE_CAPTAIN" ? 
+                    trainProfile.role === "ROLE_CAPTAIN" ?
                     <X>
                         <MdCancel onClick={() => {
                             deleteHandler(trackDate, i);
@@ -129,11 +145,13 @@ const TrackList = ({tracks, train, trainProfile, setTrain, setTracks, members}) 
 
     return (
         <div style={{width:'100%'}}>
-            <div style={{width:'100%', opacity:popup ? "5%" : "100%"}}>
+            <div style={{width:'100%', opacity:popup.createTrack ? "5%" : "100%"}}>
         <div style={{display:"flex", flexDirection:"column", alignItems:"center", justifyContent:"center", textAlign:'center', marginBottom:'130px'}}>
         {trainProfile && trainProfile.role === "ROLE_CAPTAIN" ? 
                             (<div style={{marginBottom:'15px'}}>
-                                <button style={{backgroundColor:'black', width:'130px', height:'30px', borderRadius:'5px', border:0, color:'white'}} onClick={() => handlePopup(true)}>트랙 추가하기</button>
+                                <button style={{backgroundColor:'black', width:'130px', height:'30px', borderRadius:'5px', border:0, color:'white'}} onClick={() => handlePopup({
+                                    createTrack:true
+                                })}>트랙 추가하기</button>
                             </div>) : undefined
                         }
             {
@@ -143,7 +161,7 @@ const TrackList = ({tracks, train, trainProfile, setTrain, setTracks, members}) 
             </div>
             
         </div>
-        { popup ? <CreateTrack onClose={handlePopup} train={train} addOne={addOne} /> : undefined}
+        { popup.createTrack ? <CreateTrack onClose={handlePopup} train={train} addOne={addOne} /> : undefined}
         </div>
     )
 }
@@ -159,12 +177,5 @@ const X = styled.div`
     z-index : 100;
     cursor: pointer;
 `
-
-// const X2 = styled.div`
-//     position:fixed;
-//     top:30px;
-//     left:8%;
-//     cursor:pointer;
-// `
 
 export default TrackList

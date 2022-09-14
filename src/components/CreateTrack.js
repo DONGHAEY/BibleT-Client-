@@ -24,7 +24,9 @@ export default function CreateTrack({onClose, train, addOne}) {
             if(data === "okay") {
                 alert("트랙 생성이 성공적으로 완료되었습니다");
                 addOne(date);
-                onClose(false);
+                onClose({
+                    createTrack:false
+                });
             }
         }).catch((e) => {
             alert(e.response.data.message);

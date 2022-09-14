@@ -27,7 +27,7 @@ const UserProfile = () => {
     const role = {
         ROLE_CAPTAIN : "🧑‍✈️",
         ROLE_CREW : "🧑‍🏭",
-        ROLE_VIEWER : "viewer"
+        ROLE_VIEWER : "뷰어"
     }
 
     const menuList = trainProfiles.map((menu, index) => (

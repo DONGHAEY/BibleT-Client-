@@ -7,11 +7,11 @@ export default function HeaderWithBack({title, subtitle, path, right}) {
     const navigate = useNavigate();
     return (
       <Header>
-        <div style={{width:'20%'}}>
+        <div style={{width:'15%'}}>
           <TiArrowBack style={{color:'black', marginLeft:'30px', fontSize:'30px'}} onClick={() => navigate(path || '/' )} />
         </div>
         <div style={{textAlign:'center', color:'black'}}><h2>{title}</h2><p>{subtitle}</p></div>
-          <div div style={{width:'20%'}}>
+          <div div style={{width:'15%'}}>
             {
               right
             }
