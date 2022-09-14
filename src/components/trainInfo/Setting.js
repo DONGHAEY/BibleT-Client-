@@ -8,7 +8,7 @@ const Setting = ({trainId, goback, trainProfile}) => {
             {trainProfile && trainProfile.role !=='ROLE_CAPTAIN' ? 
             <div onClick={async () => {
                 try {
-                    await axios.delete(`/api/train/${trainId}/myProfile`);
+                    await axios.delete(`/api/train/${trainId}/exit`);
                     alert("기차에서 내리셨습니다");
                     goback();
                 } catch(error) {

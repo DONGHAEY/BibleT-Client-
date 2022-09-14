@@ -33,6 +33,14 @@ const TrainInfo = () => {
         loadContent();
     }, []);
 
+    const fetchMembers = useCallback(
+        () => {
+            axios.get(`/api/train/${trainId}/trainMemberProfiles`).then(res => {
+                setMembers(res.data);
+            });
+        }
+    , [])
+
 
         const loadContent = useCallback(() => {
         axios.get(`/api/train/${trainId}`).then((res) => {
@@ -76,14 +84,14 @@ const TrainInfo = () => {
 <div style={{width:'100%'}}>
         {
             train ? <HeaderWithBack
-            title={train.trainName} 
+            title={train.trainName}
             subtitle={`정원수 : ${train.memberCount}명 - 트랙수 : ${train.trackAmount}개`} 
             path="/userProfile"
             right={trainProfileUi}
         /> : undefined
         }
         <div style={{display:"flex", width:'100%', height:'100%' ,flexDirection:"column", alignItems:"center", justifyContent:"center", textAlign:'center', marginBottom:'100px'}}>
-            { query.get("tab")===null ? <TrackList members={members} tracks={tracks} train={train} trainProfile={trainProfile} setTrainProfile={setTrainProfile} setTrain={setTrain} setTracks={setTracks} setMembers={setMembers} /> : undefined }
+            { query.get("tab")===null ? <TrackList members={members} tracks={tracks} train={train} trainProfile={trainProfile} setTrainProfile={setTrainProfile} setTrain={setTrain} setTracks={setTracks} setMembers={setMembers} fetchMembers={fetchMembers} /> : undefined }
             { query.get("tab")==='members' ? <Members train={train} trainProfile={trainProfile} members={members} navigate={navigate} /> : undefined }
             { query.get("tab")==='setting' ? <Setting trainId={trainId} goback={() => navigate('/userProfile')} trainProfile={trainProfile} /> : undefined }
             <Navigation />

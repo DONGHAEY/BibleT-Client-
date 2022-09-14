@@ -23,7 +23,6 @@ const ProfileDetail = () => {
 
     function loadData() {
         axios.get(`/api/train/${trainId}/${userId}`).then(({data}) => {
-            console.log(data);
             setProfile(data);
         });
     }
@@ -32,8 +31,7 @@ const ProfileDetail = () => {
         const img = e.target.files[0];
         const formData = new FormData();
         formData.append('img', img);
-        console.log(`/api/train/${trainId}/upchangeProfileImgload`) // FormData {}
-        axios.post(`/api/train/${trainId}/changeProfileImg`, formData).then((data) => {
+        axios.post(`/api/train/${trainId}/changeMyProfileImg`, formData).then((data) => {
             loadData();
         }).catch();
 

@@ -19,7 +19,7 @@ const ProfileOne = ({mem}) => {
     return <span onMouseEnter={() => setShow(true)} onMouseLeave={() => setShow(false)}><img style={{width:'15px', height:'15px', borderRadius:'100%'}} src={mem && mem.profileImage}></img><span style={{fontSize:'10px', display:show ? "inline" : "none"}}>{mem && mem.nickName}</span></span>
 }
 
-const TrackList = ({tracks, train, trainProfile, setTrainProfile, setTrain, setTracks, members, setMembers}) => {
+const TrackList = ({tracks, train, trainProfile, setTrainProfile, setTrain, setTracks, members, setMembers, fetchMembers}) => {
     // const [train, setTrain] = useState(null);
     const [popup, handlePopup] = useState({
         createTrack:false
@@ -40,6 +40,7 @@ const TrackList = ({tracks, train, trainProfile, setTrainProfile, setTrain, setT
                 setTracks(oldTracks => {
                     return oldTracks.filter((track, i) => i !== idx);
                 })
+                fetchMembers()
             })
         }).catch(e => {
             alert("알수 없는 에러 발생");
