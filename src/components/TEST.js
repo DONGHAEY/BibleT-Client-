@@ -23,7 +23,7 @@ export const TEST = () => {
                 selected={startDate}
                 onChange={(date) => setStartDate(date)}
             />
-            </div>
+            </ div>
             <div style={{
                 paddingInline:'10px'
             }}>

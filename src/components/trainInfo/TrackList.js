@@ -5,14 +5,10 @@ import styled from "styled-components";
 import Hoc from "../../HOC/auth";
 import CreateTrack from "../createTrack";
 import { MdCancel } from '@react-icons/all-files/md/MdCancel';
-import { AiOutlineSetting } from '@react-icons/all-files/ai/AiOutlineSetting'
-import { BsCardChecklist } from '@react-icons/all-files/bs/BsCardChecklist'
-import { FiUsers } from '@react-icons/all-files/fi/FiUsers'
 import bibleData from "../util/bible";
 import { role } from '../util/role'
 import { useLocation } from "react-router-dom";
 const bible = bibleData();
-
 
 const ProfileOne = ({mem}) => {
     const [show, setShow] = useState(false);
@@ -20,12 +16,9 @@ const ProfileOne = ({mem}) => {
 }
 
 const TrackList = ({tracks, train, trainProfile, setTrainProfile, setTrain, setTracks, members, setMembers, fetchMembers}) => {
-    // const [train, setTrain] = useState(null);
     const [popup, handlePopup] = useState({
         createTrack:false
     });
-    // const [trainProfile, setTrainProfile] = useState(null);
-    // const [tracks, setTracks] = useState(tracks);
     const { trainId } = useParams();
 
     function useQuery() {

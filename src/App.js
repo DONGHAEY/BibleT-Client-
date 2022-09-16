@@ -20,6 +20,7 @@ import JoinTrain from './components/JoinTrain';
 import ProfileDetail from './components/ProfileDetail';
 import { TEST } from './components/TEST';
 import Test2 from './components/TEST2';
+import Analysis from './components/analysis';
 
 
 function App() {
@@ -37,9 +38,10 @@ function App() {
           <Route path="/train/">
             <Route path=":trainId/" element={<TrainInfo />}></Route>
             <Route path=":trainId/:userId" element={<ProfileDetail />} />
-          </ Route>
+          </Route>
           <Route path="/createTrain" element={ ((<CreateTrain />))} />
           <Route path="/joinTrain/:trainId" element={<JoinTrain/>} />
+          <Route path="/analysis/:trainId" element={<Analysis/>} />
         </Routes>
       </Router>
     </div>

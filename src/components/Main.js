@@ -20,7 +20,7 @@ const Main = () => {
         dispatch(userLogout()).then(
             () => {
                 alert("로그아웃 완료!");
-                window.location.reload()
+                window.location.reload();
             }
         ).catch(e => {
             alert("알 수 없는 에러")

@@ -30,7 +30,9 @@ const UserProfile = () => {
         ROLE_VIEWER : "뷰어"
     }
 
-    const menuList = trainProfiles.map((menu, index) => (
+    const menuList = trainProfiles.map((menu, index) => {
+        console.log(menu);
+    return (
     <div key={menu.train.id} style={{backgroundColor:'whitesmoke', padding:"10px", width:'250px', height:'90px', margin:'30px', borderRadius:'5%', cursor:"pointer"}}
         onClick={() => {
             navigate(`/train/${menu.train.id}`);
@@ -40,7 +42,7 @@ const UserProfile = () => {
         <span>정원 : {menu.train.memberCount}</span>
         <span style={{marginLeft:'10px', fontSize:'15px'}}>트랙 : {menu.train.trackAmount}개</span>
     </div>
-    ))
+    )})
 
     return (
         user && <>
