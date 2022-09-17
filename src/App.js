@@ -41,7 +41,6 @@ function App() {
           </Route>
           <Route path="/createTrain" element={ ((<CreateTrain />))} />
           <Route path="/joinTrain/:trainId" element={<JoinTrain/>} />
-          <Route path="/analysis/:trainId" element={<Analysis/>} />
         </Routes>
       </Router>
     </div>

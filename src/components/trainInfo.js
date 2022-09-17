@@ -12,6 +12,7 @@ import { useLocation } from "react-router-dom";
 import Navigation from "./trainInfo/Navigation";
 import Members from "./trainInfo/Members";
 import Setting from "./trainInfo/Setting";
+import Analysis from "./analysis";
 
 const bible = bibleData();
 
@@ -81,7 +82,7 @@ const TrainInfo = () => {
     ) : undefined
 
     return (
-<div style={{width:'100%'}}>
+        query.get("pop") === null ? <div style={{width:'100%'}}>
         {
             train ? <HeaderWithBack
             title={train.trainName}
@@ -96,8 +97,7 @@ const TrainInfo = () => {
             { query.get("tab")==='setting' ? <Setting trainId={trainId} goback={() => navigate('/userProfile')} trainProfile={trainProfile} /> : undefined }
             <Navigation />
             </div>
-        </div>
-        
+        </div> : query.get("pop") === "analysis" ? <Analysis train={train} trainId={trainId} members={members} /> : undefined
     )
 }
 const Container = styled.div`

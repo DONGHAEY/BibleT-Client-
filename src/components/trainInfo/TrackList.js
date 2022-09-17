@@ -8,6 +8,7 @@ import { MdCancel } from '@react-icons/all-files/md/MdCancel';
 import bibleData from "../util/bible";
 import { role } from '../util/role'
 import { useLocation } from "react-router-dom";
+import {요일} from '../util/dateForm'
 const bible = bibleData();
 
 const ProfileOne = ({mem}) => {
@@ -95,7 +96,7 @@ const TrackList = ({tracks, train, trainProfile, setTrainProfile, setTrain, setT
         })
     }, [])
 
-    const 요일 = ['일', '월', '화', '수', '목', '금', '토'];
+    
     const 오늘 = new Date();
 
     const trackComponents = tracks.length ? tracks.map((track, i) => {

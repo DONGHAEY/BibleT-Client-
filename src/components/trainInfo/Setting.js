@@ -26,10 +26,7 @@ const Setting = ({trainId, goback, trainProfile}) => {
                 }
             }} style={{display:'inline-flex', flexDirection:'column', alignItems:'center', justifyContent:'center', minWidth:'100%', height:'100px', backgroundColor:'rgba(250, 250, 250)', borderRadius:'5px', cursor:'pointer', margin:'5px'}}><img style={{width:'50px'}} src={"/png/bus-stop.png"}></img><span>기차삭제</span></div>}
             <Link style={{display:'inline-flex', flexDirection:'column', alignItems:'center', justifyContent:'center', minWidth:'100%', height:'100px', backgroundColor:'rgba(250, 250, 250)', borderRadius:'5px', cursor:'pointer', margin:'5px'}} to={{
-                pathname: `/analysis/${trainId}`,
-                state: {
-                    dddd:"DDDD"
-                }
+                pathname: `?pop=analysis`
               }}  ><img style={{width:'50px'}} src={"/png/anal.png"}></img><span>분석하기</span></Link>
             <div style={{display:'inline-flex', flexDirection:'column', alignItems:'center', justifyContent:'center', width:'100%', height:'100px', backgroundColor:'rgba(250, 250, 250)', borderRadius:'5px', cursor:'pointer', margin:'5px'}} onClick={async () => {
 
