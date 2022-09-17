@@ -2,11 +2,31 @@ import axios from 'axios'
 import { Link } from 'react-router-dom';
 
 const Setting = ({trainId, goback, trainProfile}) => {
+
+    const useConfirm = (message = null, onConfirm, onCancel) => {
+        if (!onConfirm || typeof onConfirm !== "function") {
+          return;
+        }
+        if (onCancel && typeof onCancel !== "function") {
+          return;
+        }
+      
+        const confirmAction = () => {
+          if (window.confirm(message)) {
+            onConfirm();
+          } else {
+            onCancel();
+          }
+        };
+      
+        return confirmAction;
+      };
+      
     return (
         <div style={{minWidth:'100%'}}>
             <br ></ br>
             <div style={{display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center',minWidth:'100%'}}>
-            {trainProfile && trainProfile.role !=='ROLE_CAPTAIN' ? 
+            {trainProfile && trainProfile.role !=='ROLE_CAPTAIN' ?
             <div onClick={async () => {
                 try {
                     await axios.delete(`/api/train/${trainId}/exit`);

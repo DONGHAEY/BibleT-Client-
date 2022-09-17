@@ -97,7 +97,7 @@ const TrainInfo = () => {
             { query.get("tab")==='setting' ? <Setting trainId={trainId} goback={() => navigate('/userProfile')} trainProfile={trainProfile} /> : undefined }
             <Navigation />
             </div>
-        </div> : query.get("pop") === "analysis" ? <Analysis train={train} trainId={trainId} members={members} /> : undefined
+        </div> : query.get("pop") === "analysis" ? train && members && <Analysis train={train} trainId={trainId} members={members} /> : undefined
     )
 }
 const Container = styled.div`

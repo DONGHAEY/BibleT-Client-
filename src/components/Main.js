@@ -42,7 +42,9 @@ const Main = () => {
                     <img style={{width:'60px'}} src={"./png/train.png"}></img>
                     <h2 style={{fontSize:'20px'}}>내 성경열차</h2>
                 </div>
-                <div style={{margin:'5px', borderRadius:"15%", display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center', backgroundColor:'gainsboro', minWidth:"150px", height:'150px'}}>
+                <div style={{margin:'5px', borderRadius:"15%", display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center', backgroundColor:'gainsboro', minWidth:"150px", height:'150px'}} onClick={()=> {
+                    alert("준비중입니다...")
+                }}>
                     <img style={{width:'60px'}} src={"./png/bible.png"}></img>
                     <h2 style={{fontSize:'20px'}}>성경읽기 기록</h2>
                 </div>
