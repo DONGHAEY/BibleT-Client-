@@ -1,10 +1,12 @@
 import { useState } from "react";
-import DatePicker from "react-datepicker";
+import DatePicker, { registerLocale } from "react-datepicker";
 import styled from "styled-components";
 import { ko } from "date-fns/esm/locale";
-import './css/d.css'
+import "react-datepicker/dist/react-datepicker.css";
 import Select from "./Select";
 import axios from "axios";
+
+registerLocale("ko", ko);
 
 export default function CreateTrack({onClose, train, addOne}) {
     const [selected, setSelected] = useState({});
@@ -39,13 +41,13 @@ export default function CreateTrack({onClose, train, addOne}) {
                 <h1 style={{fontSize:'30px', marginBlock:'10px'}}>트랙 생성하기</h1>
                 <div>
                 <DatePicker
-                locale={ko}    // 언어설정 기본값은 영어
-                dateFormat="yyyy년 MM월 dd일"    // 날짜 형식 설정
-                className="input-datepicker"    // 클래스 명 지정 css주기 위해   // 선택할 수 있는 최소 날짜값 지정 
-                closeOnScroll={false}    // 스크롤을 움직였을 때 자동으로 닫히도록 설정 기본값 false
-                placeholderText="트랙 날짜 선택"    // placeholder
-                selected={date}    // value
-                onChange={(date) => setDate(date)} // 날짜를 선택하였을 때 실행될 함수
+                    // locale={ko}    // 언어설정 기본값은 영어
+                    dateFormat="yyyy년 MM월 dd일"    // 날짜 형식 설정
+                    className="input-datepicker"    // 클래스 명 지정 css주기 위해   // 선택할 수 있는 최소 날짜값 지정 
+                    // closeOnScroll={false}    // 스크롤을 움직였을 때 자동으로 닫히도록 설정 기본값 false
+                    placeholderText="트랙 날짜 선택"    // placeholder
+                    selected={date}    // value
+                    onChange={(date) => setDate(date)} // 날짜를 선택하였을 때 실행될 함수
                 />
                 </div>
                 <div>

@@ -8,7 +8,8 @@ import { MdCancel } from '@react-icons/all-files/md/MdCancel';
 import bibleData from "../util/bible";
 import { role } from '../util/role'
 import { useLocation } from "react-router-dom";
-import {요일} from '../util/dateForm'
+import { 요일 } from '../util/dateForm'
+
 const bible = bibleData();
 
 const ProfileOne = ({mem}) => {
@@ -143,10 +144,10 @@ const TrackList = ({tracks, train, trainProfile, setTrainProfile, setTrain, setT
             <div style={{width:'100%', opacity:popup.createTrack ? "5%" : "100%"}}>
         <div style={{display:"flex", flexDirection:"column", alignItems:"center", justifyContent:"center", textAlign:'center', marginBottom:'130px'}}>
         {trainProfile && trainProfile.role === "ROLE_CAPTAIN" ? 
-                            (<div style={{marginBottom:'15px'}}>
-                                <button style={{backgroundColor:'black', width:'130px', height:'30px', borderRadius:'5px', border:0, color:'white'}} onClick={() => handlePopup({
+                            (<div style={{position :'fixed', bottom:'100px', right:'30px', zIndex:'100'}}>
+                                <button style={{backgroundColor:'black', width:'60px', height:'60px', borderRadius:'100%', border:0, color:'white', fontSize:'30px', cursor:'pointer'}} onClick={() => handlePopup({
                                     createTrack:true
-                                })}>트랙 추가하기</button>
+                                })}>+</button>
                             </div>) : undefined
                         }
             {
@@ -169,7 +170,6 @@ const X = styled.div`
     top:2px;
     right:2px;
     position:absolute;
-    z-index : 100;
     cursor: pointer;
 `
 

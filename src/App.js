@@ -5,6 +5,7 @@ import UserProfile from './components/UserProfile';
 import { useSelector } from 'react-redux';
 import TrainInfo from './components/trainInfo';
 import { selectUser } from './features/userSlice';
+import ScrrenShot from './components/ScreenShot'
 
 
 import {
@@ -18,8 +19,7 @@ import Main from './components/Main';
 import CreateTrain from './components/CreateTrain';
 import JoinTrain from './components/JoinTrain';
 import ProfileDetail from './components/ProfileDetail';
-import { TEST } from './components/TEST';
-import Test2 from './components/TEST2';
+import TEST from './components/TEST';
 import Analysis from './components/analysis';
 
 
@@ -30,8 +30,6 @@ function App() {
       <Router>
         <Routes>
           <Route exact path="/" element={ <Main /> } />
-          <Route path="/test" element={<TEST/>} />
-          <Route path="/test2" element={<Test2/>} />
           <Route path="/login" element={ <Login /> } />
           <Route path="/register" element={ <Register /> } />
           <Route path="/userProfile" element={ (<UserProfile />)} />
@@ -41,6 +39,7 @@ function App() {
           </Route>
           <Route path="/createTrain" element={ ((<CreateTrain />))} />
           <Route path="/joinTrain/:trainId" element={<JoinTrain/>} />
+          {/* <Route path="/gh1" element={<ScrrenShot />} /> */}
         </Routes>
       </Router>
     </div>

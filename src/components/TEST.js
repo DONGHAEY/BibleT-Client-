@@ -1,44 +1,43 @@
-import { useState } from "react";
-import DatePicker from "react-datepicker";
-import 'react-datepicker/dist/react-datepicker.css';
-import './css/d.css'
-import { ko } from "date-fns/esm/locale";
+// import { Component } from 'react'
+// import ApexCharts from 'react-apexcharts'
 
-export const TEST = () => {
+// // export default class App extends Component {
+// //   constructor(props) {
+// //     super(props);
 
-    const [startDate, setStartDate] = useState(new Date());
-    const [endDate, setEndDate] = useState(new Date());
+// //     this.state = {
 
-    return (
-        <div style={{display:"flex", flexDirection:"column", alignItems:"center", justifyContnet:"center", textAlign:"center"}}>
-            <div style={{display:"flex", flexDirection:"row", alignItems:"center", justifyContent:"center", marginTop:'30px'}}>
-            <div style={{ paddingInline:'10px' }}>
-            <h3>시작날짜</h3>
-            <DatePicker
-                locale={ko}
-                dateFormat="yyyy년 MM월 dd일"
-                className="input-datepicker"
-                closeOnScroll={true}
-                placeholderText="시작날 선택"
-                selected={startDate}
-                onChange={(date) => setStartDate(date)}
-            />
-            </ div>
-            <div style={{
-                paddingInline:'10px'
-            }}>
-            <h3>종료날짜</h3>
-            <DatePicker
-                locale={ko} 
-                dateFormat="yyyy년 MM월 dd일" 
-                className="input-datepicker"
-                closeOnScroll={true}
-                placeholderText="끝날 선택"
-                selected={endDate}
-                onChange={(date) => setEndDate(date)}
-            />
-            </div>
-            </div>
-        </div>
-    )
-}
+// //       options: {  
+// //         chart: {
+// //           zoom: {
+// //             enabled: false
+// //           }
+// //         },
+// //         dataLabels: {
+// //           enabled: false
+// //         },
+// //         stroke: {
+// //           curve: 'straight'
+// //         },
+// //         title: {
+// //           text: 'Product Trends by Month',
+// //           align: 'left'
+// //         },
+// //         grid: {
+// //           row: {
+// //             colors: ['#f3f3f3f3', 'transparent'], // takes an array which will be repeated on columns
+// //             opacity: 0.5
+// //           },
+// //         },
+// //         xaxis: {
+// //           categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep'],
+// //         }
+// //       }
+// //     }
+// //   }
+// //   render() {
+// //     return (
+      
+// //     );
+// //   }
+// // }

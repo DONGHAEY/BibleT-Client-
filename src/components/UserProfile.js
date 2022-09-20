@@ -18,7 +18,6 @@ const UserProfile = () => {
     useEffect(() => {
         axios.post("/api/train/trainProfiles").then(({data}) => {
             setTrainProfiles(prev => {
-                console.log([...prev, ...data])
                 return [...prev, ...data]
             });
         })
@@ -31,7 +30,6 @@ const UserProfile = () => {
     }
 
     const menuList = trainProfiles.map((menu, index) => {
-        console.log(menu);
     return (
     <div key={menu.train.id} style={{backgroundColor:'whitesmoke', padding:"10px", width:'250px', height:'90px', margin:'30px', borderRadius:'5%', cursor:"pointer"}}
         onClick={() => {

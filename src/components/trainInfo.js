@@ -105,20 +105,3 @@ width:'100%'
 `;
 
 export default Hoc(TrainInfo);
-
-
-
-{/* <span style={{marginInline:'5px', cursor:'pointer'}}><AiOutlineUserAdd onClick={async() => {
-                                const tempInput = document.createElement('input');
-                                tempInput.value = `http://localhost:3000/joinTrain/${trainId}?joinKey=${train.joinKey}`;
-                                document.body.appendChild(tempInput);
-                                tempInput.select();
-                                document.execCommand('copy');
-                                document.body.removeChild(tempInput);
-                                alert("초대링크가 복사되었습니다");
-                                await navigator.share({
-                                    title: `${train.trainName}에 가입하세요`,
-                                    text: "이곳에서 함께하세요! 비밀번호="+train.joinKey,
-                                    url: `http://localhost:3000/joinTrain/${trainId}?joinKey=${train.joinKey}`,
-                                  })
-                            }} /></span> */}
