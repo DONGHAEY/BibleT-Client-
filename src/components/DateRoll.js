@@ -1,27 +1,28 @@
 import React, { useState } from "react";
-// import "./App.css";
-import './css/TEST2.css'
+import "./css/TEST2.css";
 import CalendarHeatmap from "react-calendar-heatmap";
 import "react-calendar-heatmap/dist/styles.css";
 import ReactTooltip from "react-tooltip";
 
-const Test2 = ({checkStamps}) => {
-    const [year, setYear] = useState(new Date().getFullYear());
+const Test2 = ({ checkStamps }) => {
+  const [year, setYear] = useState(new Date().getFullYear());
   return (
-    <div className="container" style={{width:'85%'}}>
+    <div className="container" style={{ width: "85%" }}>
       <div>
-        <button onClick={() => setYear(p => p-1)}>{" < "}</button>
+        <button onClick={() => setYear((p) => p - 1)}>{" < "}</button>
         <span>{year}</span>
-        <button onClick={() => setYear(p => p+1)}>{" > "}</button>
+        <button onClick={() => setYear((p) => p + 1)}>{" > "}</button>
         <CalendarHeatmap
           startDate={new Date(year, 0, 0)}
           endDate={new Date(year, 12, -1)}
-          values={checkStamps && checkStamps.map(stamp => {
-            return {
-                date : stamp.trackDate,
-            }
-          })}
-
+          values={
+            checkStamps &&
+            checkStamps.map((stamp) => {
+              return {
+                date: stamp.trackDate,
+              };
+            })
+          }
           classForValue={(value) => {
             if (!value) {
               return "color-empty";
