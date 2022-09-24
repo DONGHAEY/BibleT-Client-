@@ -1,13 +1,22 @@
 import React from "react";
-import logo from "./logo.svg";
+import { RecoilRoot } from "recoil";
 import "./App.css";
+import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
+import Main from "./components/Main/main";
+import { UserLogin } from "./components/userLogin/userLogin";
 
 function App() {
   return (
-    <div className="App">
-      <h1>Let's Start!!!</h1>
-      <h2>test</h2>
-    </div>
+    <RecoilRoot>
+      <div className="App">
+        <Router>
+          <Routes>
+            <Route path="/" element={<Main />} />
+            <Route path="/login" element={<UserLogin />} />
+          </Routes>
+        </Router>
+      </div>
+    </RecoilRoot>
   );
 }
 
