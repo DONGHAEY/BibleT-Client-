@@ -5,25 +5,17 @@ import { useLocation } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import { role } from "../util/role";
 import { IoMdExit } from "@react-icons/all-files/io/IoMdExit";
-// IoExit
+import styled from "styled-components";
+import { FlexWrapper } from "../../styledComponent/Wrapper";
+import { AddCircleButton } from "../../styledComponent/AddCircleButton";
+import { HiOutlineUserAdd } from "@react-icons/all-files/hi/HiOutlineUserAdd";
 
 const Members = ({ train, members, navigate, trainProfile }) => {
   const { trainId } = useParams();
   const MemberProfiles = members.map((member, memIdx) => {
     return (
-      <div
+      <MemberDiv
         key={memIdx}
-        style={{
-          width: "90%",
-          backgroundColor: "rgba(250, 250, 250, 0.9)",
-          borderRadius: "15px",
-          display: "flex",
-          flexDirection: "row",
-          alignItems: "center",
-          justifyContent: "center",
-          padding: "20px",
-          marginBlock: "15px",
-        }}
         onClick={() => {
           navigate(`/train/${member.trainId}/${member.userId}`);
         }}
@@ -38,32 +30,14 @@ const Members = ({ train, members, navigate, trainProfile }) => {
           <span>{role[member.role]}</span>
         </span>
         <div>{member.checkStamps.length}번</div>
-      </div>
+      </MemberDiv>
     );
   });
 
   return (
     trainProfile && (
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          justifyContent: "center",
-          width: "100%",
-        }}
-      >
-        <button
-          style={{
-            backgroundColor: "black",
-            width: "130px",
-            height: "30px",
-            borderRadius: "5px",
-            border: 0,
-            color: "white",
-            marginTop: "30px",
-            marginBottom: "30px",
-          }}
+      <FlexWrapper>
+        {/* <button
           onClick={() => {
             const tempInput = document.createElement("input");
             tempInput.value = `http://${window.location.host}/joinTrain/${trainId}?joinKey=${train.joinKey}`;
@@ -75,11 +49,28 @@ const Members = ({ train, members, navigate, trainProfile }) => {
           }}
         >
           멤버 추가하기
-        </button>
+        </button> */}
         {MemberProfiles}
-      </div>
+        {trainProfile?.role === "ROLE_CAPTAIN" ? (
+          <AddCircleButton style={{ color: "white" }}>
+            <HiOutlineUserAdd size={25} />
+          </AddCircleButton>
+        ) : null}
+      </FlexWrapper>
     )
   );
 };
+
+const MemberDiv = styled.div`
+  width: 90%;
+  background-color: rgba(250, 250, 250, 0.9);
+  border-radius: 15px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  margin-block: 15px;
+`;
 
 export default Members;

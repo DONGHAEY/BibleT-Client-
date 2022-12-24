@@ -32,6 +32,7 @@ export const Register = () => {
         navigate("/login", {
           state: {
             wait: state.wait,
+            back: state.back ? state.back : "/",
           },
         });
       } else {
@@ -46,7 +47,7 @@ export const Register = () => {
 
   return (
     <>
-      <HeaderWithBack path={-1} />
+      <HeaderWithBack path={state.back ? state.back : "/"} />
       <div style={{ marginTop: "90px" }}>
         <form className="login__form" onSubmit={(e) => submit(e)}>
           <h1>BibleT 회원가입</h1>

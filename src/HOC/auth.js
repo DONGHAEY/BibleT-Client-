@@ -13,10 +13,11 @@ export default function Hoc(HocComponent, canPass = false) {
       dispatch(userAuth()).then((response) => {
         if (response.payload && !response.payload.success) {
           if (canPass) return <HocComponent />;
-          alert("로그인이 필요한 작업입니다");
+          alert("로그인을 부탁드립니다");
           navigate("/login", {
             state: {
               wait: location.pathname + location.search,
+              back: "/",
             },
           });
         }

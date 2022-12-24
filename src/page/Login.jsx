@@ -35,7 +35,7 @@ export const Login = () => {
 
   return (
     <>
-      <HeaderWithBack path={-1} />
+      <HeaderWithBack path={state?.back ? state?.back : -1} />
       <div div style={{ marginTop: "90px" }}>
         <form className="login__form" onSubmit={(e) => submit(e)}>
           <div
@@ -78,6 +78,7 @@ export const Login = () => {
                 navigate("/register", {
                   state: {
                     wait: (state && state.wait) || "",
+                    back: "/",
                   },
                 })
               }

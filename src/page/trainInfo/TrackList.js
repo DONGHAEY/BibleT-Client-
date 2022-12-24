@@ -9,6 +9,7 @@ import bibleData from "../util/bible";
 import { role } from "../util/role";
 import { useLocation } from "react-router-dom";
 import { getStringDate, 요일 } from "../util/dateForm";
+import { AddCircleButton } from "../../styledComponent/AddCircleButton";
 
 const bible = bibleData();
 
@@ -48,47 +49,50 @@ const TrackList = ({
     );
   };
 
-  const deleteHandler = useCallback(async (date, idx) => {
-    axios
-      .post(`/api/bible-track/${trainId}/${getStringDate(date)}/deleteTrack`)
-      .then((response) => {
-        axios.get(`/api/train/${trainId}`).then(({ data }) => {
-          setTrain(data);
-          setTracks((oldTracks) => {
-            return oldTracks.filter((track, i) => i !== idx);
-          });
-          axios.get(`/api/train/${trainId}/trainMemberProfiles`).then((res) => {
-            setMembers(res.data);
-          });
-        });
-      })
-      .catch((e) => {
-        alert("알수 없는 에러 발생");
-        alert(e.response.data.message);
+  const deleteTrackHandler = useCallback(async (date, idx) => {
+    try {
+      await axios.post(
+        `/api/bible-track/${trainId}/${getStringDate(date)}/deleteTrack`
+      );
+      const trainInfo = await axios.get(`/api/train/${trainId}`);
+      setTrain(trainInfo.data);
+      setTracks((oldTracks) => {
+        return oldTracks.filter((track, i) => i !== idx);
       });
+      const membersInfo = await axios.get(
+        `/api/train/${trainId}/trainMemberProfiles`
+      );
+      setMembers(membersInfo.data);
+    } catch (e) {
+      alert(e.response.data.message);
+    }
   }, []);
 
   const checkHandler = useCallback(async (e, date, idx) => {
-    if (e.target.checked) {
-      await axios.post(`/api/bible-track/${trainId}/${date}/complete`);
-    } else {
-      await axios.post(`/api/bible-track/${trainId}/${date}/cancelStamp`);
-    }
-    await updateOne(date, idx);
-    const updatedUser = await axios.get(`/api/train/trainProfile/${trainId}`);
-    setTrainProfile(updatedUser.data);
-    setMembers((members) => {
-      //굳이 요청하지 않아도 되는 메서드 잘 정리하기 그리고 이 메서드는 Members컴포넌트에서 가져와야 편리하다
-      return members.map((member) => {
-        if (member.userId === updatedUser.data.userId) {
-          return updatedUser.data;
-        }
-        return member;
+    try {
+      if (e.target.checked) {
+        await axios.post(`/api/bible-track/${trainId}/${date}/complete`);
+      } else {
+        await axios.post(`/api/bible-track/${trainId}/${date}/cancelStamp`);
+      }
+      await updateOneTrack(date, idx);
+      const updatedUser = await axios.get(`/api/train/trainProfile/${trainId}`);
+      setTrainProfile(updatedUser.data);
+      setMembers((members) => {
+        //굳이 요청하지 않아도 되는 메서드 잘 정리하기 그리고 이 메서드는 Members컴포넌트에서 가져와야 편리하다
+        return members.map((member) => {
+          if (member.userId === updatedUser.data.userId) {
+            return updatedUser.data;
+          }
+          return member;
+        });
       });
-    });
+    } catch (e) {
+      alert(e.response.data.message);
+    }
   }, []);
 
-  const updateOne = useCallback(async (date, idx) => {
+  const updateOneTrack = useCallback(async (date, idx) => {
     const { data } = await axios.get(`/api/bible-track/${trainId}/${date}`);
     setTracks((oldTracks) => {
       const newArray = [];
@@ -104,56 +108,40 @@ const TrackList = ({
     });
   }, []);
 
-  const addOne = useCallback(async (date) => {
-    axios.get(`/api/train/${trainId}`).then(({ data }) => {
-      setTrain(data);
-      axios
-        .get(`/api/bible-track/${trainId}/${getStringDate(date)}`)
-        .then(({ data }) => {
-          setTracks((oldTracks) => {
-            const newArray = [...oldTracks];
-            newArray.push(data);
-            newArray.sort(function (a, b) {
-              if (a.date < b.date) return 1;
-              if (a.date === b.date) return 0;
-              if (a.date > b.date) return -1;
-            });
-            return newArray;
-          });
+  const addOneTrack = useCallback(async (date) => {
+    try {
+      const trainInfo = await axios.get(`/api/train/${trainId}`);
+      setTrain(trainInfo.data);
+      const trackInfo = await axios.get(
+        `/api/bible-track/${trainId}/${getStringDate(date)}`
+      );
+      setTracks((oldTracks) => {
+        const newArray = [...oldTracks];
+        newArray.push(trackInfo.data);
+        newArray.sort(function (a, b) {
+          if (a.date < b.date) return 1;
+          if (a.date === b.date) return 0;
+          if (a.date > b.date) return -1;
         });
-    });
+        return newArray;
+      });
+    } catch (e) {
+      alert(e.response.data.message);
+    }
   }, []);
 
   const 오늘 = new Date();
 
   const trackComponents = tracks?.map((track, i) => {
-    const p = track.date.split("-");
+    const dateString = track.date.split("-");
     const trackDate = new Date(
-      parseInt(p[0]),
-      parseInt(p[1]) - 1,
-      parseInt(p[2])
+      parseInt(dateString[0]),
+      parseInt(dateString[1]) - 1,
+      parseInt(dateString[2])
     );
 
     return (
-      <div
-        key={track.date}
-        style={{
-          position: "relative",
-          marginTop: "15px",
-          textAlign: "center",
-          width: "95%",
-          height: "200px",
-          borderRadius: "8px",
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          justifyContent: "center",
-          backgroundColor:
-            오늘.toLocaleDateString() === trackDate.toLocaleDateString()
-              ? "rgb(150, 150, 150, 0.11)"
-              : "whitesmoke",
-        }}
-      >
+      <TrackDiv key={track.date}>
         <h3 style={{ padding: "10px" }}>
           {trackDate.getFullYear()}년 {trackDate.getMonth() + 1}월{" "}
           {trackDate.getDate()}일 ({요일[trackDate.getDay()]}){" "}
@@ -164,7 +152,9 @@ const TrackList = ({
           {bible[track.startChapter - 1].chapter} {track.startPage}장 -{" "}
           {bible[track.endChapter - 1].chapter} {track.endPage}장
         </h3>
-        <p style={{ padding: "5px" }}>{track.content}</p>
+        <p style={{ paddingInline: "3%", paddingBlock: "5px" }}>
+          {track.content}
+        </p>
         <div>
           <span style={{ padding: "5px" }}>
             총 {track.checkStamps.length}명 완료
@@ -188,16 +178,16 @@ const TrackList = ({
             onClick={async (e) => await checkHandler(e, `${track.date}`, i)}
           ></input>
         </div>
-        {trainProfile.role === "ROLE_CAPTAIN" ? (
-          <X key={`${track.date}/x`}>
-            <MdCancel
-              onClick={() => {
-                deleteHandler(trackDate, i);
-              }}
-            />
-          </X>
-        ) : null}
-      </div>
+        <DeleteButton
+          show={trainProfile.role === "ROLE_CAPTAIN"}
+          key={`${track.date}/xBtn`}
+        >
+          <MdCancel
+            key={`${track.date}/xIcon`}
+            onClick={() => deleteTrackHandler(trackDate, i)}
+          />
+        </DeleteButton>
+      </TrackDiv>
     );
   });
 
@@ -205,39 +195,20 @@ const TrackList = ({
     <>
       <TrackListMain>
         {trainProfile?.role === "ROLE_CAPTAIN" ? (
-          <div
-            style={{
-              position: "fixed",
-              bottom: "100px",
-              right: "30px",
-              zIndex: "100",
-            }}
+          <AddCircleButton
+            onClick={() =>
+              handlePopup({
+                createTrack: true,
+              })
+            }
           >
-            <button
-              style={{
-                backgroundColor: "black",
-                width: "60px",
-                height: "60px",
-                borderRadius: "100%",
-                border: 0,
-                color: "white",
-                fontSize: "30px",
-                cursor: "pointer",
-              }}
-              onClick={() =>
-                handlePopup({
-                  createTrack: true,
-                })
-              }
-            >
-              +
-            </button>
-          </div>
+            +
+          </AddCircleButton>
         ) : null}
         {tracks.length ? trackComponents : NoTracks}
       </TrackListMain>
       {popup.createTrack ? (
-        <CreateTrack onClose={handlePopup} train={train} addOne={addOne} />
+        <CreateTrack onClose={handlePopup} train={train} addOne={addOneTrack} />
       ) : null}
     </>
   );
@@ -250,6 +221,20 @@ const NoTracks = (
   </div>
 );
 
+const TrackDiv = styled.div`
+  position: relative;
+  margin-top: 15px;
+  text-align: center;
+  width: 95%;
+  height: 200px;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: whitesmoke;
+`;
+
 const TrackListMain = styled.div`
   display: flex;
   flex-direction: column;
@@ -259,7 +244,8 @@ const TrackListMain = styled.div`
   width: 100%;
 `;
 
-const X = styled.div`
+const DeleteButton = styled.div`
+  display:${({ show }) => (show ? "block;" : "none;")}
   top: 2px;
   right: 2px;
   position: absolute;

@@ -29,7 +29,9 @@ const Main = () => {
     <MainCompo>
       <LOGO>BibleT</LOGO>
       <div>
-        <span>{user ? user.username + "님" : "로그인하세요"}</span>
+        <span style={{ fontSize: "20px" }}>
+          {user ? user.username + "님" : "로그인하세요"}
+        </span>
         <LoginStatus onClick={user ? handleLogout : () => navigate("/login")}>
           {user ? "로그아웃" : "로그인"}
         </LoginStatus>
