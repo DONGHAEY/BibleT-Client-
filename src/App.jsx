@@ -1,9 +1,8 @@
-import "./App.css";
 import React, { useEffect } from "react";
 import { Login } from "./page/Login";
-import UserTrainProfiles from "./page/UserTrainProfiles";
+import BibleTrainProfiles from "./page/BibleTrainProfiles";
 import { useSelector } from "react-redux";
-import TrainInfo from "./page/trainInfo/trainInfo";
+import TrainInfo from "./page/trainInfo";
 import { selectUser } from "./features/userSlice";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import { Register } from "./page/Register";
@@ -15,13 +14,16 @@ import TrackDetail from "./page/trainInfo/TrackDetail";
 
 function App() {
   return (
-    <div className="App">
+    <div>
       <Router>
         <Routes>
           <Route exact path="/" element={<Main />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
-          <Route path="/userTrainProfiles" element={<UserTrainProfiles />} />
+          <Route
+            path="/myBibleTrainProfiles"
+            element={<BibleTrainProfiles />}
+          />
           <Route path="/train/">
             <Route path=":trainId/" element={<TrainInfo />}></Route>
             <Route

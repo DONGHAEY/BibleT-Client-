@@ -35,20 +35,34 @@ const Main = () => {
         </LoginStatus>
       </div>
       <FUNCTIONBUTTONS>
-        <BUTTON onClick={() => navigate("/userTrainProfiles")}>
+        <BUTTON onClick={() => navigate("/myBibleTrainProfiles")}>
           <BUTTONIMG src={"./png/train.png"}></BUTTONIMG>
-          <h2>내 성경열차</h2>
+          <div style={{ paddingInline: "5px" }}></div>
+          <span>내 성경열차</span>
         </BUTTON>
         <BUTTON>
           <BUTTONIMG src={"./png/bible.png"}></BUTTONIMG>
-          <h2>성경읽기 기록</h2>
+          <div style={{ paddingInline: "5px" }}></div>
+          <span>개인 기록</span>
         </BUTTON>
+        {/* <BUTTON>
+          <BUTTONIMG
+            src={
+              "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRz1rsaEJ9l42S8uioYTcPVaJIbsM30Q9WN4Q&usqp=CAU"
+            }
+          ></BUTTONIMG>
+          <span>앱으로 설치</span>
+        </BUTTON> */}
       </FUNCTIONBUTTONS>
     </MainCompo>
   );
 };
 
 const MainCompo = styled.div`
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  overflow: hidden;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -63,31 +77,35 @@ const LoginStatus = styled.div`
 `;
 
 const LOGO = styled.h1`
-  color: rebeccapurple;
-  font-size: 15vh;
-  margin-top: 50px;
+  color: black;
+  font-size: 13vh;
 `;
 
 const FUNCTIONBUTTONS = styled.div`
+  margin: 5px;
   display: flex;
-  margin-top: 25px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
 `;
 
 const BUTTON = styled.div`
-  margin: 5px;
-  border-radius: 15%;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  border-radius: 5px;
   align-items: center;
   justify-content: center;
-  background-color: gainsboro;
-  min-width: 30vh;
-  height: 30vh;
-  font-size: 2.5vh;
+  height: 70px;
+  margin-top: 10px;
+  cursor: pointer;
+  width: 90%;
+  background-color: whitesmoke;
 `;
 
 const BUTTONIMG = styled.img`
-  width: 60px;
+  width: 70px;
+  padding-inline: 5px;
 `;
 
 export default Hoc(Main, true);

@@ -3,23 +3,29 @@ import styled from "styled-components";
 import "./css/header.css";
 import { TiArrowBack } from "@react-icons/all-files/ti/TiArrowBack";
 import { useNavigate } from "react-router-dom";
+import { FlexWrapper } from "../styledComponent/Wrapper";
 
-export default function HeaderWithBack({ title, subtitle, path = "/", right }) {
+export default function HeaderWithBack({
+  title = null,
+  subtitle = null,
+  path = "/",
+  right,
+}) {
   const navigate = useNavigate();
   return (
     <Header>
-      <ArrowBack>
-        <TiArrowBack
-          style={{ marginLeft: "30px" }}
-          onClick={() => navigate(path)}
-        />
-      </ArrowBack>
-      {title && subtitle && (
-        <SubTitle>
-          <h2>{title}</h2>
-          <p>{subtitle}</p>
-        </SubTitle>
-      )}
+      <Left>
+        <FlexWrapper>
+          <TiArrowBack
+            style={{ fontSize: "30px" }}
+            onClick={() => navigate(path)}
+          />
+        </FlexWrapper>
+      </Left>
+      <SubTitle>
+        <h2>{title}</h2>
+        <p>{subtitle}</p>
+      </SubTitle>
       <Right show={right}>{right}</Right>
     </Header>
   );
@@ -53,8 +59,7 @@ const SubTitle = styled.div`
   color: black;
 `;
 
-const ArrowBack = styled.div`
+const Left = styled.div`
   color: black;
-  font-size: 30px;
   width: 15%;
 `;

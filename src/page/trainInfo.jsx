@@ -2,17 +2,22 @@ import axios from "axios";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
-import Hoc from "../../HOC/auth";
-import CreateTrack from "./createTrack";
-import bibleData from "../util/bible";
-import HeaderWithBack from "../HeaderWithBack";
-import { role } from "../util/role";
-import TrackList from "./TrackList";
+import Hoc from "../HOC/auth";
+import CreateTrack from "./trainInfo/createTrack";
+import bibleData from "./util/bible";
+import HeaderWithBack from "./HeaderWithBack";
+import { role } from "./util/role";
+import TrackList from "./trainInfo/TrackList";
 import { useLocation } from "react-router-dom";
-import Navigation from "./Navigation";
-import Members from "./Members";
-import Setting from "./Setting";
-import Analysis from "./analysis";
+import Navigation from "./trainInfo/Navigation";
+import Members from "./trainInfo/Members";
+import Setting from "./trainInfo/Setting";
+import Analysis from "./trainInfo/analysis";
+import {
+  FlexWrapper,
+  FlexWrapperWithHeader,
+  WrapperWithHeader,
+} from "../styledComponent/Wrapper";
 
 const bible = bibleData();
 
@@ -60,31 +65,31 @@ const TrainInfo = () => {
     });
   }, []);
 
-  const trainProfileUi = trainProfile ? (
-    <Container
+  const trainProfileUi = (
+    <FlexWrapper
       onClick={() => {
-        navigate(`/train/${trainId}/${trainProfile.userId}`);
+        navigate(`/train/${trainId}/${trainProfile?.userId}`);
       }}
     >
       <img
         style={{ width: "30px", height: "30px", borderRadius: "100%" }}
-        src={trainProfile.profileImage}
+        src={trainProfile?.profileImage}
       ></img>
       <span style={{ fontSize: "10px" }}>
-        {role[trainProfile.role]}, {trainProfile.nickName}
+        {role[trainProfile?.role]}, {trainProfile?.nickName}
       </span>
-    </Container>
-  ) : null;
+    </FlexWrapper>
+  );
 
   return query.get("pop") === null ? (
-    <div>
+    <>
       <HeaderWithBack
         title={train?.trainName}
         subtitle={`정원수 : ${train?.memberCount}명 - 트랙수 : ${train?.trackAmount}개`}
-        path="/userTrainProfiles"
+        path="/myBibleTrainProfiles"
         right={trainProfileUi}
       />
-      <Container2>
+      <FlexWrapperWithHeader style={{ marginBottom: "90px" }}>
         {query.get("tab") === null ? (
           <TrackList
             members={members}
@@ -109,38 +114,17 @@ const TrainInfo = () => {
         {query.get("tab") === "setting" ? (
           <Setting
             trainId={trainId}
-            goback={() => navigate("/userTrainProfiles")}
+            goback={() => navigate("/myBibleTrainProfiles")}
             trainProfile={trainProfile}
           />
         ) : null}
         <Navigation />
-      </Container2>
-    </div>
+      </FlexWrapperWithHeader>
+    </>
   ) : query.get("pop") === "analysis" ? (
     train &&
     members && <Analysis train={train} trainId={trainId} members={members} />
   ) : null;
 };
-
-const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  float: right;
-  text-align: center;
-  margin-right: 30px;
-`;
-
-const Container2 = styled.div`
-  display: flex;
-  width: 100%;
-  height: 100%;
-  margin-top: 90px;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  margin-bottom: 100px;
-`;
 
 export default Hoc(TrainInfo);

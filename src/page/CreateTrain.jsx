@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import auth from "../HOC/auth";
+import { FlexWrapper, FlexWrapperWithHeader } from "../styledComponent/Wrapper";
 import HeaderWithBack from "./HeaderWithBack";
 
 const CreateTrain = () => {
@@ -19,7 +20,7 @@ const CreateTrain = () => {
         churchName,
         captainName: myNickName,
       });
-      navigate("/userTrainProfiles");
+      navigate("/myBibleTrainProfiles");
     } catch (e) {
       alert(`열차를 생성할 수 없습니다 (${e.response.data.message})`);
       navigate("/userTrainProfiles");
@@ -28,13 +29,16 @@ const CreateTrain = () => {
 
   return (
     <>
-      <HeaderWithBack path={"/userTrainProfiles"} />
-      <MainS>
-        <h2 style={{ fontSize: "8vh" }}>성경열차 만들기</h2>
+      <HeaderWithBack
+        path={"/myBibleTrainProfiles"}
+        title={"성경열차 생성"}
+        subtitle={"하나님이 주실 생명의 열차"}
+      />
+      <FlexWrapperWithHeader>
         <InputBox
           value={trainName}
           onChange={(e) => setTrainName(e.target.value)}
-          placeholder="기차이름"
+          placeholder="열차이름"
         ></InputBox>
         <InputBox
           value={churchName}
@@ -46,14 +50,14 @@ const CreateTrain = () => {
           onChange={(e) => setMyNickName(e.target.value)}
           placeholder="사용할 기관사 이름 ex)홍길동A"
         ></InputBox>
-        <AddTrain
+        <CreateTrainButton
           onClick={() => {
             clickEv();
           }}
         >
           성경 열차 만들기
-        </AddTrain>
-      </MainS>
+        </CreateTrainButton>
+      </FlexWrapperWithHeader>
     </>
   );
 };
@@ -69,14 +73,15 @@ const MainS = styled.div`
 const InputBox = styled.input`
   padding-inline: 15px;
   margin-top: 30px;
-  width: 55vh;
+  min-width: 50%;
+  max-width: 80%;
   height: 8vh;
   border: 0;
-  border-radius: 30;
+  border-radius: 5px;
   background-color: whitesmoke;
 `;
 
-const AddTrain = styled.button`
+const CreateTrainButton = styled.button`
   border: 0;
   width: 230px;
   height: 50px;

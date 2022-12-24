@@ -61,6 +61,7 @@ const Members = ({ train, members, navigate, trainProfile }) => {
             borderRadius: "5px",
             border: 0,
             color: "white",
+            marginTop: "30px",
             marginBottom: "30px",
           }}
           onClick={() => {

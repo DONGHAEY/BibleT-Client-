@@ -11,6 +11,7 @@ import HeaderWithBack from "../HeaderWithBack";
 import { useLocation } from "react-router-dom";
 import bibleData from "../util/bible";
 import ApexCharts from "react-apexcharts";
+import { FlexWrapperWithHeader } from "../../styledComponent/Wrapper";
 
 const bible = bibleData();
 
@@ -40,21 +41,13 @@ const Analysis = ({ train, trainId, members }) => {
   };
 
   return (
-    <div>
+    <>
       <HeaderWithBack
         title={train.trainName}
         subtitle={"분석하기"}
         path={location.pathname + "?tab=setting"}
       />
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          justifyContent: "center",
-          textAlign: "center",
-        }}
-      >
+      <FlexWrapperWithHeader>
         <div style={{ display: "inline-flex", flexDirection: "row" }}>
           <div>
             <h4>시작</h4>
@@ -298,8 +291,8 @@ const Analysis = ({ train, trainId, members }) => {
           <br></br>
           <br></br>
         </div>
-      </div>
-    </div>
+      </FlexWrapperWithHeader>
+    </>
   );
 };
 
