@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { userRegister } from "../actions/userRegister";
 import { useLocation } from "react-router-dom";
 import HeaderWithBack from "./HeaderWithBack";
+import { selectUser } from "../features/userSlice";
 
 export const Register = () => {
   const dispatch = useDispatch();
@@ -15,6 +16,7 @@ export const Register = () => {
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
   const { state } = useLocation();
+  const { loading } = useSelector((prev) => prev.user);
 
   const submit = (e) => {
     e.preventDefault();
@@ -38,10 +40,14 @@ export const Register = () => {
     });
   };
 
+  if (loading) {
+    return <h1>로딩중입니다... 잠시만 기다려주세요..</h1>;
+  }
+
   return (
     <>
       <HeaderWithBack path={-1} />
-      <div>
+      <div style={{ marginTop: "90px" }}>
         <form className="login__form" onSubmit={(e) => submit(e)}>
           <h1>BibleT 회원가입</h1>
           <input

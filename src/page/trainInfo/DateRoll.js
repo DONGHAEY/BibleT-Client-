@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "./css/TEST2.css";
+import "../css/TEST2.css";
 import CalendarHeatmap from "react-calendar-heatmap";
 import "react-calendar-heatmap/dist/styles.css";
 import ReactTooltip from "react-tooltip";

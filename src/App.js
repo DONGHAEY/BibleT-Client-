@@ -1,22 +1,19 @@
 import "./App.css";
-import React from "react";
-import { Login } from "./components/Login";
-import UserProfile from "./components/UserProfile";
+import React, { useEffect } from "react";
+import { Login } from "./page/Login";
+import UserTrainProfiles from "./page/UserTrainProfiles";
 import { useSelector } from "react-redux";
-import TrainInfo from "./components/trainInfo";
+import TrainInfo from "./page/trainInfo/trainInfo";
 import { selectUser } from "./features/userSlice";
-import ScrrenShot from "./components/ScreenShot";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
-import { Register } from "./components/Register";
-import Main from "./components/Main";
-import CreateTrain from "./components/CreateTrain";
-import JoinTrain from "./components/JoinTrain";
-import ProfileDetail from "./components/ProfileDetail";
-import Analysis from "./components/analysis";
-import TrackDetail from "./components/TrackDetail";
+import { Register } from "./page/Register";
+import Main from "./page/Main";
+import CreateTrain from "./page/CreateTrain";
+import JoinTrain from "./page/trainInfo/JoinTrain";
+import ProfileDetail from "./page/trainInfo/ProfileDetail";
+import TrackDetail from "./page/trainInfo/TrackDetail";
 
 function App() {
-  const user = useSelector((state) => state.user);
   return (
     <div className="App">
       <Router>
@@ -24,7 +21,7 @@ function App() {
           <Route exact path="/" element={<Main />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
-          <Route path="/userProfile" element={<UserProfile />} />
+          <Route path="/userTrainProfiles" element={<UserTrainProfiles />} />
           <Route path="/train/">
             <Route path=":trainId/" element={<TrainInfo />}></Route>
             <Route

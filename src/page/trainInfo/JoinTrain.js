@@ -3,8 +3,8 @@ import { useEffect, useMemo, useState } from "react";
 import { useSelector } from "react-redux";
 import { useParams, useLocation } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-import Hoc from "../HOC/auth";
-import HeaderWithBack from "./HeaderWithBack";
+import Hoc from "../../HOC/auth";
+import HeaderWithBack from "../HeaderWithBack";
 
 const JoinTrain = () => {
   const query = useQuery();
@@ -28,7 +28,6 @@ const JoinTrain = () => {
       })
       .catch((e) => {
         alert("잘못된접근");
-        navigate("/");
       });
   }, []);
 

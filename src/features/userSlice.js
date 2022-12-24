@@ -2,6 +2,7 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { userAuth } from "../actions/userAuth";
 import { userLogin } from "../actions/userLogin";
 import { userRegister } from "../actions/userRegister";
+import { atom } from "recoil";
 
 const userToken = localStorage.getItem("userToken")
   ? localStorage.getItem("userToken")
@@ -63,6 +64,6 @@ export const userSlice = createSlice({
   },
 });
 
-export const selectUser = (state) => state.user.user;
+export const selectUser = (state) => state.user;
 
 export default userSlice.reducer;

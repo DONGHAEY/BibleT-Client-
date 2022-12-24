@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import styled from "styled-components";
-import bibleData from "./util/bible";
+import bibleData from "../util/bible";
 
 const Select = ({ select }) => {
   const chapt = bibleData();
@@ -12,7 +12,7 @@ const Select = ({ select }) => {
   }, [selectedChapter]);
 
   const chapters = chapt.map((cp, idx) => (
-    <option key={cp.id} value={cp.id}>
+    <option key={cp?.id} value={cp.id}>
       {cp.chapter}
     </option>
   ));
@@ -24,7 +24,7 @@ const Select = ({ select }) => {
     }
     return pages.map((page, i) => {
       return (
-        <option key={page} value={page}>
+        <option key={`${page}/${i}`} value={page}>
           {page}장
         </option>
       );

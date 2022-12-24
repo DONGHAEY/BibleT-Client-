@@ -14,6 +14,7 @@ export const Login = () => {
 
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
+
   const { state } = useLocation();
 
   const submit = (e) => {
@@ -35,9 +36,22 @@ export const Login = () => {
   return (
     <>
       <HeaderWithBack path={-1} />
-      <div>
+      <div div style={{ marginTop: "90px" }}>
         <form className="login__form" onSubmit={(e) => submit(e)}>
-          <h1>BibleT 로그인</h1>
+          <div
+            style={{
+              display: "inline",
+              paddingInline: "50px",
+              paddingBlock: "50px",
+            }}
+          >
+            <div className="d">
+              <h1>BibleT</h1>
+            </div>
+            <div className="d">
+              <h1>로그인</h1>
+            </div>
+          </div>
           <input
             type="name"
             placeholder="아이디"
@@ -50,19 +64,28 @@ export const Login = () => {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           ></input>
-          <button className="submit__btn">submit</button>
-          <a
-            onClick={() =>
-              navigate("/register", {
-                state: {
-                  wait: (state && state.wait) || "",
-                },
-              })
-            }
-          >
-            가입하기
-          </a>
-          <a>아이디와 비밀번호 찾기</a>
+          <button className="submit__btn">로그인하기</button>
+          <div className="submit__btn2">
+            <img
+              style={{ width: "15px" }}
+              src="https://www.svgrepo.com/show/368252/kakao.svg"
+            ></img>
+            <p>카카오 로그인</p>
+          </div>
+          <div style={{ marginTop: "15px" }}>
+            <a
+              onClick={() =>
+                navigate("/register", {
+                  state: {
+                    wait: (state && state.wait) || "",
+                  },
+                })
+              }
+            >
+              회원가입하기
+            </a>
+            <a>비밀번호 찾기</a>
+          </div>
         </form>
       </div>
     </>
