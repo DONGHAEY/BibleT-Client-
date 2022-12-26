@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import styled from "styled-components";
-import bibleData from "../util/bible";
+import bibleData from "./util/bible";
 
 const Select = ({ select }) => {
   const chapt = bibleData();

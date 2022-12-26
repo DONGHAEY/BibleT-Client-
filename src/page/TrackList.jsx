@@ -2,9 +2,8 @@ import axios from "axios";
 import { useCallback, useState } from "react";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
-import Hoc from "../HOC/auth";
-import CreateTrack from "./trainInfo/createTrack";
-import { getStringDate, 요일 } from "./util/dateForm";
+import CreateTrack from "./CreateTrack";
+import { getStringDate, getWeek, 요일 } from "./util/dateForm";
 import { AddCircleButton } from "../styledComponent/AddCircleButton";
 import { TrackInfo } from "../component/TrackInfo";
 
@@ -17,6 +16,7 @@ const TrackList = ({
   setTracks,
   members,
   setMembers,
+  setPage,
 }) => {
   const [popup, handlePopup] = useState({
     createTrack: false,
@@ -134,7 +134,13 @@ const TrackList = ({
             +
           </AddCircleButton>
         ) : null}
+        <PageMoveBtn onClick={() => setPage((prev) => prev - 1)}>
+          저번주로
+        </PageMoveBtn>
         {tracks.length ? trackComponents : NoTracks}
+        <PageMoveBtn onClick={() => setPage((prev) => prev + 1)}>
+          다음주로
+        </PageMoveBtn>
       </TrackListMain>
       {popup.createTrack ? (
         <CreateTrack onClose={handlePopup} train={train} addOne={addOneTrack} />
@@ -149,6 +155,15 @@ const NoTracks = (
     <h3 style={{ marginTop: "20px" }}>트랙이 아무것도 없네요..</h3>
   </div>
 );
+
+const PageMoveBtn = styled.div`
+  width: 95%;
+  background-color: whitesmoke;
+  margin-top: 15px;
+  border-radius: 3px;
+  cursor: pointer;
+  font-size: 5px;
+`;
 
 const TrackDiv = styled.div`
   position: relative;

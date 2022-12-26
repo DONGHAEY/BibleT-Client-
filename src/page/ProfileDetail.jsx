@@ -1,11 +1,11 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import HeaderWithBack from "../HeaderWithBack";
+import HeaderWithBack from "./HeaderWithBack";
 import styled from "styled-components";
 import { AiOutlineEdit } from "@react-icons/all-files/ai/AiOutlineEdit";
 import Test2 from "./DateRoll";
-import { role } from "../util/role";
+import { role } from "./util/role";
 
 const ProfileDetail = () => {
   const { trainId, userId } = useParams();

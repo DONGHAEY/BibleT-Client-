@@ -8,9 +8,9 @@ import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import { Register } from "./page/Register";
 import Main from "./page/Main";
 import CreateTrain from "./page/CreateTrain";
-import JoinTrain from "./page/trainInfo/JoinTrain";
-import ProfileDetail from "./page/trainInfo/ProfileDetail";
-import TrackDetail from "./page/trainInfo/TrackDetail";
+import JoinTrain from "./page/JoinTrain";
+import ProfileDetail from "./page/ProfileDetail";
+import TrackDetail from "./page/TrackDetail";
 
 function App() {
   return (

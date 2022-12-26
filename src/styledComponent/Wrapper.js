@@ -13,3 +13,11 @@ export const FlexWrapper = styled.div`
 export const FlexWrapperWithHeader = styled(FlexWrapper)`
   margin-top: 90px;
 `;
+
+export const FlexWrapperWithHeaderAndNavigation = styled(FlexWrapperWithHeader)`
+  margin-bottom: 90px;
+  flex-direction: row;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+`;

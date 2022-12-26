@@ -2,12 +2,11 @@ import axios from "axios";
 import { useEffect, useMemo, useState } from "react";
 import { useParams, useLocation } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-import Hoc from "../../HOC/auth";
-import HeaderWithBack from "../HeaderWithBack";
+import Hoc from "../HOC/auth";
+import HeaderWithBack from "./HeaderWithBack";
 
 const JoinTrain = () => {
   const query = useQuery();
-  // const { loading, user, error } = useSelector((state) => state.user);
   const [joinKey, setJoinKey] = useState(query.get("joinKey") || "");
   const [nickName, setNickName] = useState("");
   const navigate = useNavigate();

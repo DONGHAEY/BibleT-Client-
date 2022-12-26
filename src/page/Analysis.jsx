@@ -1,16 +1,16 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import DatePicker from "react-datepicker";
-import "../css/datePicker.css";
+import "./css/datePicker.css";
 import "react-datepicker/dist/react-datepicker.css";
 import { ko } from "date-fns/esm/locale";
-import { getStringDate, stringToDate } from "../util/dateForm";
-import { 요일 } from "../util/dateForm";
-import HeaderWithBack from "../HeaderWithBack";
+import { getStringDate, stringToDate } from "./util/dateForm";
+import { 요일 } from "./util/dateForm";
+import HeaderWithBack from "./HeaderWithBack";
 import { useLocation } from "react-router-dom";
-import bibleData from "../util/bible";
+import bibleData from "./util/bible";
 import ApexCharts from "react-apexcharts";
-import { FlexWrapperWithHeader } from "../../styledComponent/Wrapper";
+import { FlexWrapperWithHeader } from "../styledComponent/Wrapper";
 
 const bible = bibleData();
 
