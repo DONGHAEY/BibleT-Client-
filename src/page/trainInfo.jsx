@@ -51,7 +51,7 @@ const TrainInfo = () => {
         await updateTrainMembers();
         await updateTracks();
       } catch (e) {
-        alert(e.response.data.message);
+        alert(e);
       }
     })();
   }, [page]);

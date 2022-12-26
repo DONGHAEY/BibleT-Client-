@@ -5,6 +5,7 @@ import { ko } from "date-fns/esm/locale";
 import "react-datepicker/dist/react-datepicker.css";
 import Select from "./Select";
 import axios from "axios";
+import { getStringDate } from "./util/dateForm";
 
 registerLocale("ko", ko);
 
@@ -15,9 +16,10 @@ export default function CreateTrack({ onClose, train, addOne }) {
 
   const createTrackApi = () => {
     const { start, end } = selected;
+    console.log(getStringDate(date));
     axios
       .post(`/api/bible-track/${train.id}/addTrack`, {
-        date: `${date.getFullYear()}.${date.getMonth() + 1}.${date.getDate()}`,
+        date: getStringDate(date),
         startChapter: start.selectedChapter,
         endChapter: end.selectedChapter,
         startPage: start.selectedPage,
@@ -40,22 +42,8 @@ export default function CreateTrack({ onClose, train, addOne }) {
 
   return (
     <Container>
-      <div
-        style={{
-          maxWidth: "80%",
-          minWidth: "40%",
-          height: "50%",
-          paddingInline: "30px",
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          justifyContent: "center",
-          textAlign: "center",
-          borderRadius: "5%",
-          background: "rgba(250, 250, 250, 0.99)",
-        }}
-      >
-        <h1 style={{ fontSize: "30px", marginBlock: "10px" }}>트랙 생성하기</h1>
+      <CreateTrackPopUpWrapper>
+        <Title>트랙 생성하기</Title>
         <div>
           <DatePicker
             // locale={ko}    // 언어설정 기본값은 영어
@@ -105,26 +93,9 @@ export default function CreateTrack({ onClose, train, addOne }) {
             placeholder="기타사항을 입력해주세요"
           />
         </div>
-        <button
-          style={{
-            width: "150px",
-            height: "30px",
-            borderRadius: "8%",
-            border: 0,
-            backgroundColor: "black",
-            color: "white",
-          }}
-          onClick={() => createTrackApi()}
-        >
-          추가하기
-        </button>
-        <p
-          style={{ fontSize: "15px", cursor: "pointer", marginTop: "10px" }}
-          onClick={() => onClose(false)}
-        >
-          취소
-        </p>
-      </div>
+        <AddBtn onClick={() => createTrackApi()}>추가하기</AddBtn>
+        <p onClick={() => onClose(false)}>취소</p>
+      </CreateTrackPopUpWrapper>
     </Container>
   );
 }
@@ -141,4 +112,32 @@ const Container = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
+`;
+
+const CreateTrackPopUpWrapper = styled.div`
+  max-width: 80%;
+  min-width: 40%;
+  height: 50%;
+  padding-inline: 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  border-radius: 5%;
+  background: rgba(250, 250, 250, 0.99);
+`;
+
+const Title = styled.h1`
+  font-size: 30px;
+  margin-block: 10px;
+`;
+
+const AddBtn = styled.button`
+  width: 150px;
+  height: 30px;
+  border-radius: 8%;
+  border: 0;
+  background-color: black;
+  color: white;
 `;

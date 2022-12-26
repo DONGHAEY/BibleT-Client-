@@ -1,9 +1,7 @@
-import axios from "axios";
-import { useCallback, useState } from "react";
+import { useState } from "react";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import CreateTrack from "./CreateTrack";
-import { getStringDate } from "./util/dateForm";
 import { AddCircleButton } from "../styledComponent/AddCircleButton";
 import { TrackInfo } from "../component/TrackInfo";
 import { BibleTrainState } from "../store/BibleTrainStore";
@@ -40,7 +38,7 @@ const TrackList = ({ updateBibleTrain, updateMembers }) => {
       });
       updateMembers();
     } catch (e) {
-      alert(e.response.data.message);
+      alert(e);
     }
   };
 
@@ -64,33 +62,38 @@ const TrackList = ({ updateBibleTrain, updateMembers }) => {
         });
       });
     } catch (e) {
-      alert(e.response.data.message);
+      alert(e);
     }
   };
 
   const updateOneTrack = async (date, idx) => {
-    const { data } = await fetchGetTrack(trainId, date);
-    setTracks((oldTracks) => {
-      const newArray = [];
-      for (let i = 0; i < oldTracks.length; i++) {
-        const oldNote = oldTracks[i];
-        if (i === idx) {
-          newArray[i] = data;
-        } else {
-          newArray[i] = oldNote;
+    try {
+      const { data } = await fetchGetTrack(trainId, date);
+      setTracks((oldTracks) => {
+        const newArray = [];
+        for (let i = 0; i < oldTracks.length; i++) {
+          const oldNote = oldTracks[i];
+          if (i === idx) {
+            newArray[i] = data;
+          } else {
+            newArray[i] = oldNote;
+          }
         }
-      }
-      return newArray;
-    });
+        return newArray;
+      });
+    } catch (e) {
+      alert(e);
+    }
   };
 
   const addOneTrack = async (date) => {
     try {
-      updateBibleTrain();
+      await updateBibleTrain();
+      // 서버 과부하를 막기 위해 특정 하나의 트랙만 불러온다..
       const trackInfo = await fetchGetTrack(trainId, date);
       setTracks((oldTracks) => {
         const newArray = [...oldTracks];
-        newArray.push(trackInfo.data);
+        newArray.push(trackInfo);
         newArray.sort(function (a, b) {
           if (a.date < b.date) return 1;
           if (a.date === b.date) return 0;
@@ -99,7 +102,7 @@ const TrackList = ({ updateBibleTrain, updateMembers }) => {
         return newArray;
       });
     } catch (e) {
-      alert(e.response.data.message);
+      alert(e);
     }
   };
 
