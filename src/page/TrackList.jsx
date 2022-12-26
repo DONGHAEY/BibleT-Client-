@@ -10,8 +10,14 @@ import { TrainMembersState } from "../store/TrainMembersStore";
 import { TrainProfileState } from "../store/TrainProfileState";
 import { BibleTracksState } from "../store/BibleTracksState";
 import axios from "axios";
-import { getStringDate, stringToDate } from "./util/dateForm";
 import { useEffect } from "react";
+import {
+  fetchBibleTracks,
+  fetchCancelTrack,
+  fetchCompleteTrack,
+  fetchDeleteBibleTrack,
+  fetchTrainProfile,
+} from "../api/bibletrain";
 
 const TrackList = ({}) => {
   const [bibleTrain, setBibleTrain] = useRecoilState(BibleTrainState);
@@ -27,13 +33,13 @@ const TrackList = ({}) => {
 
   useEffect(() => {
     (async () => {
-      await getTracksAndSet();
+      await fetchAndSetTracks();
     })();
   }, []);
 
   const deleteTrackHandler = async (date, idx) => {
     try {
-      await axios.post(`/api/bible-track/${trainId}/${date}/deleteTrack`);
+      await fetchDeleteBibleTrack(trainId, date);
       setBibleTrain((prevTrain) => {
         const newBibleTrain = {
           ...prevTrain,
@@ -41,7 +47,7 @@ const TrackList = ({}) => {
         };
         return newBibleTrain;
       });
-      getTracksAndSet();
+      fetchAndSetTracks();
     } catch (e) {
       alert(e);
     }
@@ -50,15 +56,12 @@ const TrackList = ({}) => {
   const checkTrackHandler = async (e, date, idx) => {
     try {
       if (e.target.checked) {
-        await axios.post(`/api/bible-track/${trainId}/${date}/complete`);
+        await fetchCompleteTrack(trainId, date);
       } else {
-        await axios.post(`/api/bible-track/${trainId}/${date}/cancelStamp`);
+        await fetchCancelTrack(trainId, date);
       }
-      const trainProfile = await axios.get(
-        `/api/train/trainProfile/${trainId}`
-      );
-      setTrainProfile(trainProfile.data);
-      getTracksAndSet();
+      setTrainProfile(await fetchTrainProfile(trainId));
+      fetchAndSetTracks();
     } catch (e) {
       alert(e);
     }
@@ -66,7 +69,6 @@ const TrackList = ({}) => {
 
   const addOneTrack = async (date) => {
     try {
-      await axios.get(`/api/bible-track/${trainId}/${date}`);
       setBibleTrain((prevTrain) => {
         const newTrain = {
           ...prevTrain,
@@ -74,16 +76,15 @@ const TrackList = ({}) => {
         };
         return newTrain;
       });
-      getTracksAndSet();
+      fetchAndSetTracks();
     } catch (e) {
       alert(e);
     }
   };
 
-  const getTracksAndSet = async () => {
+  const fetchAndSetTracks = async () => {
     try {
-      const tracks = await axios.get(`/api/bible-track/${trainId}`);
-      setTracks(tracks.data);
+      setTracks(await fetchBibleTracks(trainId));
     } catch (e) {
       alert(e);
     }
