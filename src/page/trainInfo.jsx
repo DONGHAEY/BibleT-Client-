@@ -13,12 +13,6 @@ import { TrainProfileUi } from "../component/TrainProfileUi";
 import { FlexWrapperWithHeaderAndNavigation } from "../styledComponent/Wrapper";
 import { getWeek } from "./util/dateForm";
 import styled from "styled-components";
-import {
-  fetchBibleTrain,
-  fetchTrainMembers,
-  fetchTrainProfile,
-} from "../api/bibleTrainApi";
-import { fetchBibleTracks } from "../api/bibleTrackApi";
 import { useRecoilState } from "recoil";
 import { BibleTrainState } from "../store/BibleTrainStore";
 import { TrainMembersState } from "../store/TrainMembersStore";
@@ -31,7 +25,7 @@ const TrainInfo = () => {
   const [trainProfile, setTrainProfile] = useRecoilState(TrainProfileState);
   const [bibleTracks, setBibleTracks] = useRecoilState(BibleTracksState);
   const [page, setPage] = useState(0);
-  const [date, setDate] = useState({});
+  const [date, setDate] = useState(null);
 
   const navigate = useNavigate();
   const query = useQuery();
@@ -45,7 +39,7 @@ const TrainInfo = () => {
   useEffect(() => {
     (async () => {
       try {
-        setDate(getWeek(page));
+        // setDate(getWeek(page));
         await updateBibleTrain();
         await updateTrainProfile();
         await updateTrainMembers();
@@ -57,16 +51,22 @@ const TrainInfo = () => {
   }, [page]);
 
   const updateBibleTrain = async () => {
-    setBibleTrain(await fetchBibleTrain(trainId));
+    const bibleTrain = await axios.get(`/api/train/${trainId}`);
+    setBibleTrain(bibleTrain.data);
   };
   const updateTrainProfile = async () => {
-    setTrainProfile(await fetchTrainProfile(trainId));
+    const trainProfile = await axios.get(`/api/train/trainProfile/${trainId}`);
+    setTrainProfile(trainProfile.data);
   };
   const updateTracks = async () => {
-    setBibleTracks(await fetchBibleTracks(trainId));
+    const tracks = await axios.get(`/api/bible-track/${trainId}`);
+    setBibleTracks(tracks.data);
   };
   const updateTrainMembers = async () => {
-    setTrainMembers(await fetchTrainMembers(trainId));
+    const trainMembers = await axios.get(
+      `/api/train/${trainId}/trainMemberProfiles`
+    );
+    setTrainMembers(trainMembers.data);
   };
 
   const trainProfileUi = (

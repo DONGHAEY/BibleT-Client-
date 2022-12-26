@@ -1,7 +1,7 @@
 import { MdCancel } from "@react-icons/all-files/md/MdCancel";
 import styled from "styled-components";
 import bibleData from "../page/util/bible";
-import { 요일 } from "../page/util/dateForm";
+import { stringToDate, 요일 } from "../page/util/dateForm";
 import { SmallTrainProfile } from "./SmallTrainProfile";
 
 const bible = bibleData();

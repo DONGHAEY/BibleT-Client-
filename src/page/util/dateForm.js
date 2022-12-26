@@ -1,5 +1,5 @@
 export const getStringDate = (date) => {
-  return `${date.getFullYear()}.${date.getMonth() + 1}.${date.getDate()}`;
+  return `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
 };
 
 export const stringToDate = (stringDate) => {
@@ -51,7 +51,6 @@ export const getWeek = (stat = 0) => {
     dd = String(dd).length === 1 ? "0" + dd : dd;
     thisWeek.push(yyyy + "-" + mm + "-" + dd);
   }
-  console.log(thisWeek);
   return {
     startDate: thisWeek[0],
     endDate: thisWeek[6],

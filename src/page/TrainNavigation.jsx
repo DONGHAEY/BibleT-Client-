@@ -7,8 +7,6 @@ import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
 const Navigation = ({ tab }) => {
-  // const [tabN, setTabN] = useState(0);
-
   const tabs = [
     <Icon>
       <Link style={{ textDecoration: "none", color: "black" }} to="">
@@ -36,29 +34,25 @@ const Navigation = ({ tab }) => {
     </Icon>,
   ];
 
-  return (
-    <div
-      style={{
-        display: "flex",
-        flexDirection: "row",
-        alignItems: "center",
-        justifyContent: "center",
-        position: "fixed",
-        bottom: 0,
-        width: "100%",
-        height: "80px",
-        backgroundColor: "rgba(250, 250, 250)",
-      }}
-    >
-      {tabs.map((tab) => tab)}
-    </div>
-  );
+  return <NavigationBar>{tabs.map((tab) => tab)}</NavigationBar>;
 };
 
 const Icon = styled.span`
   margin-inline: 8.3%;
   cursor: pointer;
   width: 30%;
+`;
+
+const NavigationBar = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  height: 90px;
+  background-color: rgba(250, 250, 250);
 `;
 
 export default Navigation;
