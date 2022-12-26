@@ -9,9 +9,22 @@ import styled from "styled-components";
 import { FlexWrapper } from "../styledComponent/Wrapper";
 import { AddCircleButton } from "../styledComponent/AddCircleButton";
 import { HiOutlineUserAdd } from "@react-icons/all-files/hi/HiOutlineUserAdd";
+import { useRecoilState } from "recoil";
+import { TrainMembersState } from "../store/TrainMembersStore";
 
-const Members = ({ train, members, navigate, trainProfile }) => {
+const Members = ({ train, navigate, trainProfile }) => {
   const { trainId } = useParams();
+  const [members, setTrainMembers] = useRecoilState(TrainMembersState);
+
+  useEffect(() => {
+    (async () => {
+      const trainMembers = await axios.get(
+        `/api/train/${trainId}/trainMemberProfiles`
+      );
+      setTrainMembers(trainMembers.data);
+    })();
+  }, []);
+
   const MemberProfiles = members.map((member, memIdx) => {
     return (
       <MemberDiv

@@ -7,34 +7,34 @@ import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
 const Navigation = ({ tab }) => {
-  const tabs = [
-    <Icon>
-      <Link style={{ textDecoration: "none", color: "black" }} to="">
-        <BsCardChecklist />
-        <p>홈</p>
-      </Link>
-    </Icon>,
-    <Icon>
-      <Link
-        style={{ textDecoration: "none", color: "black" }}
-        to="?tab=members"
-      >
-        <FiUsers />
-        <p>멤버</p>
-      </Link>
-    </Icon>,
-    <Icon>
-      <Link
-        style={{ textDecoration: "none", color: "black" }}
-        to="?tab=setting"
-      >
-        <AiOutlineSetting />
-        <p>설정</p>
-      </Link>
-    </Icon>,
-  ];
-
-  return <NavigationBar>{tabs.map((tab) => tab)}</NavigationBar>;
+  return (
+    <NavigationBar>
+      <Icon>
+        <Link style={{ textDecoration: "none", color: "black" }} to="">
+          <BsCardChecklist />
+          <p>홈</p>
+        </Link>
+      </Icon>
+      <Icon>
+        <Link
+          style={{ textDecoration: "none", color: "black" }}
+          to="?tab=members"
+        >
+          <FiUsers />
+          <p>멤버</p>
+        </Link>
+      </Icon>
+      <Icon>
+        <Link
+          style={{ textDecoration: "none", color: "black" }}
+          to="?tab=setting"
+        >
+          <AiOutlineSetting />
+          <p>설정</p>
+        </Link>
+      </Icon>
+    </NavigationBar>
+  );
 };
 
 const Icon = styled.span`

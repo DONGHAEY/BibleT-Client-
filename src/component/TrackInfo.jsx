@@ -1,7 +1,7 @@
 import { MdCancel } from "@react-icons/all-files/md/MdCancel";
 import styled from "styled-components";
 import bibleData from "../page/util/bible";
-import { stringToDate, 요일 } from "../page/util/dateForm";
+import { getStringDate, stringToDate, 요일 } from "../page/util/dateForm";
 import { SmallTrainProfile } from "./SmallTrainProfile";
 
 const bible = bibleData();
@@ -54,7 +54,7 @@ export const TrackInfo = ({
         <input
           style={{ padding: "5px" }}
           type="checkbox"
-          checked={track?.status === "COMPLETE" ? true : false}
+          defaultChecked={track?.status === "COMPLETE" ? true : false}
           onClick={async (e) => await checkTrackHandler(e, `${track?.date}`, i)}
         ></input>
       </div>
@@ -65,7 +65,7 @@ export const TrackInfo = ({
         <MdCancel
           key={`${track?.date}/xIcon`}
           onClick={() => {
-            deleteTrackHandler(trackDate, i);
+            deleteTrackHandler(getStringDate(trackDate), i);
           }}
         />
       </DeleteButton>

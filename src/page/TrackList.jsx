@@ -11,9 +11,10 @@ import { TrainProfileState } from "../store/TrainProfileState";
 import { BibleTracksState } from "../store/BibleTracksState";
 import axios from "axios";
 import { getStringDate, stringToDate } from "./util/dateForm";
+import { useEffect } from "react";
 
-const TrackList = ({ updateBibleTrain, updateMembers }) => {
-  const [bibleTrain] = useRecoilState(BibleTrainState);
+const TrackList = ({}) => {
+  const [bibleTrain, setBibleTrain] = useRecoilState(BibleTrainState);
   const [trainMembers, setTrainMembers] = useRecoilState(TrainMembersState);
   const [trainProfile, setTrainProfile] = useRecoilState(TrainProfileState);
   const [bibleTracks, setTracks] = useRecoilState(BibleTracksState);
@@ -24,16 +25,23 @@ const TrackList = ({ updateBibleTrain, updateMembers }) => {
 
   const { trainId } = useParams();
 
+  useEffect(() => {
+    (async () => {
+      await getTracksAndSet();
+    })();
+  }, []);
+
   const deleteTrackHandler = async (date, idx) => {
     try {
-      await axios.post(
-        `/api/bible-track/${trainId}/${getStringDate(date)}/deleteTrack`
-      );
-      updateBibleTrain();
-      setTracks((oldTracks) => {
-        return oldTracks.filter((track, i) => i !== idx);
+      await axios.post(`/api/bible-track/${trainId}/${date}/deleteTrack`);
+      setBibleTrain((prevTrain) => {
+        const newBibleTrain = {
+          ...prevTrain,
+          trackAmount: prevTrain["trackAmount"] - 1,
+        };
+        return newBibleTrain;
       });
-      updateMembers();
+      getTracksAndSet();
     } catch (e) {
       alert(e);
     }
@@ -46,40 +54,11 @@ const TrackList = ({ updateBibleTrain, updateMembers }) => {
       } else {
         await axios.post(`/api/bible-track/${trainId}/${date}/cancelStamp`);
       }
-      await updateOneTrack(date, idx);
       const trainProfile = await axios.get(
         `/api/train/trainProfile/${trainId}`
       );
       setTrainProfile(trainProfile.data);
-      setTrainMembers((members) => {
-        //굳이 요청하지 않아도 되는 메서드 잘 정리하기 그리고 이 메서드는 Members컴포넌트에서 가져와야 편리하다
-        return trainMembers.map((member) => {
-          if (member.userId === trainProfile.userId) {
-            return trainProfile.data;
-          }
-          return member;
-        });
-      });
-    } catch (e) {
-      alert(e);
-    }
-  };
-
-  const updateOneTrack = async (date, idx) => {
-    try {
-      const track = await axios.get(`/api/bible-track/${trainId}/${date}`);
-      setTracks((oldTracks) => {
-        const newArray = [];
-        for (let i = 0; i < oldTracks.length; i++) {
-          const oldNote = oldTracks[i];
-          if (i === idx) {
-            newArray[i] = track.data;
-          } else {
-            newArray[i] = oldNote;
-          }
-        }
-        return newArray;
-      });
+      getTracksAndSet();
     } catch (e) {
       alert(e);
     }
@@ -87,19 +66,24 @@ const TrackList = ({ updateBibleTrain, updateMembers }) => {
 
   const addOneTrack = async (date) => {
     try {
-      await updateBibleTrain();
-      // 서버 과부하를 막기 위해 특정 하나의 트랙만 불러온다..
-      const trackInfo = await axios.get(`/api/bible-track/${trainId}/${date}`);
-      setTracks((oldTracks) => {
-        const newArray = [...oldTracks];
-        newArray.push(trackInfo.data);
-        newArray.sort(function (a, b) {
-          if (a.date < b.date) return 1;
-          if (a.date === b.date) return 0;
-          if (a.date > b.date) return -1;
-        });
-        return newArray;
+      await axios.get(`/api/bible-track/${trainId}/${date}`);
+      setBibleTrain((prevTrain) => {
+        const newTrain = {
+          ...prevTrain,
+          trackAmount: prevTrain["trackAmount"] + 1,
+        };
+        return newTrain;
       });
+      getTracksAndSet();
+    } catch (e) {
+      alert(e);
+    }
+  };
+
+  const getTracksAndSet = async () => {
+    try {
+      const tracks = await axios.get(`/api/bible-track/${trainId}`);
+      setTracks(tracks.data);
     } catch (e) {
       alert(e);
     }
