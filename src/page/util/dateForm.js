@@ -3,11 +3,6 @@ export const getStringDate = (date) => {
 };
 
 export const stringToDate = (stringDate) => {
-  console.log(
-    parseInt(stringDate.slice(0, 4)),
-    parseInt(stringDate.slice(5, 7)),
-    parseInt(stringDate.slice(8, 10))
-  );
   return new Date(
     parseInt(stringDate.slice(0, 4)),
     parseInt(stringDate.slice(5, 7)) - 1,

@@ -1,6 +1,6 @@
 import { atom } from "recoil";
 
 const darkModeState = atom({
-  key: "darkModeState",
+  key: "dark_mode_state",
   default: true,
 });

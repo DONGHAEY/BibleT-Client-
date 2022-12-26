@@ -16,7 +16,6 @@ export const FlexWrapperWithHeader = styled(FlexWrapper)`
 
 export const FlexWrapperWithHeaderAndNavigation = styled(FlexWrapperWithHeader)`
   margin-bottom: 90px;
-  flex-direction: row;
   height: 100%;
   align-items: center;
   justify-content: center;

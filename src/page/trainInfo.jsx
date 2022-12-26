@@ -3,7 +3,6 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Hoc from "../HOC/auth";
 import HeaderWithBack from "./HeaderWithBack";
-import { role } from "./util/role";
 import TrackList from "./TrackList";
 import { useLocation } from "react-router-dom";
 import Navigation from "./TrainNavigation";
@@ -13,12 +12,24 @@ import Analysis from "./Analysis";
 import { TrainProfileUi } from "../component/TrainProfileUi";
 import { FlexWrapperWithHeaderAndNavigation } from "../styledComponent/Wrapper";
 import { getWeek } from "./util/dateForm";
+import styled from "styled-components";
+import {
+  fetchBibleTrain,
+  fetchTrainMembers,
+  fetchTrainProfile,
+} from "../api/bibleTrainApi";
+import { fetchBibleTracks } from "../api/bibleTrackApi";
+import { useRecoilState } from "recoil";
+import { BibleTrainState } from "../store/BibleTrainStore";
+import { TrainMembersState } from "../store/TrainMembersStore";
+import { TrainProfileState } from "../store/TrainProfileState";
+import { BibleTracksState } from "../store/BibleTracksState";
 
 const TrainInfo = () => {
-  const [bibleTrain, setBibleTrain] = useState(null);
-  const [trainProfile, setTrainProfile] = useState(null);
-  const [tracks, setTracks] = useState([]);
-  const [members, setMembers] = useState([]);
+  const [bibleTrain, setBibleTrain] = useRecoilState(BibleTrainState);
+  const [trainMembers, setTrainMembers] = useRecoilState(TrainMembersState);
+  const [trainProfile, setTrainProfile] = useRecoilState(TrainProfileState);
+  const [bibleTracks, setBibleTracks] = useRecoilState(BibleTracksState);
   const [page, setPage] = useState(0);
   const [date, setDate] = useState({});
 
@@ -35,35 +46,28 @@ const TrainInfo = () => {
     (async () => {
       try {
         setDate(getWeek(page));
-        setBibleTrain(await fetchBibleTrain());
-        setTrainProfile(await fetchTrainProfile());
-        setTracks(await fetchTracks());
-        setMembers(await fetchMembers());
+        await updateBibleTrain();
+        await updateTrainProfile();
+        await updateTrainMembers();
+        await updateTracks();
       } catch (e) {
         alert(e.response.data.message);
       }
     })();
   }, [page]);
 
-  const fetchTrainProfile = useCallback(async (trainId) => {
-    const trainProfile = await axios.get(`/api/train/trainProfile/${trainId}`);
-    return trainProfile.data;
-  });
-
-  const fetchBibleTrain = useCallback(async (trainId) => {
-    const train = await axios.get(`/api/train/${trainId}`);
-    return train.data;
-  });
-
-  const fetchTracks = useCallback(async (trainId) => {
-    const tracks = await axios.get(`/api/bible-track/${trainId}`);
-    return tracks.data;
-  });
-
-  const fetchMembers = useCallback(async (trainId) => {
-    const res = await axios.get(`/api/train/${trainId}/trainMemberProfiles`);
-    return res.data;
-  }, []);
+  const updateBibleTrain = async () => {
+    setBibleTrain(await fetchBibleTrain(trainId));
+  };
+  const updateTrainProfile = async () => {
+    setTrainProfile(await fetchTrainProfile(trainId));
+  };
+  const updateTracks = async () => {
+    setBibleTracks(await fetchBibleTracks(trainId));
+  };
+  const updateTrainMembers = async () => {
+    setTrainMembers(await fetchTrainMembers(trainId));
+  };
 
   const trainProfileUi = (
     <TrainProfileUi trainId={trainId} trainProfile={trainProfile} />
@@ -82,25 +86,27 @@ const TrainInfo = () => {
       <FlexWrapperWithHeaderAndNavigation>
         {query.get("tab") === null ? (
           <>
+            {bibleTrain?.trackAmount ? (
+              <PageMoveBtn onClick={() => setPage((prev) => prev - 1)}>
+                저번주로
+              </PageMoveBtn>
+            ) : null}
             <TrackList
-              members={members}
-              tracks={tracks}
-              train={bibleTrain}
-              trainProfile={trainProfile}
-              setTrainProfile={setTrainProfile}
-              setTrain={setBibleTrain}
-              setTracks={setTracks}
-              setMembers={setMembers}
-              fetchMembers={fetchMembers}
-              setPage={setPage}
+              updateBibleTrain={updateBibleTrain}
+              updateMembers={updateTrainMembers}
             />
+            {bibleTrain?.trackAmount ? (
+              <PageMoveBtn onClick={() => setPage((prev) => prev + 1)}>
+                다음주로
+              </PageMoveBtn>
+            ) : null}
           </>
         ) : null}
         {query.get("tab") === "members" ? (
           <Members
             train={bibleTrain}
             trainProfile={trainProfile}
-            members={members}
+            members={trainMembers}
             navigate={navigate}
           />
         ) : null}
@@ -116,10 +122,19 @@ const TrainInfo = () => {
     </>
   ) : query.get("pop") === "analysis" ? (
     bibleTrain &&
-    members && (
-      <Analysis train={bibleTrain} trainId={trainId} members={members} />
+    trainMembers && (
+      <Analysis train={bibleTrain} trainId={trainId} members={trainMembers} />
     )
   ) : null;
 };
+
+const PageMoveBtn = styled.div`
+  width: 95%;
+  background-color: whitesmoke;
+  margin-top: 15px;
+  border-radius: 3px;
+  cursor: pointer;
+  font-size: 5px;
+`;
 
 export default Hoc(TrainInfo);
