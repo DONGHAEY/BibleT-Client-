@@ -11,11 +11,7 @@ import Members from "./TrainMembers";
 import Setting from "./Setting";
 import Analysis from "./Analysis";
 import { TrainProfileUi } from "../component/TrainProfileUi";
-import {
-  FlexWrapper,
-  FlexWrapperWithHeader,
-  FlexWrapperWithHeaderAndNavigation,
-} from "../styledComponent/Wrapper";
+import { FlexWrapperWithHeaderAndNavigation } from "../styledComponent/Wrapper";
 import { getWeek } from "./util/dateForm";
 
 const TrainInfo = () => {
@@ -38,8 +34,7 @@ const TrainInfo = () => {
   useEffect(() => {
     (async () => {
       try {
-        const week = getWeek(page);
-        setDate(week);
+        setDate(getWeek(page));
         setBibleTrain(await fetchBibleTrain());
         setTrainProfile(await fetchTrainProfile());
         setTracks(await fetchTracks());
@@ -50,22 +45,22 @@ const TrainInfo = () => {
     })();
   }, [page]);
 
-  const fetchTrainProfile = useCallback(async () => {
+  const fetchTrainProfile = useCallback(async (trainId) => {
     const trainProfile = await axios.get(`/api/train/trainProfile/${trainId}`);
     return trainProfile.data;
   });
 
-  const fetchBibleTrain = useCallback(async () => {
+  const fetchBibleTrain = useCallback(async (trainId) => {
     const train = await axios.get(`/api/train/${trainId}`);
     return train.data;
   });
 
-  const fetchTracks = useCallback(async () => {
+  const fetchTracks = useCallback(async (trainId) => {
     const tracks = await axios.get(`/api/bible-track/${trainId}`);
     return tracks.data;
   });
 
-  const fetchMembers = useCallback(async () => {
+  const fetchMembers = useCallback(async (trainId) => {
     const res = await axios.get(`/api/train/${trainId}/trainMemberProfiles`);
     return res.data;
   }, []);
