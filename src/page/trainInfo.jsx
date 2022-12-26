@@ -17,6 +17,11 @@ import { BibleTrainState } from "../store/BibleTrainStore";
 import { TrainMembersState } from "../store/TrainMembersStore";
 import { TrainProfileState } from "../store/TrainProfileState";
 import { BibleTracksState } from "../store/BibleTracksState";
+import {
+  fetchBibleTrain,
+  fetchTrainMembers,
+  fetchTrainProfile,
+} from "../api/bibletrain";
 
 const TrainInfo = () => {
   const [bibleTrain, setBibleTrain] = useRecoilState(BibleTrainState);
@@ -38,18 +43,9 @@ const TrainInfo = () => {
   useEffect(() => {
     (async () => {
       try {
-        const bibleTrain = await axios.get(`/api/train/${trainId}`);
-        setBibleTrain(bibleTrain.data);
-        //
-        const trainProfile = await axios.get(
-          `/api/train/trainProfile/${trainId}`
-        );
-        setTrainProfile(trainProfile.data);
-        //
-        const trainMembers = await axios.get(
-          `/api/train/${trainId}/trainMemberProfiles`
-        );
-        setTrainMembers(trainMembers.data);
+        setBibleTrain(await fetchBibleTrain(trainId));
+        setTrainProfile(await fetchTrainProfile(trainId));
+        setTrainMembers(await fetchTrainMembers(trainId));
       } catch (e) {
         alert(e);
       }
