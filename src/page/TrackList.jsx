@@ -1,17 +1,12 @@
 import axios from "axios";
-import { memo, useCallback, useEffect, useMemo, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useCallback, useState } from "react";
+import { useParams } from "react-router-dom";
 import styled from "styled-components";
-import Hoc from "../../HOC/auth";
-import CreateTrack from "./createTrack";
-import { MdCancel } from "@react-icons/all-files/md/MdCancel";
-import bibleData from "../util/bible";
-import { role } from "../util/role";
-import { useLocation } from "react-router-dom";
-import { getStringDate, 요일 } from "../util/dateForm";
-import { AddCircleButton } from "../../styledComponent/AddCircleButton";
-
-const bible = bibleData();
+import Hoc from "../HOC/auth";
+import CreateTrack from "./trainInfo/createTrack";
+import { getStringDate, 요일 } from "./util/dateForm";
+import { AddCircleButton } from "../styledComponent/AddCircleButton";
+import { TrackInfo } from "../component/TrackInfo";
 
 const TrackList = ({
   tracks,
@@ -23,31 +18,12 @@ const TrackList = ({
   members,
   setMembers,
 }) => {
-  const navigate = useNavigate();
   const [popup, handlePopup] = useState({
     createTrack: false,
     trackDetail: false,
   });
 
   const { trainId } = useParams();
-
-  const ProfileOne = ({ mem }) => {
-    const [show, setShow] = useState(false);
-    return (
-      <span
-        onMouseEnter={() => setShow(true)}
-        onMouseLeave={() => setShow(false)}
-      >
-        <img
-          style={{ width: "15px", height: "15px", borderRadius: "100%" }}
-          src={mem && mem.profileImage}
-        ></img>
-        <span style={{ fontSize: "10px", display: show ? "inline" : "none" }}>
-          {mem && mem.nickName}
-        </span>
-      </span>
-    );
-  };
 
   const deleteTrackHandler = useCallback(async (date, idx) => {
     try {
@@ -68,7 +44,7 @@ const TrackList = ({
     }
   }, []);
 
-  const checkHandler = useCallback(async (e, date, idx) => {
+  const checkTrackHandler = useCallback(async (e, date, idx) => {
     try {
       if (e.target.checked) {
         await axios.post(`/api/bible-track/${trainId}/${date}/complete`);
@@ -130,64 +106,17 @@ const TrackList = ({
     }
   }, []);
 
-  const 오늘 = new Date();
-
   const trackComponents = tracks?.map((track, i) => {
-    const dateString = track.date.split("-");
-    const trackDate = new Date(
-      parseInt(dateString[0]),
-      parseInt(dateString[1]) - 1,
-      parseInt(dateString[2])
-    );
-
     return (
-      <TrackDiv key={track.date}>
-        <h3 style={{ padding: "10px" }}>
-          {trackDate.getFullYear()}년 {trackDate.getMonth() + 1}월{" "}
-          {trackDate.getDate()}일 ({요일[trackDate.getDay()]}){" "}
-          {오늘.toLocaleDateString() === trackDate.toLocaleDateString() &&
-            "오늘"}
-        </h3>
-        <h3>
-          {bible[track.startChapter - 1].chapter} {track.startPage}장 -{" "}
-          {bible[track.endChapter - 1].chapter} {track.endPage}장
-        </h3>
-        <p style={{ paddingInline: "3%", paddingBlock: "5px" }}>
-          {track.content}
-        </p>
-        <div>
-          <span style={{ padding: "5px" }}>
-            총 {track.checkStamps.length}명 완료
-          </span>
-          {track.checkStamps.map((stamp, idx) => {
-            const mem = members.find(
-              (member) => member.userId === stamp.userId
-            );
-            // console.log(`${stamp.trackDate}/${idx}`);
-            return <ProfileOne key={`${stamp.trackDate}/${idx}`} mem={mem} />;
-          })}
-        </div>
-        <div style={{ padding: "3px" }}>
-          <span style={{ padding: "5px" }}>
-            {track.status === "COMPLETE" ? "완료" : "미완료"}
-          </span>
-          <input
-            style={{ padding: "5px" }}
-            type="checkbox"
-            checked={track.status === "COMPLETE" ? true : false}
-            onClick={async (e) => await checkHandler(e, `${track.date}`, i)}
-          ></input>
-        </div>
-        <DeleteButton
-          show={trainProfile.role === "ROLE_CAPTAIN"}
-          key={`${track.date}/xBtn`}
-        >
-          <MdCancel
-            key={`${track.date}/xIcon`}
-            onClick={() => deleteTrackHandler(trackDate, i)}
-          />
-        </DeleteButton>
-      </TrackDiv>
+      <TrackInfo
+        key={i}
+        members={members}
+        track={track}
+        checkTrackHandler={checkTrackHandler}
+        deleteTrackHandler={deleteTrackHandler}
+        trainProfile={trainProfile}
+        i={i}
+      />
     );
   });
 
@@ -237,6 +166,7 @@ const TrackDiv = styled.div`
 
 const TrackListMain = styled.div`
   display: flex;
+  position: relative;
   flex-direction: column;
   align-items: center;
   justify-content: center;

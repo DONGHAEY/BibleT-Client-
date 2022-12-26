@@ -1,25 +1,13 @@
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
+import styled from "styled-components";
 
-.login__form {
+export const FlexForm = styled.form`
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-}
+`;
 
-.login__form .d {
-  display: inline-block;
-}
-
-.d h1 {
-  font-size: 10vh;
-}
-
-.login__form input {
+export const FormInput = styled.input`
   min-width: 180px;
   width: 230px;
   padding-inline: 10px;
@@ -28,15 +16,9 @@
   border: 0;
   background-color: rgba(230, 230, 230);
   border-radius: 5%;
-  /* border: solid 1px black; */
-}
+`;
 
-input::placeholder {
-  color: darkgray;
-  font-weight: bold;
-}
-
-.submit__btn {
+export const LoginRegisterBtn = styled.button`
   width: 230px;
   height: 40px;
   border: 0;
@@ -47,9 +29,9 @@ input::placeholder {
   font-size: 15px;
   border-radius: 5%;
   cursor: pointer;
-}
+`;
 
-.submit__btn2 {
+export const KakaoLoginBtn = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -63,15 +45,4 @@ input::placeholder {
   font-size: 15px;
   border-radius: 5%;
   cursor: pointer;
-}
-.submit__btn2 p {
-  font-size: 15px;
-  padding-left: 5px;
-}
-
-a {
-  padding: 5px;
-  font-size: 13px;
-  cursor: pointer;
-  color: darkgrey;
-}
+`;

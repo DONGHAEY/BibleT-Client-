@@ -1,9 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import HeaderWithBack from "../HeaderWithBack";
-// AiOutlineEdit
 import styled from "styled-components";
 import { AiOutlineEdit } from "@react-icons/all-files/ai/AiOutlineEdit";
 import Test2 from "./DateRoll";
@@ -37,9 +35,6 @@ const ProfileDetail = () => {
         loadData();
       })
       .catch();
-
-    // for (const keyValue of formData) console.log(keyValue); // ["img", File] File은 객체
-    // const response = await axios.post(`/api/${trainId}/upload`, formData);
   };
   return profile ? (
     <div>
@@ -115,7 +110,7 @@ const ProfileDetail = () => {
     </div>
   ) : (
     <div>
-      <h1>loading</h1>
+      <h1></h1>
     </div>
   );
 };

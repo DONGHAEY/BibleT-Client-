@@ -3,11 +3,11 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 import { useParams } from "react-router-dom";
-import { role } from "../util/role";
+import { role } from "./util/role";
 import { IoMdExit } from "@react-icons/all-files/io/IoMdExit";
 import styled from "styled-components";
-import { FlexWrapper } from "../../styledComponent/Wrapper";
-import { AddCircleButton } from "../../styledComponent/AddCircleButton";
+import { FlexWrapper } from "../styledComponent/Wrapper";
+import { AddCircleButton } from "../styledComponent/AddCircleButton";
 import { HiOutlineUserAdd } from "@react-icons/all-files/hi/HiOutlineUserAdd";
 
 const Members = ({ train, members, navigate, trainProfile }) => {
@@ -37,22 +37,19 @@ const Members = ({ train, members, navigate, trainProfile }) => {
   return (
     trainProfile && (
       <FlexWrapper>
-        {/* <button
-          onClick={() => {
-            const tempInput = document.createElement("input");
-            tempInput.value = `http://${window.location.host}/joinTrain/${trainId}?joinKey=${train.joinKey}`;
-            document.body.appendChild(tempInput);
-            tempInput.select();
-            document.execCommand("copy");
-            document.body.removeChild(tempInput);
-            alert("초대링크가 복사되었습니다");
-          }}
-        >
-          멤버 추가하기
-        </button> */}
         {MemberProfiles}
         {trainProfile?.role === "ROLE_CAPTAIN" ? (
-          <AddCircleButton style={{ color: "white" }}>
+          <AddCircleButton
+            onClick={() => {
+              const tempInput = document.createElement("input");
+              tempInput.value = `http://${window.location.host}/joinTrain/${trainId}?joinKey=${train.joinKey}`;
+              document.body.appendChild(tempInput);
+              tempInput.select();
+              document.execCommand("copy");
+              document.body.removeChild(tempInput);
+              alert("초대링크가 복사되었습니다");
+            }}
+          >
             <HiOutlineUserAdd size={25} />
           </AddCircleButton>
         ) : null}

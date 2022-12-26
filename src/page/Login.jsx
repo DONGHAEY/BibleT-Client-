@@ -1,14 +1,19 @@
-import "./css/Login.css";
 import { useDispatch, useSelector } from "react-redux";
 import { userLogin } from "../actions/userLogin";
 import React, { useCallback, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { Navigate } from "react-router-dom";
 import HeaderWithBack from "./HeaderWithBack";
+import "./css/login.css";
+import { FlexWrapperWithHeader } from "../styledComponent/Wrapper";
+import styled from "styled-components";
+import {
+  FlexForm,
+  FormInput,
+  LoginRegisterBtn,
+  KakaoLoginBtn,
+} from "../styledComponent/LoginRegisterForm";
 
 export const Login = () => {
-  const { loading, user, error } = useSelector((state) => state.user);
-
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -36,8 +41,8 @@ export const Login = () => {
   return (
     <>
       <HeaderWithBack path={state?.back ? state?.back : -1} />
-      <div div style={{ marginTop: "90px" }}>
-        <form className="login__form" onSubmit={(e) => submit(e)}>
+      <FlexWrapperWithHeader>
+        <FlexForm onSubmit={(e) => submit(e)}>
           <div
             style={{
               display: "inline",
@@ -52,26 +57,28 @@ export const Login = () => {
               <h1>로그인</h1>
             </div>
           </div>
-          <input
+          <FormInput
             type="name"
             placeholder="아이디"
             value={name}
             onChange={(e) => setName(e.target.value)}
-          ></input>
-          <input
+          ></FormInput>
+          <FormInput
             type="password"
             placeholder="비밀번호"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-          ></input>
-          <button className="submit__btn">로그인하기</button>
-          <div className="submit__btn2">
+          ></FormInput>
+          <LoginRegisterBtn>로그인하기</LoginRegisterBtn>
+          <KakaoLoginBtn>
             <img
               style={{ width: "15px" }}
               src="https://www.svgrepo.com/show/368252/kakao.svg"
             ></img>
-            <p>카카오 로그인</p>
-          </div>
+            <p style={{ fontSize: "15px", paddingLeft: "5px" }}>
+              카카오 로그인
+            </p>
+          </KakaoLoginBtn>
           <div style={{ marginTop: "15px" }}>
             <a
               onClick={() =>
@@ -87,8 +94,8 @@ export const Login = () => {
             </a>
             <a>비밀번호 찾기</a>
           </div>
-        </form>
-      </div>
+        </FlexForm>
+      </FlexWrapperWithHeader>
     </>
   );
 };

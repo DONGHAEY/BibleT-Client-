@@ -1,6 +1,5 @@
 import axios from "axios";
 import { useEffect, useMemo, useState } from "react";
-import { useSelector } from "react-redux";
 import { useParams, useLocation } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import Hoc from "../../HOC/auth";
@@ -66,7 +65,7 @@ const JoinTrain = () => {
               })
               .then((response) => {
                 alert(response.data);
-                navigate("/userProfile");
+                navigate("/myBibleTrainProfiles");
               })
               .catch((e) => {
                 alert(e.response.data.message);

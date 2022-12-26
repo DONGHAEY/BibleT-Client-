@@ -7,10 +7,10 @@ import CreateTrack from "./trainInfo/createTrack";
 import bibleData from "./util/bible";
 import HeaderWithBack from "./HeaderWithBack";
 import { role } from "./util/role";
-import TrackList from "./trainInfo/TrackList";
+import TrackList from "./TrackList";
 import { useLocation } from "react-router-dom";
-import Navigation from "./trainInfo/Navigation";
-import Members from "./trainInfo/Members";
+import Navigation from "./TrainNavigation";
+import Members from "./TrainMembers";
 import Setting from "./trainInfo/Setting";
 import Analysis from "./trainInfo/analysis";
 import {
@@ -18,8 +18,6 @@ import {
   FlexWrapperWithHeader,
   WrapperWithHeader,
 } from "../styledComponent/Wrapper";
-
-const bible = bibleData();
 
 const TrainInfo = () => {
   const [train, setTrain] = useState(null);
@@ -83,25 +81,69 @@ const TrainInfo = () => {
 
   return query.get("pop") === null ? (
     <>
-      <HeaderWithBack
-        title={train?.trainName}
-        subtitle={`정원수 : ${train?.memberCount}명 - 트랙수 : ${train?.trackAmount}개`}
-        path="/myBibleTrainProfiles"
-        right={trainProfileUi}
-      />
-      <FlexWrapperWithHeader style={{ marginBottom: "90px" }}>
+      {train ? (
+        <HeaderWithBack
+          title={train?.trainName}
+          subtitle={`정원수 : ${train?.memberCount}명 - 트랙수 : ${train?.trackAmount}개`}
+          path="/myBibleTrainProfiles"
+          right={trainProfileUi}
+        />
+      ) : null}
+      <FlexWrapperWithHeader
+        style={{
+          marginBottom: "90px",
+          flexDirection: "row",
+          height: "100%",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
         {query.get("tab") === null ? (
-          <TrackList
-            members={members}
-            tracks={tracks}
-            train={train}
-            trainProfile={trainProfile}
-            setTrainProfile={setTrainProfile}
-            setTrain={setTrain}
-            setTracks={setTracks}
-            setMembers={setMembers}
-            fetchMembers={fetchMembers}
-          />
+          <>
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                justifyContent: "center",
+                position: "fixed",
+                left: 0,
+                top: 0,
+                backgroundColor: "whitesmoke",
+                height: "100%",
+                width: "10px",
+                color: "black",
+                cursor: "pointer",
+              }}
+            ></div>
+            <TrackList
+              members={members}
+              tracks={tracks}
+              train={train}
+              trainProfile={trainProfile}
+              setTrainProfile={setTrainProfile}
+              setTrain={setTrain}
+              setTracks={setTracks}
+              setMembers={setMembers}
+              fetchMembers={fetchMembers}
+            />
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                justifyContent: "center",
+                position: "fixed",
+                right: 0,
+                top: 0,
+                width: "10px",
+                backgroundColor: "whitesmoke",
+                height: "100%",
+                color: "black",
+                cursor: "pointer",
+              }}
+            ></div>
+          </>
         ) : null}
         {query.get("tab") === "members" ? (
           <Members

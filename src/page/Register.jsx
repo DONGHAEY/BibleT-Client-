@@ -1,16 +1,20 @@
-import "./css/Login.css";
+import "./css/login.css";
 import { useDispatch, useSelector } from "react-redux";
-import React, { useCallback, useState } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { userRegister } from "../actions/userRegister";
 import { useLocation } from "react-router-dom";
 import HeaderWithBack from "./HeaderWithBack";
-import { selectUser } from "../features/userSlice";
+import { FlexWrapperWithHeader } from "../styledComponent/Wrapper";
+import {
+  FlexForm,
+  FormInput,
+  LoginRegisterBtn,
+} from "../styledComponent/LoginRegisterForm";
 
 export const Register = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const location = useLocation();
 
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
@@ -42,36 +46,36 @@ export const Register = () => {
   };
 
   if (loading) {
-    return <h1>로딩중입니다... 잠시만 기다려주세요..</h1>;
+    return <></>;
   }
 
   return (
     <>
       <HeaderWithBack path={state.back ? state.back : "/"} />
-      <div style={{ marginTop: "90px" }}>
-        <form className="login__form" onSubmit={(e) => submit(e)}>
+      <FlexWrapperWithHeader>
+        <FlexForm onSubmit={(e) => submit(e)}>
           <h1>BibleT 회원가입</h1>
-          <input
+          <FormInput
             type="name"
             placeholder="아이디"
             value={name}
             onChange={(e) => setName(e.target.value)}
-          ></input>
-          <input
+          ></FormInput>
+          <FormInput
             type="password"
             placeholder="비밀번호"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-          ></input>
-          <input
+          ></FormInput>
+          <FormInput
             type="email"
             placeholder="이메일"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-          ></input>
-          <button className="submit__btn">submit</button>
-        </form>
-      </div>
+          ></FormInput>
+          <LoginRegisterBtn>submit</LoginRegisterBtn>
+        </FlexForm>
+      </FlexWrapperWithHeader>
     </>
   );
 };
