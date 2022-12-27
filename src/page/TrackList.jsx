@@ -35,10 +35,9 @@ const TrackList = ({}) => {
 
   useEffect(() => {
     (async () => {
-      const t = getWeek(stdDate);
-      await fetchAndSetTracks(t.startDate, t.endDate);
+      await fetchAndSetTracks();
     })();
-  }, [stdDate, popup.createTrack]);
+  }, [stdDate]);
 
   const deleteTrackHandler = async (date, idx) => {
     try {
@@ -51,7 +50,7 @@ const TrackList = ({}) => {
         return newBibleTrain;
       });
       const t = getWeek(stdDate);
-      fetchAndSetTracks(t.startDate, t.endDate);
+      fetchAndSetTracks();
     } catch (e) {
       alert(e);
     }
@@ -66,31 +65,15 @@ const TrackList = ({}) => {
       }
       setTrainProfile(await fetchTrainProfile(trainId));
       const t = getWeek(stdDate);
-      fetchAndSetTracks(t.startDate, t.endDate);
+      fetchAndSetTracks();
     } catch (e) {
       alert(e);
     }
   };
 
-  const addOneTrack = async (date) => {
+  const fetchAndSetTracks = async () => {
     try {
-      setBibleTrain((prevTrain) => {
-        const newTrain = {
-          ...prevTrain,
-          trackAmount: prevTrain["trackAmount"] + 1,
-        };
-        return newTrain;
-      });
       const { startDate, endDate } = getWeek(stdDate);
-      fetchAndSetTracks(startDate, endDate);
-    } catch (e) {
-      alert(e);
-    }
-  };
-
-  const fetchAndSetTracks = async (startDate, endDate) => {
-    try {
-      console.log(startDate, endDate);
       setTracks(await fetchBibleTracks(trainId, startDate, endDate));
     } catch (e) {
       alert(e);
@@ -151,7 +134,7 @@ const TrackList = ({}) => {
         <CreateTrackDiv
           onClose={handlePopup}
           train={bibleTrain}
-          addOne={addOneTrack}
+          fetchAndSetTracks={fetchAndSetTracks}
         />
       ) : null}
     </>

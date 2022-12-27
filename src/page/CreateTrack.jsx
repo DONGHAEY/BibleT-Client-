@@ -6,13 +6,16 @@ import "react-datepicker/dist/react-datepicker.css";
 import Select from "./Select";
 import axios from "axios";
 import { getStringDate } from "./util/dateForm";
+import { BibleTrainState } from "../store/BibleTrainStore";
+import { useRecoilState } from "recoil";
 
 registerLocale("ko", ko);
 
-export default function CreateTrack({ onClose, train }) {
+export default function CreateTrack({ onClose, fetchAndSetTracks }) {
   const [selected, setSelected] = useState({});
   const [content, setContent] = useState("");
   const [date, setDate] = useState(new Date());
+  const [train, setBibleTrain] = useRecoilState(BibleTrainState);
 
   const createTrackApi = () => {
     const { start, end } = selected;
@@ -27,6 +30,7 @@ export default function CreateTrack({ onClose, train }) {
       })
       .then(({ data }) => {
         alert("트랙 생성이 성공적으로 완료되었습니다");
+        fetchAndSetTracks();
         onClose({
           createTrack: false,
         });
