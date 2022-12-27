@@ -34,12 +34,11 @@ export const getDateRangeData = async (startDate, endDate) => {
   return res_day;
 };
 
-export const getWeek = (stat = 0) => {
+export const getWeek = (currentDay) => {
   //-1 저번주//0 이번주//1 다음주 //
-  var currentDay = new Date();
   var theYear = currentDay.getFullYear();
   var theMonth = currentDay.getMonth();
-  var theDate = currentDay.getDate() + stat * 7;
+  var theDate = currentDay.getDate();
   var theDayOfWeek = currentDay.getDay();
   var thisWeek = [];
   for (var i = 1; i <= 7; i++) {

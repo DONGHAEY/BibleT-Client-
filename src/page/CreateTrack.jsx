@@ -9,14 +9,13 @@ import { getStringDate } from "./util/dateForm";
 
 registerLocale("ko", ko);
 
-export default function CreateTrack({ onClose, train, addOne }) {
+export default function CreateTrack({ onClose, train }) {
   const [selected, setSelected] = useState({});
   const [content, setContent] = useState("");
   const [date, setDate] = useState(new Date());
 
   const createTrackApi = () => {
     const { start, end } = selected;
-    console.log(getStringDate(date));
     axios
       .post(`/api/bible-track/${train.id}/addTrack`, {
         date: getStringDate(date),
@@ -28,7 +27,6 @@ export default function CreateTrack({ onClose, train, addOne }) {
       })
       .then(({ data }) => {
         alert("트랙 생성이 성공적으로 완료되었습니다");
-        addOne(getStringDate(date));
         onClose({
           createTrack: false,
         });
@@ -44,12 +42,10 @@ export default function CreateTrack({ onClose, train, addOne }) {
         <Title>트랙 생성하기</Title>
         <div>
           <DatePicker
-            // locale={ko}    // 언어설정 기본값은 영어
             dateFormat="yyyy년 MM월 dd일" // 날짜 형식 설정
             className="input-datepicker" // 클래스 명 지정 css주기 위해   // 선택할 수 있는 최소 날짜값 지정
-            // closeOnScroll={false}    // 스크롤을 움직였을 때 자동으로 닫히도록 설정 기본값 false
             placeholderText="트랙 날짜 선택" // placeholder
-            selected={date} // value
+            selected={date}
             onChange={(date) => setDate(date)} // 날짜를 선택하였을 때 실행될 함수
           />
         </div>
@@ -106,6 +102,7 @@ const Container = styled.div`
   bottom: 0;
   position: fixed;
   z-index: 100;
+  background-color: rgba(255, 255, 255, 0.85);
   display: flex;
   flex-direction: column;
   align-items: center;

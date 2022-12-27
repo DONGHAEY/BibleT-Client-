@@ -22,14 +22,13 @@ import {
   fetchTrainMembers,
   fetchTrainProfile,
 } from "../api/bibletrain";
+import { getWeek } from "./util/dateForm";
 
 const TrainInfo = () => {
   const [bibleTrain, setBibleTrain] = useRecoilState(BibleTrainState);
   const [trainMembers, setTrainMembers] = useRecoilState(TrainMembersState);
   const [trainProfile, setTrainProfile] = useRecoilState(TrainProfileState);
   const [bibleTracks, setBibleTracks] = useRecoilState(BibleTracksState);
-  const [page, setPage] = useState(0);
-  // const [date, setDate] = useState(null);
 
   const navigate = useNavigate();
   const query = useQuery();
@@ -50,7 +49,7 @@ const TrainInfo = () => {
         alert(e);
       }
     })();
-  }, [page]);
+  }, []);
 
   const trainProfileUi = (
     <TrainProfileUi trainId={trainId} trainProfile={trainProfile} />
@@ -69,20 +68,7 @@ const TrainInfo = () => {
       <FlexWrapperWithHeaderAndNavigation>
         {query.get("tab") === null ? (
           <>
-            {bibleTrain?.trackAmount ? (
-              <PageMoveBtn
-                style={{ marginTop: 0 }}
-                onClick={() => setPage((prev) => prev - 1)}
-              >
-                저번주로
-              </PageMoveBtn>
-            ) : null}
             <TrackList />
-            {bibleTrain?.trackAmount ? (
-              <PageMoveBtn onClick={() => setPage((prev) => prev + 1)}>
-                다음주로
-              </PageMoveBtn>
-            ) : null}
           </>
         ) : null}
         {query.get("tab") === "members" ? (
@@ -109,15 +95,5 @@ const TrainInfo = () => {
     )
   ) : null;
 };
-
-const PageMoveBtn = styled.div`
-  width: 95%;
-  background-color: whitesmoke;
-  margin-top: 15px;
-  border-radius: 3px;
-  text-align: center;
-  cursor: pointer;
-  font-size: 5px;
-`;
 
 export default Hoc(TrainInfo);

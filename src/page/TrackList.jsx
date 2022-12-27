@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
-import CreateTrack from "./CreateTrack";
+import CreateTrackDiv from "./CreateTrack";
 import { AddCircleButton } from "../styledComponent/AddCircleButton";
 import { TrackInfo } from "../component/TrackInfo";
 import { BibleTrainState } from "../store/BibleTrainStore";
@@ -18,12 +18,14 @@ import {
   fetchDeleteBibleTrack,
   fetchTrainProfile,
 } from "../api/bibletrain";
+import { getWeek } from "./util/dateForm";
 
 const TrackList = ({}) => {
   const [bibleTrain, setBibleTrain] = useRecoilState(BibleTrainState);
   const [trainMembers, setTrainMembers] = useRecoilState(TrainMembersState);
   const [trainProfile, setTrainProfile] = useRecoilState(TrainProfileState);
   const [bibleTracks, setTracks] = useRecoilState(BibleTracksState);
+  const [stdDate, setStdDate] = useState(new Date());
   const [popup, handlePopup] = useState({
     createTrack: false,
     trackDetail: false,
@@ -33,9 +35,10 @@ const TrackList = ({}) => {
 
   useEffect(() => {
     (async () => {
-      await fetchAndSetTracks();
+      const t = getWeek(stdDate);
+      await fetchAndSetTracks(t.startDate, t.endDate);
     })();
-  }, []);
+  }, [stdDate, popup.createTrack]);
 
   const deleteTrackHandler = async (date, idx) => {
     try {
@@ -47,7 +50,8 @@ const TrackList = ({}) => {
         };
         return newBibleTrain;
       });
-      fetchAndSetTracks();
+      const t = getWeek(stdDate);
+      fetchAndSetTracks(t.startDate, t.endDate);
     } catch (e) {
       alert(e);
     }
@@ -61,7 +65,8 @@ const TrackList = ({}) => {
         await fetchCancelTrack(trainId, date);
       }
       setTrainProfile(await fetchTrainProfile(trainId));
-      fetchAndSetTracks();
+      const t = getWeek(stdDate);
+      fetchAndSetTracks(t.startDate, t.endDate);
     } catch (e) {
       alert(e);
     }
@@ -76,15 +81,17 @@ const TrackList = ({}) => {
         };
         return newTrain;
       });
-      fetchAndSetTracks();
+      const { startDate, endDate } = getWeek(stdDate);
+      fetchAndSetTracks(startDate, endDate);
     } catch (e) {
       alert(e);
     }
   };
 
-  const fetchAndSetTracks = async () => {
+  const fetchAndSetTracks = async (startDate, endDate) => {
     try {
-      setTracks(await fetchBibleTracks(trainId));
+      console.log(startDate, endDate);
+      setTracks(await fetchBibleTracks(trainId, startDate, endDate));
     } catch (e) {
       alert(e);
     }
@@ -118,10 +125,30 @@ const TrackList = ({}) => {
             +
           </AddCircleButton>
         ) : null}
+        {bibleTrain?.trackAmount ? (
+          <PageMoveBtn
+            style={{ marginTop: 0 }}
+            onClick={() =>
+              setStdDate((prev) => new Date(prev.setDate(prev.getDate() - 7)))
+            }
+          >
+            저번주로
+          </PageMoveBtn>
+        ) : null}
         {bibleTracks.length ? trackComponents : NoTracks}
+        {bibleTrain?.trackAmount ? (
+          <PageMoveBtn
+            onClick={() =>
+              setStdDate((prev) => new Date(prev.setDate(prev.getDate() + 7)))
+            }
+          >
+            다음주로
+          </PageMoveBtn>
+        ) : null}
       </TrackListMain>
+
       {popup.createTrack ? (
-        <CreateTrack
+        <CreateTrackDiv
           onClose={handlePopup}
           train={bibleTrain}
           addOne={addOneTrack}
@@ -146,6 +173,16 @@ const TrackListMain = styled.div`
   justify-content: center;
   text-align: center;
   width: 100%;
+`;
+
+const PageMoveBtn = styled.div`
+  width: 95%;
+  background-color: whitesmoke;
+  margin-top: 15px;
+  border-radius: 3px;
+  text-align: center;
+  cursor: pointer;
+  font-size: 5px;
 `;
 
 export default TrackList;

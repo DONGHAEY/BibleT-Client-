@@ -37,10 +37,13 @@ export const fetchTrainMembers = (trainId) => {
   });
 };
 
-export const fetchBibleTracks = (trainId) => {
+export const fetchBibleTracks = (trainId, startDate, endDate) => {
   return new Promise(async (resolve, reject) => {
     try {
-      const tracks = await axios.get(`/api/bible-track/${trainId}`);
+      console.log(startDate, endDate);
+      const tracks = await axios.get(
+        `/api/bible-track/${trainId}/${startDate}/${endDate}`
+      );
       resolve(tracks.data);
     } catch (e) {
       reject(e.response.data.message);
