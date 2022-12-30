@@ -19,6 +19,7 @@ import {
   fetchTrainProfile,
 } from "../api/bibletrain";
 import { getWeek } from "./util/dateForm";
+import trainInfo from "./trainInfo";
 
 const TrackList = ({}) => {
   const [bibleTrain, setBibleTrain] = useRecoilState(BibleTrainState);
@@ -84,7 +85,6 @@ const TrackList = ({}) => {
     return (
       <TrackInfo
         key={i}
-        members={trainMembers}
         track={track}
         checkTrackHandler={checkTrackHandler}
         deleteTrackHandler={deleteTrackHandler}
@@ -93,7 +93,8 @@ const TrackList = ({}) => {
       />
     );
   });
-
+  const before = getWeek(new Date(stdDate.setDate(stdDate.getDate() - 7)));
+  const after = getWeek(new Date(stdDate.setDate(stdDate.getDate() + 7)));
   return (
     <>
       <TrackListMain>
@@ -108,26 +109,23 @@ const TrackList = ({}) => {
             +
           </AddCircleButton>
         ) : null}
-        {bibleTrain?.trackAmount ? (
-          <PageMoveBtn
-            style={{ marginTop: 0 }}
-            onClick={() =>
-              setStdDate((prev) => new Date(prev.setDate(prev.getDate() - 7)))
-            }
-          >
-            저번주로
-          </PageMoveBtn>
-        ) : null}
+        <PageMoveBtn
+          style={{ marginTop: 0 }}
+          onClick={() =>
+            setStdDate((prev) => new Date(prev.setDate(prev.getDate() - 7)))
+          }
+        >
+          {before.startDate} ~ {before.endDate}
+        </PageMoveBtn>
         {bibleTracks.length ? trackComponents : NoTracks}
-        {bibleTrain?.trackAmount ? (
-          <PageMoveBtn
-            onClick={() =>
-              setStdDate((prev) => new Date(prev.setDate(prev.getDate() + 7)))
-            }
-          >
-            다음주로
-          </PageMoveBtn>
-        ) : null}
+
+        <PageMoveBtn
+          onClick={() =>
+            setStdDate((prev) => new Date(prev.setDate(prev.getDate() + 7)))
+          }
+        >
+          {after.startDate} ~ {after.endDate}
+        </PageMoveBtn>
       </TrackListMain>
 
       {popup.createTrack ? (
@@ -142,7 +140,16 @@ const TrackList = ({}) => {
 };
 
 const NoTracks = (
-  <div style={{ marginTop: "100px", textAlign: "center" }}>
+  <div
+    style={{
+      display: "flex",
+      flexDirection: "column",
+      justifyContent: "center",
+      alignItems: "center",
+      marginTop: "30px",
+      marginBottom: "15px",
+    }}
+  >
     <img style={{ width: "150px" }} src={"/png/checkList.png"}></img>
     <h3 style={{ marginTop: "20px" }}>트랙이 아무것도 없네요..</h3>
   </div>
@@ -160,12 +167,17 @@ const TrackListMain = styled.div`
 
 const PageMoveBtn = styled.div`
   width: 95%;
+  height: 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   background-color: whitesmoke;
   margin-top: 15px;
   border-radius: 3px;
   text-align: center;
   cursor: pointer;
-  font-size: 5px;
+  font-size: 14px;
 `;
 
 export default TrackList;

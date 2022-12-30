@@ -19,6 +19,7 @@ import { TrainProfileState } from "../store/TrainProfileState";
 import { BibleTracksState } from "../store/BibleTracksState";
 import {
   fetchBibleTrain,
+  fetchBibleTrainJoinKey,
   fetchTrainMembers,
   fetchTrainProfile,
 } from "../api/bibletrain";
@@ -43,7 +44,17 @@ const TrainInfo = () => {
     (async () => {
       try {
         setBibleTrain(await fetchBibleTrain(trainId));
-        setTrainProfile(await fetchTrainProfile(trainId));
+        const fetchedTrainProfile = await fetchTrainProfile(trainId);
+        setTrainProfile(fetchedTrainProfile);
+        if (fetchedTrainProfile?.role === "ROLE_CAPTAIN") {
+          const fetchedTrainJoinKey = await fetchBibleTrainJoinKey(trainId);
+          setBibleTrain((trainInfo) => {
+            return {
+              ...trainInfo,
+              joinKey: fetchedTrainJoinKey,
+            };
+          });
+        }
         setTrainMembers(await fetchTrainMembers(trainId));
       } catch (e) {
         alert(e);
@@ -51,9 +62,7 @@ const TrainInfo = () => {
     })();
   }, []);
 
-  const trainProfileUi = (
-    <TrainProfileUi trainId={trainId} trainProfile={trainProfile} />
-  );
+  const trainProfileUi = <TrainProfileUi trainId={trainId} />;
 
   return query.get("pop") === null ? (
     <>

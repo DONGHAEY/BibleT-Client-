@@ -11,6 +11,17 @@ export const fetchBibleTrain = (trainId) => {
   });
 };
 
+export const fetchBibleTrainJoinKey = (trainId) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const bibleTrain = await axios.get(`/api/train/${trainId}/getJoinKey`);
+      resolve(bibleTrain.data);
+    } catch (e) {
+      reject(e.response.data.message);
+    }
+  });
+};
+
 export const fetchTrainProfile = (trainId) => {
   return new Promise(async (resolve, reject) => {
     try {

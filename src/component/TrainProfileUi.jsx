@@ -1,8 +1,11 @@
 import { useNavigate } from "react-router-dom";
+import { useRecoilState } from "recoil";
 import { role } from "../page/util/role";
+import { TrainProfileState } from "../store/TrainProfileState";
 import { FlexWrapper } from "../styledComponent/Wrapper";
 
-export const TrainProfileUi = ({ trainId, trainProfile }) => {
+export const TrainProfileUi = ({ trainId }) => {
+  const [trainProfile, setTrainProfile] = useRecoilState(TrainProfileState);
   const navigate = useNavigate();
   return (
     <FlexWrapper

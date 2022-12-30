@@ -1,7 +1,9 @@
 import { MdCancel } from "@react-icons/all-files/md/MdCancel";
+import { useRecoilState } from "recoil";
 import styled from "styled-components";
 import bibleData from "../page/util/bible";
 import { getStringDate, stringToDate, 요일 } from "../page/util/dateForm";
+import { TrainMembersState } from "../store/TrainMembersStore";
 import { SmallTrainProfile } from "./SmallTrainProfile";
 
 const bible = bibleData();
@@ -10,10 +12,10 @@ export const TrackInfo = ({
   track,
   deleteTrackHandler,
   checkTrackHandler,
-  members,
   trainProfile,
   i,
 }) => {
+  const [members, setMembers] = useRecoilState(TrainMembersState);
   const dateString = track?.date.split("-");
   const trackDate = new Date(
     parseInt(dateString[0]),
