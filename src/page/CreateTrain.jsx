@@ -23,7 +23,7 @@ const CreateTrain = () => {
       navigate("/myBibleTrainProfiles");
     } catch (e) {
       alert(`열차를 생성할 수 없습니다 (${e.response.data.message})`);
-      navigate("/userTrainProfiles");
+      navigate("/myBibleTrainProfiles");
     }
   };
 

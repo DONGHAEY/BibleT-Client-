@@ -1,6 +1,6 @@
 import axios from "axios";
 import { memo, useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import { role } from "./util/role";
@@ -13,9 +13,11 @@ import { useRecoilState } from "recoil";
 import { TrainMembersState } from "../store/TrainMembersStore";
 import { TrainProfileState } from "../store/TrainProfileState";
 import { useMemo } from "react";
+import { BibleTrainState } from "../store/BibleTrainStore";
 
-const Members = ({ train, navigate }) => {
+const Members = ({ navigate }) => {
   const { trainId } = useParams();
+  const [train, setTrain] = useRecoilState(BibleTrainState);
   const [members, setTrainMembers] = useRecoilState(TrainMembersState);
   const [trainProfile, setTrainProfile] = useRecoilState(TrainProfileState);
 
@@ -26,12 +28,7 @@ const Members = ({ train, navigate }) => {
         const roleKeys = Object.keys(role);
         console.log(member);
         return (
-          <MemberDiv
-            key={memIdx}
-            onClick={() => {
-              navigate(`/train/${member?.trainId}/${member?.userId}`);
-            }}
-          >
+          <MemberDiv key={memIdx}>
             <img
               src={member?.profileImage}
               style={{ width: "50px", height: "50px", borderRadius: "100%" }}
@@ -43,7 +40,7 @@ const Members = ({ train, navigate }) => {
               member?.userId === trainProfile.userId ? (
                 <span>{role[member?.role]}</span>
               ) : (
-                <select defaultValue={member?.role}>
+                <select style={{ border: 0 }} defaultValue={member?.role}>
                   {roleKeys.map((roleKey, idx) => {
                     return (
                       <option key={idx} value={roleKey}>
@@ -54,7 +51,21 @@ const Members = ({ train, navigate }) => {
                 </select>
               )}
             </span>
-            <div>{member?.checkStamps.length}번</div>
+            <div>
+              <p>{member?.checkStamps.length}번</p>
+              <p
+                onClick={() => {
+                  navigate(`/train/${member?.trainId}/${member?.userId}`);
+                }}
+                style={{
+                  fontSize: "4px",
+                  textDecoration: "underline",
+                  cursor: "pointer",
+                }}
+              >
+                자세히보기
+              </p>
+            </div>
           </MemberDiv>
         );
       })

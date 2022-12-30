@@ -75,23 +75,14 @@ const TrainInfo = () => {
         />
       ) : null}
       <FlexWrapperWithHeaderAndNavigation>
-        {query.get("tab") === null ? (
-          <>
-            <TrackList />
-          </>
-        ) : null}
+        {query.get("tab") === null ? <TrackList /> : null}
         {query.get("tab") === "members" ? (
-          <Members
-            train={bibleTrain}
-            trainProfile={trainProfile}
-            navigate={navigate}
-          />
+          <Members navigate={navigate} />
         ) : null}
         {query.get("tab") === "setting" ? (
           <Setting
             trainId={trainId}
             goback={() => navigate("/myBibleTrainProfiles")}
-            trainProfile={trainProfile}
           />
         ) : null}
         <Navigation />

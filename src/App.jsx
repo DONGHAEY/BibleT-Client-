@@ -10,7 +10,6 @@ import Main from "./page/Main";
 import CreateTrain from "./page/CreateTrain";
 import JoinTrain from "./page/JoinTrain";
 import ProfileDetail from "./page/ProfileDetail";
-import TrackDetail from "./page/TrackDetail";
 
 function App() {
   return (
@@ -26,10 +25,6 @@ function App() {
           />
           <Route path="/train/">
             <Route path=":trainId/" element={<TrainInfo />}></Route>
-            <Route
-              path=":trainId/trackDetail/:trackDate"
-              element={<TrackDetail />}
-            ></Route>
             <Route path=":trainId/:userId" element={<ProfileDetail />} />
           </Route>
           <Route path="/createTrain" element={<CreateTrain />} />
