@@ -19,11 +19,9 @@ import {
   fetchTrainProfile,
 } from "../api/bibletrain";
 import { getWeek } from "./util/dateForm";
-import trainInfo from "./trainInfo";
 
 const TrackList = ({}) => {
   const [bibleTrain, setBibleTrain] = useRecoilState(BibleTrainState);
-  const [trainMembers, setTrainMembers] = useRecoilState(TrainMembersState);
   const [trainProfile, setTrainProfile] = useRecoilState(TrainProfileState);
   const [bibleTracks, setTracks] = useRecoilState(BibleTracksState);
   const [stdDate, setStdDate] = useState(new Date());
@@ -46,7 +44,7 @@ const TrackList = ({}) => {
       setBibleTrain((prevTrain) => {
         const newBibleTrain = {
           ...prevTrain,
-          trackAmount: prevTrain["trackAmount"] - 1,
+          trackAmount: prevTrain.trackAmount - 1,
         };
         return newBibleTrain;
       });
@@ -56,6 +54,8 @@ const TrackList = ({}) => {
       alert(e);
     }
   };
+
+  const addTrackHandler = () => {};
 
   const checkTrackHandler = async (e, date, idx) => {
     try {
@@ -88,13 +88,14 @@ const TrackList = ({}) => {
         track={track}
         checkTrackHandler={checkTrackHandler}
         deleteTrackHandler={deleteTrackHandler}
-        trainProfile={trainProfile}
         i={i}
       />
     );
   });
-  const before = getWeek(new Date(stdDate.setDate(stdDate.getDate() - 7)));
-  const after = getWeek(new Date(stdDate.setDate(stdDate.getDate() + 7)));
+  let bufDate = new Date(stdDate);
+  const before = getWeek(new Date(bufDate.setDate(bufDate.getDate() - 7)));
+  bufDate = new Date(stdDate);
+  const after = getWeek(new Date(bufDate.setDate(bufDate.getDate() + 7)));
   return (
     <>
       <TrackListMain>
@@ -131,7 +132,6 @@ const TrackList = ({}) => {
       {popup.createTrack ? (
         <CreateTrackDiv
           onClose={handlePopup}
-          train={bibleTrain}
           fetchAndSetTracks={fetchAndSetTracks}
         />
       ) : null}
@@ -147,7 +147,7 @@ const NoTracks = (
       justifyContent: "center",
       alignItems: "center",
       marginTop: "30px",
-      marginBottom: "15px",
+      marginBottom: "30px",
     }}
   >
     <img style={{ width: "150px" }} src={"/png/checkList.png"}></img>

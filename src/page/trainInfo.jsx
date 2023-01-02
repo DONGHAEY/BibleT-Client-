@@ -68,8 +68,10 @@ const TrainInfo = () => {
     <>
       {bibleTrain ? (
         <HeaderWithBack
-          title={bibleTrain?.trainName}
-          subtitle={`정원수 : ${bibleTrain?.memberCount}명 - 트랙수 : ${bibleTrain?.trackAmount}개`}
+          title={bibleTrain?.trainName || "loading"}
+          subtitle={`정원수 : ${bibleTrain?.memberCount || 0}명 - 트랙수 : ${
+            bibleTrain?.trackAmount || 0
+          }개`}
           path="/myBibleTrainProfiles"
           right={trainProfileUi}
         />
@@ -89,10 +91,7 @@ const TrainInfo = () => {
       </FlexWrapperWithHeaderAndNavigation>
     </>
   ) : query.get("pop") === "analysis" ? (
-    bibleTrain &&
-    trainMembers && (
-      <Analysis train={bibleTrain} trainId={trainId} members={trainMembers} />
-    )
+    <Analysis trainId={trainId} />
   ) : null;
 };
 

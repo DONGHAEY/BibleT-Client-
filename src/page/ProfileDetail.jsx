@@ -4,11 +4,15 @@ import { useParams } from "react-router-dom";
 import HeaderWithBack from "./HeaderWithBack";
 import styled from "styled-components";
 import { AiOutlineEdit } from "@react-icons/all-files/ai/AiOutlineEdit";
-import Test2 from "./DateRoll";
+import Calender from "./Calender";
 import { role } from "./util/role";
+import { useRecoilState } from "recoil";
+import { BibleTracksState } from "../store/BibleTracksState";
+import { FlexWrapperWithHeader } from "../styledComponent/Wrapper";
 
 const ProfileDetail = () => {
   const { trainId, userId } = useParams();
+  const [bibleTracks, setBibleTracks] = useRecoilState(BibleTracksState);
   const [profile, setProfile] = useState(null);
 
   const [popup, setPopup] = useState({
@@ -21,6 +25,7 @@ const ProfileDetail = () => {
 
   function loadData() {
     axios.get(`/api/train/${trainId}/${userId}`).then(({ data }) => {
+      console.log(data);
       setProfile(data);
     });
   }
@@ -37,17 +42,9 @@ const ProfileDetail = () => {
       .catch();
   };
   return profile ? (
-    <div>
+    <>
       <HeaderWithBack path={-1} />
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          justifyContent: "center",
-          marginTop: "90px",
-        }}
-      >
+      <FlexWrapperWithHeader>
         <img
           style={{ borderRadius: "100%", width: "150px", height: "150px" }}
           src={profile.profileImage}
@@ -62,31 +59,16 @@ const ProfileDetail = () => {
         >
           <AiOutlineEdit />
         </span>
-        <h1>{profile.nickName}</h1>
-        <span>역할 : {role[profile.role]}</span>
-        <p>총 {profile.checkStamps.length}번 참여</p>
-        <p>참여현황</p>
-        <Test2 checkStamps={profile.checkStamps} />
+        <h1>{profile?.nickName}</h1>
+        <span>역할 : {role[profile?.role]}</span>
+        <p>총 {profile?.completeCount}번 참여</p>
+        <Calender trainId={trainId} />
         {popup.imgEdit ? (
           <Container>
-            <div
-              style={{
-                maxWidth: "80%",
-                minWidth: "40%",
-                height: "50%",
-                paddingInline: "30px",
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-                justifyContent: "center",
-                textAlign: "center",
-                borderRadius: "5%",
-                background: "rgba(250, 250, 250, 0.99)",
-              }}
-            >
+            <ImgContainer>
               <img
                 style={{ maxWidth: "80px", maxHeight: "80px" }}
-                src={profile.profileImage}
+                src={profile?.profileImage}
               />
               <input
                 type="file"
@@ -103,15 +85,13 @@ const ProfileDetail = () => {
               >
                 닫기
               </p>
-            </div>
+            </ImgContainer>
           </Container>
-        ) : undefined}
-      </div>
-    </div>
+        ) : null}
+      </FlexWrapperWithHeader>
+    </>
   ) : (
-    <div>
-      <h1></h1>
-    </div>
+    <></>
   );
 };
 
@@ -127,6 +107,20 @@ const Container = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
+`;
+
+const ImgContainer = styled.div`
+  max-width: 80%;
+  min-width: 40%;
+  height: 50%;
+  padding-inline: 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  border-radius: 5%;
+  background: rgba(250, 250, 250, 0.99);
 `;
 
 export default ProfileDetail;

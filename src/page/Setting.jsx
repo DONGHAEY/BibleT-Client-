@@ -59,14 +59,14 @@ const Setting = ({ trainId, goback }) => {
         <SettingBtnImg src={"/png/anal.png"}></SettingBtnImg>
         <span>분석하기</span>
       </SettingBtn>
-      <SettingBtn>
+      {/* <SettingBtn>
         <SettingBtnImg src={"/png/종.png"}></SettingBtnImg>
         <span>알림켜기</span>
       </SettingBtn>
       <SettingBtn onClick={async () => {}}>
         <SettingBtnImg src={"/png/info.png"}></SettingBtnImg>
         <p>기차정보</p>
-      </SettingBtn>
+      </SettingBtn> */}
     </FlexWrapper>
   );
 };

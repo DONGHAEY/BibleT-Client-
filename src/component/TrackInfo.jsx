@@ -4,6 +4,7 @@ import styled from "styled-components";
 import bibleData from "../page/util/bible";
 import { getStringDate, stringToDate, 요일 } from "../page/util/dateForm";
 import { TrainMembersState } from "../store/TrainMembersStore";
+import { TrainProfileState } from "../store/TrainProfileState";
 import { SmallTrainProfile } from "./SmallTrainProfile";
 
 const bible = bibleData();
@@ -12,9 +13,9 @@ export const TrackInfo = ({
   track,
   deleteTrackHandler,
   checkTrackHandler,
-  trainProfile,
   i,
 }) => {
+  const [trainProfile, setTrainProfile] = useRecoilState(TrainProfileState);
   const [members, setMembers] = useRecoilState(TrainMembersState);
   const dateString = track?.date.split("-");
   const trackDate = new Date(

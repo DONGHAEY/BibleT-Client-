@@ -1,76 +1,90 @@
 import axios from "axios";
-import { memo, useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { useLocation } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import { role } from "./util/role";
-import { IoMdExit } from "@react-icons/all-files/io/IoMdExit";
 import styled from "styled-components";
 import { FlexWrapper } from "../styledComponent/Wrapper";
 import { AddCircleButton } from "../styledComponent/AddCircleButton";
 import { HiOutlineUserAdd } from "@react-icons/all-files/hi/HiOutlineUserAdd";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { TrainMembersState } from "../store/TrainMembersStore";
 import { TrainProfileState } from "../store/TrainProfileState";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { BibleTrainState } from "../store/BibleTrainStore";
+import { useEffect } from "react";
+import { fetchTrainMembers } from "../api/bibletrain";
 
 const Members = ({ navigate }) => {
   const { trainId } = useParams();
-  const [train, setTrain] = useRecoilState(BibleTrainState);
-  const [members, setTrainMembers] = useRecoilState(TrainMembersState);
-  const [trainProfile, setTrainProfile] = useRecoilState(TrainProfileState);
+  const train = useRecoilValue(BibleTrainState);
+  const trainProfile = useRecoilValue(TrainProfileState);
+  const [members, setTrainMembers] = useState([]);
+
+  useEffect(() => {
+    (async () => {
+      setTrainMembers(await fetchTrainMembers(trainId));
+    })();
+  }, []);
 
   const MemberProfiles = useMemo(() => {
-    return (
-      members.length &&
-      members.map((member, memIdx) => {
-        const roleKeys = Object.keys(role);
-        console.log(member);
-        return (
-          <MemberDiv key={memIdx}>
-            <img
-              src={member?.profileImage}
-              style={{ width: "50px", height: "50px", borderRadius: "100%" }}
-            ></img>
-            <span style={{ fontSize: "15px", width: "100px" }}>
-              <span style={{ fontWeight: "bold" }}>{member?.nickName}</span>
-              <br></br>
-              {trainProfile?.role !== "ROLE_CAPTAIN" ||
-              member?.userId === trainProfile.userId ? (
-                <span>{role[member?.role]}</span>
-              ) : (
-                <select style={{ border: 0 }} defaultValue={member?.role}>
-                  {roleKeys.map((roleKey, idx) => {
-                    return (
-                      <option key={idx} value={roleKey}>
-                        {role[roleKey]}
-                      </option>
-                    );
-                  })}
-                </select>
-              )}
-            </span>
-            <div>
-              <p>{member?.checkStamps.length}번</p>
-              <p
-                onClick={() => {
-                  navigate(`/train/${member?.trainId}/${member?.userId}`);
-                }}
-                style={{
-                  fontSize: "4px",
-                  textDecoration: "underline",
-                  cursor: "pointer",
-                }}
+    return members?.map((member, memIdx) => {
+      const roleKeys = Object.keys(role);
+      return (
+        <MemberDiv key={memIdx}>
+          <img
+            src={member?.profileImage}
+            style={{ width: "50px", height: "50px", borderRadius: "100%" }}
+          ></img>
+          <span style={{ fontSize: "15px", width: "100px" }}>
+            <span style={{ fontWeight: "bold" }}>{member?.nickName}</span>
+            <br></br>
+            {trainProfile?.role !== "ROLE_CAPTAIN" ||
+            member?.userId === trainProfile.userId ? (
+              <span>{role[member?.role]}</span>
+            ) : (
+              <select
+                style={{ border: 0 }}
+                defaultValue={member?.role}
+                onChange={(e) =>
+                  changeRoleHandler(e.target.value, member?.userId)
+                }
               >
-                자세히보기
-              </p>
-            </div>
-          </MemberDiv>
-        );
-      })
-    );
+                {roleKeys.map((roleKey, idx) => {
+                  return (
+                    <option key={idx} value={roleKey}>
+                      {role[roleKey]}
+                    </option>
+                  );
+                })}
+              </select>
+            )}
+          </span>
+          <div>
+            <p>{member?.completeCount}번</p>
+            <p
+              onClick={() => {
+                navigate(`/train/${member?.trainId}/${member?.userId}`);
+              }}
+              style={{
+                fontSize: "1.3vh",
+                textDecoration: "underline",
+                cursor: "pointer",
+              }}
+            >
+              자세히보기
+            </p>
+          </div>
+        </MemberDiv>
+      );
+    });
   }, [members]);
+
+  const changeRoleHandler = async (roleKey, userId) => {
+    console.log(trainId);
+    console.log(userId);
+    await axios.put(`/api/train/${trainId}/${userId}/changeRole`, {
+      role: roleKey,
+    });
+  };
 
   return (
     <FlexWrapper>

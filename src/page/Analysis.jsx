@@ -11,10 +11,15 @@ import { useLocation } from "react-router-dom";
 import bibleData from "./util/bible";
 import ApexCharts from "react-apexcharts";
 import { FlexWrapperWithHeader } from "../styledComponent/Wrapper";
+import { useRecoilState } from "recoil";
+import { BibleTrainState } from "../store/BibleTrainStore";
+import { TrainMembersState } from "../store/TrainMembersStore";
 
 const bible = bibleData();
 
-const Analysis = ({ train, trainId, members }) => {
+const Analysis = ({ trainId }) => {
+  const [train, setTrain] = useRecoilState(BibleTrainState);
+  const [members, setMembers] = useRecoilState(TrainMembersState);
   const now = new Date();
   const [period, setPeriod] = useState({
     startDate: new Date(),
@@ -253,7 +258,7 @@ const Analysis = ({ train, trainId, members }) => {
             </tr>
             {members.map((member, idx) => {
               return (
-                <tr style={{ lineHeight: "15px" }}>
+                <tr style={{ lineHeight: "15px" }} key={idx}>
                   <th
                     style={{
                       fontSize: "11px",

@@ -17,13 +17,14 @@ const Main = () => {
 
   const handleLogout = async (e) => {
     e.preventDefault();
-    try {
-      dispatch(userLogout());
-      alert("로그아웃 완료");
-      window.location.reload();
-    } catch (e) {
-      alert("에러 발생");
-    }
+    dispatch(userLogout()).then((data) => {
+      if (data.payload.success) {
+        alert("로그아웃 완료");
+        window.location.reload();
+      } else {
+        alert("로그아웃 실패");
+      }
+    });
   };
 
   return (

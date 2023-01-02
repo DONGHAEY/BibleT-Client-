@@ -29,13 +29,16 @@ export const Login = () => {
         username: name,
         password: password,
       })
-    ).then((response) => {
-      if (response.payload.success) {
-        navigate(state && state.wait ? state.wait : "/");
-      } else {
-        alert("유저네임이 올바르지 않거나 비밀번호가 올바르지 않습니다");
-      }
-    });
+    )
+      .then((response) => {
+        console.log(response);
+        if (response.payload.success) {
+          navigate(state && state.wait ? state.wait : "/");
+        } else {
+          alert("유저네임이 올바르지 않거나 비밀번호가 올바르지 않습니다");
+        }
+      })
+      .catch((e) => {});
   };
 
   return (

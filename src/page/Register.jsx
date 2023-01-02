@@ -30,8 +30,8 @@ export const Register = () => {
         password: password,
         email: email,
       })
-    ).then((response) => {
-      if (response.payload.success) {
+    )
+      .then((response) => {
         alert("회원가입에 성공하였습니다.");
         navigate("/login", {
           state: {
@@ -39,10 +39,10 @@ export const Register = () => {
             back: state.back ? state.back : "/",
           },
         });
-      } else {
-        alert("회원가입에 실패하였습니다.");
-      }
-    });
+      })
+      .catch((e) => {
+        alert(e);
+      });
   };
 
   if (loading) {

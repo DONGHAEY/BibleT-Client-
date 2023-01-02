@@ -31,6 +31,13 @@ export default function CreateTrack({ onClose, fetchAndSetTracks }) {
       .then(({ data }) => {
         alert("트랙 생성이 성공적으로 완료되었습니다");
         fetchAndSetTracks();
+        setBibleTrain((prev) => {
+          const nTrain = {
+            ...prev,
+            trackAmount: train.trackAmount + 1,
+          };
+          return nTrain;
+        });
         onClose({
           createTrack: false,
         });

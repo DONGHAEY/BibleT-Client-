@@ -5,8 +5,8 @@ import { useNavigate } from "react-router-dom";
 import { FlexWrapper } from "../styledComponent/Wrapper";
 
 export default function HeaderWithBack({
-  title = null,
-  subtitle = null,
+  title = "",
+  subtitle = "",
   path = "/",
   right,
 }) {
