@@ -14,6 +14,7 @@ import { FlexWrapperWithHeader } from "../styledComponent/Wrapper";
 import { useRecoilState } from "recoil";
 import { BibleTrainState } from "../store/BibleTrainStore";
 import { TrainMembersState } from "../store/TrainMembersStore";
+import { fetchBibleTracks } from "../api/bibletrain";
 
 const bible = bibleData();
 
@@ -32,16 +33,17 @@ const Analysis = ({ trainId }) => {
     loadData();
   }, [period]);
 
-  const loadData = () => {
-    axios
-      .post(
-        `/api/bible-track/${trainId}/analysis?startDate=${getStringDate(
-          period.startDate
-        )}&endDate=${getStringDate(period.endDate)}`
-      )
-      .then(({ data }) => {
-        setList([...data]);
-      });
+  const loadData = async () => {
+    try {
+      const tracks = await fetchBibleTracks(
+        trainId,
+        getStringDate(period.startDate),
+        getStringDate(period.endDate)
+      );
+      setList(tracks);
+    } catch (e) {
+      alert(e);
+    }
   };
 
   return (

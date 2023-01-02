@@ -7,8 +7,9 @@ import { fetchBibleTracks } from "../api/bibletrain";
 import { getStringDate } from "./util/dateForm";
 import "./css/calender.css";
 import styled from "styled-components";
+import axios from "axios";
 
-const Calender = ({ trainId }) => {
+const Calender = ({ trainId, userId }) => {
   const [year, setYear] = useState(new Date().getFullYear());
   const [tracks, setTracks] = useState([]);
   useEffect(() => {
@@ -17,9 +18,15 @@ const Calender = ({ trainId }) => {
       const yearEndDate = new Date(year + 1, 0, 0);
       let yearStartDateString = getStringDate(yearStartDate);
       let yearEndDateString = getStringDate(yearEndDate);
-      setTracks(
-        await fetchBibleTracks(trainId, yearStartDateString, yearEndDateString)
-      );
+      try {
+        const { data } = await axios.post(
+          `/api/bible-track/${trainId}/profileOtherTrackList/${yearStartDateString}/${yearEndDateString}`,
+          {
+            userId,
+          }
+        );
+        setTracks(data);
+      } catch (e) {}
     })();
   }, [year]);
   return (

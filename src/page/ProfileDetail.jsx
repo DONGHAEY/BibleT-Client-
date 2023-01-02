@@ -12,7 +12,6 @@ import { FlexWrapperWithHeader } from "../styledComponent/Wrapper";
 
 const ProfileDetail = () => {
   const { trainId, userId } = useParams();
-  const [bibleTracks, setBibleTracks] = useRecoilState(BibleTracksState);
   const [profile, setProfile] = useState(null);
 
   const [popup, setPopup] = useState({
@@ -25,7 +24,6 @@ const ProfileDetail = () => {
 
   function loadData() {
     axios.get(`/api/train/${trainId}/${userId}`).then(({ data }) => {
-      console.log(data);
       setProfile(data);
     });
   }
@@ -62,7 +60,7 @@ const ProfileDetail = () => {
         <h1>{profile?.nickName}</h1>
         <span>역할 : {role[profile?.role]}</span>
         <p>총 {profile?.completeCount}번 참여</p>
-        <Calender trainId={trainId} />
+        <Calender trainId={trainId} userId={profile.userId} />
         {popup.imgEdit ? (
           <Container>
             <ImgContainer>
