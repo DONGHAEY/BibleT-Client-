@@ -1,20 +1,20 @@
 import axios from "axios";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { role } from "./util/role";
 import styled from "styled-components";
 import { FlexWrapper } from "../styledComponent/Wrapper";
 import { AddCircleButton } from "../styledComponent/AddCircleButton";
 import { HiOutlineUserAdd } from "@react-icons/all-files/hi/HiOutlineUserAdd";
-import { useRecoilState, useRecoilValue } from "recoil";
-import { TrainMembersState } from "../store/TrainMembersStore";
+import { useRecoilValue } from "recoil";
 import { TrainProfileState } from "../store/TrainProfileState";
-import { useMemo, useState } from "react";
+import { memo, useMemo, useState } from "react";
 import { BibleTrainState } from "../store/BibleTrainStore";
 import { useEffect } from "react";
 import { fetchTrainMembers } from "../api/bibletrain";
 
-const Members = ({ navigate }) => {
+const Members = () => {
   const { trainId } = useParams();
+  const navigate = useNavigate();
   const train = useRecoilValue(BibleTrainState);
   const trainProfile = useRecoilValue(TrainProfileState);
   const [members, setTrainMembers] = useState([]);
@@ -79,8 +79,6 @@ const Members = ({ navigate }) => {
   }, [members]);
 
   const changeRoleHandler = async (roleKey, userId) => {
-    console.log(trainId);
-    console.log(userId);
     await axios.put(`/api/train/${trainId}/${userId}/changeRole`, {
       role: roleKey,
     });
@@ -120,4 +118,4 @@ const MemberDiv = styled.div`
   margin-block: 15px;
 `;
 
-export default Members;
+export default memo(Members);

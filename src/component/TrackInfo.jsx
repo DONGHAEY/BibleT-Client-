@@ -1,5 +1,5 @@
 import { MdCancel } from "@react-icons/all-files/md/MdCancel";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import styled from "styled-components";
 import bibleData from "../page/util/bible";
 import { getStringDate, stringToDate, 요일 } from "../page/util/dateForm";
@@ -9,14 +9,9 @@ import { SmallTrainProfile } from "./SmallTrainProfile";
 
 const bible = bibleData();
 
-export const TrackInfo = ({
-  track,
-  deleteTrackHandler,
-  checkTrackHandler,
-  i,
-}) => {
-  const [trainProfile, setTrainProfile] = useRecoilState(TrainProfileState);
-  const [members, setMembers] = useRecoilState(TrainMembersState);
+export const TrackInfo = ({ track, deleteTrackHandler, checkTrackHandler }) => {
+  const trainProfile = useRecoilValue(TrainProfileState);
+  const members = useRecoilValue(TrainMembersState);
   const dateString = track?.date.split("-");
   const trackDate = new Date(
     parseInt(dateString[0]),
@@ -44,7 +39,6 @@ export const TrackInfo = ({
         </span>
         {track?.checkStamps.map((stamp, idx) => {
           const mem = members.find((member) => member.userId === stamp.userId);
-          // console.log(`${stamp.trackDate}/${idx}`);
           return (
             <SmallTrainProfile key={`${stamp.trackDate}/${idx}`} mem={mem} />
           );
@@ -55,20 +49,19 @@ export const TrackInfo = ({
           {track?.status === "COMPLETE" ? "완료" : "미완료"}
         </span>
         <input
-          style={{ padding: "5px" }}
           type="checkbox"
-          defaultChecked={track?.status === "COMPLETE" ? true : false}
-          onClick={async (e) => await checkTrackHandler(e, `${track?.date}`, i)}
+          defaultChecked={track?.status === "COMPLETE"}
+          onClick={async (e) => await checkTrackHandler(e, `${track?.date}`)}
         ></input>
       </div>
       <DeleteButton
         show={trainProfile.role === "ROLE_CAPTAIN"}
-        key={`${track?.date}/xBtn`}
+        key={`${track?.date}`}
       >
         <MdCancel
-          key={`${track?.date}/xIcon`}
+          key={`${track?.date}`}
           onClick={() => {
-            deleteTrackHandler(getStringDate(trackDate), i);
+            deleteTrackHandler(getStringDate(trackDate));
           }}
         />
       </DeleteButton>

@@ -1,5 +1,4 @@
-// import "./css/Main.css";
-import React, { useCallback, useEffect, useState } from "react";
+import React from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 import Hoc from "../HOC/auth";
@@ -12,8 +11,6 @@ const Main = () => {
   const { user } = useSelector((state) => state.user);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
-  useEffect(() => {}, []);
 
   const handleLogout = async (e) => {
     e.preventDefault();
@@ -42,11 +39,11 @@ const Main = () => {
           imgUrl={"./png/train.png"}
           btnName={"내 성경열차"}
         ></MainPageButton>
-        <MainPageButton
+        {/* <MainPageButton
           link={"/myBibleTrainProfiles"}
           imgUrl={"./png/bible.png"}
           btnName={"개인기록"}
-        ></MainPageButton>
+        ></MainPageButton> */}
         {/* <MainPageButton
           link={"/myBibleTrainProfiles"}
           imgUrl={"./png/bible.png"}

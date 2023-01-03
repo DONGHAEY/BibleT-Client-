@@ -28,21 +28,29 @@ const BibleTrainProfiles = () => {
     return <>로딩중..</>;
   }
 
-  const BibleTrainProfiles = trainProfiles.map((menu, index) => {
-    return (
-      <BibleTrainDiv
-        key={menu.train.id}
-        onClick={() => navigate(`/train/${menu.train.id}`)}
-      >
-        <h3>{menu.train.trainName}</h3>
-        <p>
-          {menu.nickName} {EmojiRoleSign[menu.role]}
-        </p>
-        <span>정원 : {menu.train.memberCount}</span>
-        <span>&nbsp;&nbsp;&nbsp;트랙 : {menu.train.trackAmount}개</span>
-      </BibleTrainDiv>
-    );
-  });
+  const BibleTrainProfiles = trainProfiles.length ? (
+    trainProfiles?.map((menu, index) => {
+      return (
+        <BibleTrainDiv
+          key={menu.train.id}
+          onClick={() => navigate(`/train/${menu.train.id}`)}
+        >
+          <h3>{menu.train.trainName}</h3>
+          <p>
+            {menu.nickName} {EmojiRoleSign[menu.role]}
+          </p>
+          <span>정원 : {menu.train.memberCount}</span>
+          <span>&nbsp;&nbsp;&nbsp;트랙 : {menu.train.trackAmount}개</span>
+        </BibleTrainDiv>
+      );
+    })
+  ) : (
+    <NoTrainDiv>
+      <p>열차가 1도 없네요..</p>
+      <p>만들면 되죠!</p>
+      <p>가입하면 되죠!</p>
+    </NoTrainDiv>
+  );
 
   return (
     <>
@@ -69,4 +77,10 @@ const BibleTrainDiv = styled.div`
   border-radius: 5px;
   cursor: pointer;
 `;
+
+const NoTrainDiv = styled.div`
+  font-size: 3vh;
+  margin-top: 15vh;
+`;
+
 export default Hoc(BibleTrainProfiles);

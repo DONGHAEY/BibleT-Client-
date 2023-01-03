@@ -1,12 +1,15 @@
-import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import { useRecoilState } from "recoil";
+import { fetchBibleTrainJoinKey, fetchMyTrainProfile } from "../api/bibletrain";
 import { role } from "../page/util/role";
+import { BibleTrainState } from "../store/BibleTrainStore";
 import { TrainProfileState } from "../store/TrainProfileState";
 import { FlexWrapper } from "../styledComponent/Wrapper";
 
-export const TrainProfileUi = ({ trainId }) => {
-  const [trainProfile, setTrainProfile] = useRecoilState(TrainProfileState);
+export const TrainProfileUi = ({ trainProfile }) => {
   const navigate = useNavigate();
+  const { trainId } = useParams();
   return (
     <FlexWrapper
       onClick={() => {

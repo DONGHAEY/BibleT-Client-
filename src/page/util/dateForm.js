@@ -1,5 +1,10 @@
 export const getStringDate = (date) => {
-  return `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
+  const syear = date.getFullYear();
+  const smonth = date.getMonth() + 1;
+  const sdate = date.getDate();
+  return `${syear}-${parseInt(smonth / 10)}${parseInt(smonth % 10)}-${parseInt(
+    sdate / 10
+  )}${parseInt(sdate % 10)}`;
 };
 
 export const stringToDate = (stringDate) => {

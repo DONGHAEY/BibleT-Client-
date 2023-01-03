@@ -1,17 +1,22 @@
-import axios from "axios";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useRecoilState } from "recoil";
 import styled from "styled-components";
+import { deleteTrain, getOffTrain } from "../api/bibletrain";
 import { TrainProfileState } from "../store/TrainProfileState";
 import { FlexWrapper } from "../styledComponent/Wrapper";
 import { useConfirm } from "./util/confirm";
 
-const Setting = ({ trainId, goback }) => {
+const Setting = ({ goback }) => {
   const [trainProfile, setTrainProfile] = useRecoilState(TrainProfileState);
   const navigate = useNavigate();
+  const { trainId } = useParams();
   const confirm = useConfirm();
   return (
     <FlexWrapper>
+      <SettingBtn onClick={() => navigate("?pop=analysis")}>
+        <SettingBtnImg src={"/png/anal.png"}></SettingBtnImg>
+        <span>분석하기</span>
+      </SettingBtn>
       {trainProfile && trainProfile.role !== "ROLE_CAPTAIN" ? (
         <SettingBtn
           onClick={async () => {
@@ -19,7 +24,7 @@ const Setting = ({ trainId, goback }) => {
               confirm(
                 "정말로 기차에서 내리겠습니까? 모든 참석기록이 초기화 됩니다!",
                 async () => {
-                  await axios.delete(`/api/train/${trainId}/exit`);
+                  await getOffTrain(trainId);
                   alert("기차에서 내리셨습니다");
                   goback();
                 },
@@ -40,7 +45,7 @@ const Setting = ({ trainId, goback }) => {
               confirm(
                 "정말로 기차를 삭제하시겠습니까? 되돌릴 수 없습니다!",
                 async () => {
-                  await axios.delete(`/api/train/${trainId}`);
+                  await deleteTrain(trainId);
                   alert("기차가 올바르게 삭제 되었습니다");
                   goback();
                 },
@@ -55,10 +60,6 @@ const Setting = ({ trainId, goback }) => {
           <span>기차삭제</span>
         </SettingBtn>
       )}
-      <SettingBtn onClick={() => navigate("?pop=analysis")}>
-        <SettingBtnImg src={"/png/anal.png"}></SettingBtnImg>
-        <span>분석하기</span>
-      </SettingBtn>
       {/* <SettingBtn>
         <SettingBtnImg src={"/png/종.png"}></SettingBtnImg>
         <span>알림켜기</span>

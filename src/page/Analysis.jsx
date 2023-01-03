@@ -7,27 +7,28 @@ import { ko } from "date-fns/esm/locale";
 import { getStringDate, stringToDate } from "./util/dateForm";
 import { 요일 } from "./util/dateForm";
 import HeaderWithBack from "./HeaderWithBack";
-import { useLocation } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import bibleData from "./util/bible";
 import ApexCharts from "react-apexcharts";
 import { FlexWrapperWithHeader } from "../styledComponent/Wrapper";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { BibleTrainState } from "../store/BibleTrainStore";
+import { fetchBibleTracks, fetchTrainMembers } from "../api/bibletrain";
 import { TrainMembersState } from "../store/TrainMembersStore";
-import { fetchBibleTracks } from "../api/bibletrain";
 
 const bible = bibleData();
 
-const Analysis = ({ trainId }) => {
-  const [train, setTrain] = useRecoilState(BibleTrainState);
+const Analysis = () => {
+  const train = useRecoilValue(BibleTrainState);
   const [members, setMembers] = useRecoilState(TrainMembersState);
-  const now = new Date();
   const [period, setPeriod] = useState({
     startDate: new Date(),
-    endDate: new Date(now.setDate(now.getDate() + 7)),
+    endDate: new Date(new Date().setDate(new Date().getDate() + 7)),
   });
-  const location = useLocation();
   const [list, setList] = useState([]);
+
+  const location = useLocation();
+  const { trainId } = useParams();
 
   useEffect(() => {
     loadData();
@@ -35,6 +36,7 @@ const Analysis = ({ trainId }) => {
 
   const loadData = async () => {
     try {
+      setMembers(await fetchTrainMembers(trainId));
       const tracks = await fetchBibleTracks(
         trainId,
         getStringDate(period.startDate),

@@ -1,11 +1,10 @@
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { userLogin } from "../actions/userLogin";
 import React, { useCallback, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import HeaderWithBack from "./HeaderWithBack";
 import "./css/login.css";
 import { FlexWrapperWithHeader } from "../styledComponent/Wrapper";
-import styled from "styled-components";
 import {
   FlexForm,
   FormInput,
@@ -73,15 +72,6 @@ export const Login = () => {
             onChange={(e) => setPassword(e.target.value)}
           ></FormInput>
           <LoginRegisterBtn>로그인하기</LoginRegisterBtn>
-          <KakaoLoginBtn>
-            <img
-              style={{ width: "15px" }}
-              src="https://www.svgrepo.com/show/368252/kakao.svg"
-            ></img>
-            <p style={{ fontSize: "15px", paddingLeft: "5px" }}>
-              카카오 로그인
-            </p>
-          </KakaoLoginBtn>
           <div style={{ marginTop: "15px" }}>
             <a
               onClick={() =>

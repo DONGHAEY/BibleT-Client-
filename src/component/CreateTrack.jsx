@@ -3,15 +3,15 @@ import DatePicker, { registerLocale } from "react-datepicker";
 import styled from "styled-components";
 import { ko } from "date-fns/esm/locale";
 import "react-datepicker/dist/react-datepicker.css";
-import Select from "./Select";
+import Select from "../page/Select";
 import axios from "axios";
-import { getStringDate } from "./util/dateForm";
+import { getStringDate } from "../page/util/dateForm";
 import { BibleTrainState } from "../store/BibleTrainStore";
 import { useRecoilState } from "recoil";
 
 registerLocale("ko", ko);
 
-export default function CreateTrack({ onClose, fetchAndSetTracks }) {
+export default function CreateTrack({ onClose, loadTracksData }) {
   const [selected, setSelected] = useState({});
   const [content, setContent] = useState("");
   const [date, setDate] = useState(new Date());
@@ -30,7 +30,7 @@ export default function CreateTrack({ onClose, fetchAndSetTracks }) {
       })
       .then(({ data }) => {
         alert("트랙 생성이 성공적으로 완료되었습니다");
-        fetchAndSetTracks();
+        loadTracksData();
         setBibleTrain((prev) => {
           const nTrain = {
             ...prev,
@@ -38,9 +38,7 @@ export default function CreateTrack({ onClose, fetchAndSetTracks }) {
           };
           return nTrain;
         });
-        onClose({
-          createTrack: false,
-        });
+        onClose(false);
       })
       .catch((e) => {
         alert(e.response.data.message);

@@ -11,30 +11,21 @@ import Setting from "./Setting";
 import Analysis from "./Analysis";
 import { TrainProfileUi } from "../component/TrainProfileUi";
 import { FlexWrapperWithHeaderAndNavigation } from "../styledComponent/Wrapper";
-import styled from "styled-components";
 import { useRecoilState } from "recoil";
 import { BibleTrainState } from "../store/BibleTrainStore";
-import { TrainMembersState } from "../store/TrainMembersStore";
-import { TrainProfileState } from "../store/TrainProfileState";
-import { BibleTracksState } from "../store/BibleTracksState";
 import {
   fetchBibleTrain,
   fetchBibleTrainJoinKey,
-  fetchTrainMembers,
-  fetchTrainProfile,
+  fetchMyTrainProfile,
 } from "../api/bibletrain";
-import { getWeek } from "./util/dateForm";
+import { TrainProfileState } from "../store/TrainProfileState";
 
-const TrainInfo = () => {
+const BibleTrain = () => {
   const [bibleTrain, setBibleTrain] = useRecoilState(BibleTrainState);
-  const [trainMembers, setTrainMembers] = useRecoilState(TrainMembersState);
   const [trainProfile, setTrainProfile] = useRecoilState(TrainProfileState);
-  const [bibleTracks, setBibleTracks] = useRecoilState(BibleTracksState);
-
   const navigate = useNavigate();
-  const query = useQuery();
   const { trainId } = useParams();
-
+  const query = useQuery();
   function useQuery() {
     const { search } = useLocation();
     return useMemo(() => new URLSearchParams(search), [search]);
@@ -44,7 +35,7 @@ const TrainInfo = () => {
     (async () => {
       try {
         setBibleTrain(await fetchBibleTrain(trainId));
-        const fetchedTrainProfile = await fetchTrainProfile(trainId);
+        const fetchedTrainProfile = await fetchMyTrainProfile(trainId);
         setTrainProfile(fetchedTrainProfile);
         if (fetchedTrainProfile?.role === "ROLE_CAPTAIN") {
           const fetchedTrainJoinKey = await fetchBibleTrainJoinKey(trainId);
@@ -55,44 +46,38 @@ const TrainInfo = () => {
             };
           });
         }
-        setTrainMembers(await fetchTrainMembers(trainId));
       } catch (e) {
         alert(e);
+        navigate(-1);
       }
     })();
   }, []);
 
-  const trainProfileUi = <TrainProfileUi trainId={trainId} />;
+  const tab = query.get("tab");
+  const pop = query.get("pop");
 
-  return query.get("pop") === null ? (
+  return !pop ? (
     <>
-      {bibleTrain ? (
-        <HeaderWithBack
-          title={bibleTrain?.trainName || "loading"}
-          subtitle={`정원수 : ${bibleTrain?.memberCount || 0}명 - 트랙수 : ${
-            bibleTrain?.trackAmount || 0
-          }개`}
-          path="/myBibleTrainProfiles"
-          right={trainProfileUi}
-        />
-      ) : null}
+      <HeaderWithBack
+        title={bibleTrain?.trainName || "loading"}
+        subtitle={`정원수 : ${bibleTrain?.memberCount || 0}명 - 트랙수 : ${
+          bibleTrain?.trackAmount || 0
+        }개`}
+        path="/myBibleTrainProfiles"
+        right={<TrainProfileUi trainProfile={trainProfile} />}
+      />
       <FlexWrapperWithHeaderAndNavigation>
-        {query.get("tab") === null ? <TrackList /> : null}
-        {query.get("tab") === "members" ? (
-          <Members navigate={navigate} />
-        ) : null}
-        {query.get("tab") === "setting" ? (
-          <Setting
-            trainId={trainId}
-            goback={() => navigate("/myBibleTrainProfiles")}
-          />
-        ) : null}
+        {!tab && <TrackList />}
+        {tab === "members" && <Members />}
+        {tab === "setting" && (
+          <Setting goback={() => navigate("/myBibleTrainProfiles")} />
+        )}
         <Navigation />
       </FlexWrapperWithHeaderAndNavigation>
     </>
-  ) : query.get("pop") === "analysis" ? (
-    <Analysis trainId={trainId} />
-  ) : null;
+  ) : (
+    pop === "analysis" && <Analysis trainId={trainId} />
+  );
 };
 
-export default Hoc(TrainInfo);
+export default Hoc(BibleTrain);

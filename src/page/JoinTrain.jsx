@@ -1,7 +1,7 @@
-import axios from "axios";
 import { useEffect, useMemo, useState } from "react";
 import { useParams, useLocation } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import { fetchBibleTrain, joinTrain } from "../api/bibletrain";
 import Hoc from "../HOC/auth";
 import { FlexWrapper } from "../styledComponent/Wrapper";
 import HeaderWithBack from "./HeaderWithBack";
@@ -22,8 +22,7 @@ const JoinTrain = () => {
   useEffect(() => {
     (async () => {
       try {
-        const train = await axios.get(`/api/train/${trainId}`);
-        setTrain(train.data);
+        setTrain(await fetchBibleTrain(trainId));
       } catch (e) {
         alert("잘못된 접근");
       }
@@ -52,10 +51,7 @@ const JoinTrain = () => {
         <button
           onClick={async () => {
             try {
-              await axios.post(`/api/train/${trainId}/join`, {
-                joinKey,
-                nickName,
-              });
+              await joinTrain(trainId, joinKey, nickName);
               navigate("/myBibleTrainProfiles");
             } catch (e) {
               alert(e.response.data.message);

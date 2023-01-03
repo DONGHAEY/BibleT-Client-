@@ -6,12 +6,13 @@ const Select = ({ select }) => {
   const chapt = bibleData();
   const [selectedChapter, setSelectedChapter] = useState(1);
   const [selectedPage, setSelectedPage] = useState(1);
+  const [pageSign, setPageSign] = useState("장");
 
   const maxPage = useMemo(() => {
     return chapt[selectedChapter - 1].page;
   }, [selectedChapter]);
 
-  const chapters = chapt.map((cp, idx) => (
+  const chapters = chapt.map((cp) => (
     <option key={cp?.id} value={cp.id}>
       {cp.chapter}
     </option>
@@ -25,13 +26,19 @@ const Select = ({ select }) => {
     return pages.map((page, i) => {
       return (
         <option key={`${page}/${i}`} value={page}>
-          {page}장
+          {page}
+          {pageSign}
         </option>
       );
     });
-  }, [selectedChapter]);
+  }, [selectedChapter, pageSign]);
 
   useEffect(() => {
+    if (selectedChapter === 19) {
+      setPageSign("편");
+    } else {
+      setPageSign("장");
+    }
     select({
       selectedChapter,
       selectedPage,

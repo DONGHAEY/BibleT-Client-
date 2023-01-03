@@ -1,4 +1,3 @@
-import axios from "axios";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import HeaderWithBack from "./HeaderWithBack";
@@ -6,9 +5,8 @@ import styled from "styled-components";
 import { AiOutlineEdit } from "@react-icons/all-files/ai/AiOutlineEdit";
 import Calender from "./Calender";
 import { role } from "./util/role";
-import { useRecoilState } from "recoil";
-import { BibleTracksState } from "../store/BibleTracksState";
 import { FlexWrapperWithHeader } from "../styledComponent/Wrapper";
+import { changeTrainProfileImg, getOtherTrainProfile } from "../api/bibletrain";
 
 const ProfileDetail = () => {
   const { trainId, userId } = useParams();
@@ -19,25 +17,27 @@ const ProfileDetail = () => {
   });
 
   useEffect(() => {
-    loadData();
+    loadProfileData();
   }, []);
 
-  function loadData() {
-    axios.get(`/api/train/${trainId}/${userId}`).then(({ data }) => {
-      setProfile(data);
-    });
-  }
+  const loadProfileData = async () => {
+    try {
+      setProfile(await getOtherTrainProfile(trainId, userId));
+    } catch (e) {
+      alert(e);
+    }
+  };
 
-  const onChange = (e) => {
-    const img = e.target.files[0];
-    const formData = new FormData();
-    formData.append("img", img);
-    axios
-      .post(`/api/train/${trainId}/changeMyProfileImg`, formData)
-      .then((data) => {
-        loadData();
-      })
-      .catch();
+  const onChange = async (e) => {
+    try {
+      const img = e.target.files[0];
+      const formData = new FormData();
+      formData.append("img", img);
+      await changeTrainProfileImg(trainId, formData);
+      await loadProfileData();
+    } catch (e) {
+      alert(e);
+    }
   };
   return profile ? (
     <>

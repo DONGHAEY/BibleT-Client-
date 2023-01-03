@@ -22,7 +22,7 @@ export const fetchBibleTrainJoinKey = (trainId) => {
   });
 };
 
-export const fetchTrainProfile = (trainId) => {
+export const fetchMyTrainProfile = (trainId) => {
   return new Promise(async (resolve, reject) => {
     try {
       const trainProfile = await axios.get(
@@ -51,7 +51,6 @@ export const fetchTrainMembers = (trainId) => {
 export const fetchBibleTracks = (trainId, startDate, endDate) => {
   return new Promise(async (resolve, reject) => {
     try {
-      console.log(startDate, endDate);
       const tracks = await axios.get(
         `/api/bible-track/${trainId}/${startDate}/${endDate}`
       );
@@ -106,6 +105,59 @@ export const fetchCancelTrack = (trainId, date) => {
   });
 };
 
-// const trainProfile = await axios.get(
-//   `/api/train/trainProfile/${trainId}`
-// );
+export const getOffTrain = (trainId) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      await axios.delete(`/api/train/${trainId}/exit`);
+      resolve();
+    } catch (e) {
+      reject(e.response.data.message);
+    }
+  });
+};
+export const deleteTrain = (trainId) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      await axios.delete(`/api/train/${trainId}`);
+      resolve();
+    } catch (e) {
+      reject(e.response.data.message);
+    }
+  });
+};
+
+export const getOtherTrainProfile = (trainId, userId) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const { data } = await axios.get(`/api/train/${trainId}/${userId}`);
+      resolve(data);
+    } catch (e) {
+      reject(e.response.data.message);
+    }
+  });
+};
+
+export const changeTrainProfileImg = (trainId, formData) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      await axios.post(`/api/train/${trainId}/changeMyProfileImg`, formData);
+      resolve();
+    } catch (e) {
+      reject(e.response.data.message);
+    }
+  });
+};
+
+export const joinTrain = (trainId, joinKey, nickName) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      await axios.post(`/api/train/${trainId}/join`, {
+        joinKey,
+        nickName,
+      });
+      resolve();
+    } catch (e) {
+      reject(e.response.data.message);
+    }
+  });
+};

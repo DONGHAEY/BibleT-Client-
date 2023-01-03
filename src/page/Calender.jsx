@@ -3,7 +3,6 @@ import { useEffect } from "react";
 import CalendarHeatmap from "react-calendar-heatmap";
 import "react-calendar-heatmap/dist/styles.css";
 import ReactTooltip from "react-tooltip";
-import { fetchBibleTracks } from "../api/bibletrain";
 import { getStringDate } from "./util/dateForm";
 import "./css/calender.css";
 import styled from "styled-components";
