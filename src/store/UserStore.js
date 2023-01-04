@@ -1,6 +1,8 @@
 import { atom } from "recoil";
+import { localStorageEffect } from "./effect/localStorage";
 
-const userState = atom({
+export const userState = atom({
   key: "user_state",
   default: {},
+  effects: [localStorageEffect("user")],
 });

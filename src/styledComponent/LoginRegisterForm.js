@@ -9,7 +9,7 @@ export const FlexForm = styled.form`
 
 export const FormInput = styled.input`
   min-width: 180px;
-  width: 230px;
+  width: 210px;
   padding-inline: 10px;
   height: 40px;
   margin: 5px;

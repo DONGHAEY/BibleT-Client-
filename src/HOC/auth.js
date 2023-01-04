@@ -1,27 +1,33 @@
 import React, { Component, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { Navigate, useNavigate, useLocation } from "react-router-dom";
-import { userAuth } from "../actions/userAuth";
+import { useRecoilState } from "recoil";
+import { authenticateApi } from "../api/user";
+import { userState } from "../store/UserStore";
 
 export default function Hoc(HocComponent, canPass = false) {
   return function AUTH() {
-    const dispatch = useDispatch();
+    const [user, setUser] = useRecoilState(userState);
     const navigate = useNavigate();
     const location = useLocation();
-
     useEffect(() => {
-      dispatch(userAuth()).then((response) => {
-        if (response.payload && !response.payload.success) {
-          if (canPass) return <HocComponent />;
-          alert("로그인을 부탁드립니다");
-          navigate("/login", {
-            state: {
-              wait: location.pathname + location.search,
-              back: "/",
-            },
-          });
+      (async () => {
+        try {
+          const data = await authenticateApi();
+          setUser(data.user);
+        } catch (e) {
+          if (!canPass) {
+            alert("로그인 해야합니다");
+            setUser(null);
+            navigate("/login", {
+              state: {
+                wait: location.pathname + location.search,
+                back: "/",
+              },
+            });
+          }
         }
-      });
+      })();
     }, []);
 
     return <HocComponent />;

@@ -1,6 +1,8 @@
 import axios from "axios";
 
-export const fetchBibleTrain = (trainId) => {
+// **************************** train section **************************** //
+
+export const getBibleTrainApi = (trainId) => {
   return new Promise(async (resolve, reject) => {
     try {
       const bibleTrain = await axios.get(`/api/train/${trainId}`);
@@ -11,7 +13,7 @@ export const fetchBibleTrain = (trainId) => {
   });
 };
 
-export const fetchBibleTrainJoinKey = (trainId) => {
+export const getBibleTrainJoinKeyApi = (trainId) => {
   return new Promise(async (resolve, reject) => {
     try {
       const bibleTrain = await axios.get(`/api/train/${trainId}/getJoinKey`);
@@ -22,20 +24,7 @@ export const fetchBibleTrainJoinKey = (trainId) => {
   });
 };
 
-export const fetchMyTrainProfile = (trainId) => {
-  return new Promise(async (resolve, reject) => {
-    try {
-      const trainProfile = await axios.get(
-        `/api/train/trainProfile/${trainId}`
-      );
-      resolve(trainProfile.data);
-    } catch (e) {
-      reject(e.response.data.message);
-    }
-  });
-};
-
-export const fetchTrainMembers = (trainId) => {
+export const getTrainMembersApi = (trainId) => {
   return new Promise(async (resolve, reject) => {
     try {
       const trainMembers = await axios.get(
@@ -48,64 +37,7 @@ export const fetchTrainMembers = (trainId) => {
   });
 };
 
-export const fetchBibleTracks = (trainId, startDate, endDate) => {
-  return new Promise(async (resolve, reject) => {
-    try {
-      const tracks = await axios.get(
-        `/api/bible-track/${trainId}/${startDate}/${endDate}`
-      );
-      resolve(tracks.data);
-    } catch (e) {
-      reject(e.response.data.message);
-    }
-  });
-};
-
-export const fetchDeleteBibleTrack = (trainId, date) => {
-  return new Promise(async (resolve, reject) => {
-    try {
-      await axios.post(`/api/bible-track/${trainId}/${date}/deleteTrack`);
-      resolve();
-    } catch (e) {
-      reject(e.response.data.message);
-    }
-  });
-};
-
-export const fetchOneBibleTrack = (trainId, date) => {
-  return new Promise(async (resolve, reject) => {
-    try {
-      const bibleTrack = await axios.get(`/api/bible-track/${trainId}/${date}`);
-      resolve(bibleTrack.data);
-    } catch (e) {
-      reject(e.response.data.message);
-    }
-  });
-};
-
-export const fetchCompleteTrack = (trainId, date) => {
-  return new Promise(async (resolve, reject) => {
-    try {
-      await axios.post(`/api/bible-track/${trainId}/${date}/complete`);
-      resolve();
-    } catch (e) {
-      reject(e.response.data.message);
-    }
-  });
-};
-
-export const fetchCancelTrack = (trainId, date) => {
-  return new Promise(async (resolve, reject) => {
-    try {
-      await axios.post(`/api/bible-track/${trainId}/${date}/cancelStamp`);
-      resolve();
-    } catch (e) {
-      reject(e.response.data.message);
-    }
-  });
-};
-
-export const getOffTrain = (trainId) => {
+export const getOffTrainApi = (trainId) => {
   return new Promise(async (resolve, reject) => {
     try {
       await axios.delete(`/api/train/${trainId}/exit`);
@@ -115,7 +47,23 @@ export const getOffTrain = (trainId) => {
     }
   });
 };
-export const deleteTrain = (trainId) => {
+
+export const createTrainApi = ({ trainName, churchName, captainName }) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      await axios.post("/api/train/create", {
+        trainName,
+        churchName,
+        captainName,
+      });
+      resolve();
+    } catch (e) {
+      reject(e.response.data.message);
+    }
+  });
+};
+
+export const deleteTrainApi = (trainId) => {
   return new Promise(async (resolve, reject) => {
     try {
       await axios.delete(`/api/train/${trainId}`);
@@ -126,7 +74,34 @@ export const deleteTrain = (trainId) => {
   });
 };
 
-export const getOtherTrainProfile = (trainId, userId) => {
+export const joinTrainApi = (trainId, joinKey, nickName) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      await axios.post(`/api/train/${trainId}/join`, {
+        joinKey,
+        nickName,
+      });
+      resolve();
+    } catch (e) {
+      reject(e.response.data.message);
+    }
+  });
+};
+
+// **************************** trainProfiles section **************************** //
+
+export const trainProfilesApi = () => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const trainProfiles = await axios.post("/api/train/trainProfiles");
+      resolve(trainProfiles.data);
+    } catch (e) {
+      reject(e.response.data.message);
+    }
+  });
+};
+
+export const getOtherTrainProfileApi = (trainId, userId) => {
   return new Promise(async (resolve, reject) => {
     try {
       const { data } = await axios.get(`/api/train/${trainId}/${userId}`);
@@ -137,7 +112,7 @@ export const getOtherTrainProfile = (trainId, userId) => {
   });
 };
 
-export const changeTrainProfileImg = (trainId, formData) => {
+export const changeTrainProfileImgApi = (trainId, formData) => {
   return new Promise(async (resolve, reject) => {
     try {
       await axios.post(`/api/train/${trainId}/changeMyProfileImg`, formData);
@@ -148,14 +123,13 @@ export const changeTrainProfileImg = (trainId, formData) => {
   });
 };
 
-export const joinTrain = (trainId, joinKey, nickName) => {
+export const getMyTrainProfileApi = (trainId) => {
   return new Promise(async (resolve, reject) => {
     try {
-      await axios.post(`/api/train/${trainId}/join`, {
-        joinKey,
-        nickName,
-      });
-      resolve();
+      const trainProfile = await axios.get(
+        `/api/train/trainProfile/${trainId}`
+      );
+      resolve(trainProfile.data);
     } catch (e) {
       reject(e.response.data.message);
     }
