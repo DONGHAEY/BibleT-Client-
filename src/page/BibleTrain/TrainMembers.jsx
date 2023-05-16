@@ -9,6 +9,7 @@ import { useEffect } from "react";
 import { getTrainMembersApi } from "../../api/bibletrain";
 import { BibleTrainContext } from "./BibleTrain";
 import { useContext } from "react";
+import axios from "axios";
 
 const TrainMembers = () => {
   const { trainId } = useParams();
@@ -63,9 +64,12 @@ const TrainMembers = () => {
       {MemberProfiles}
       {trainProfile?.role === "ROLE_CAPTAIN" ? (
         <AddCircleButton
-          onClick={() => {
+          onClick={async () => {
             const tempInput = document.createElement("input");
-            tempInput.value = `http://${window.location.host}/joinTrain/${trainId}?joinKey=${bibleTrain.joinKey}`;
+            const { data } = await axios.get(
+              `/api/train/${trainId}/getJoinKey`
+            );
+            tempInput.value = `http://${window.location.host}/joinTrain/${trainId}?joinKey=${data.joinKey}`;
             document.body.appendChild(tempInput);
             tempInput.select();
             document.execCommand("copy");

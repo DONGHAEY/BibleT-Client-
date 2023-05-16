@@ -32,23 +32,47 @@ const JoinTrain = () => {
   return (
     <HeaderWithBack /> &&
     train && (
-      <FlexWrapper>
-        <h1>#{train.id}번</h1>
-        <h3>{train.trainName}기차에 가입하시려면</h3>
-        <p>이곳에 인증키와 기차에서 보여질 이름을 입력하세요</p>
+      <FlexWrapper
+        style={{
+          display: "flex",
+          height: "500px",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <span style={{ fontSize: "35px" }}>성경열차 가입</span>
+        <span style={{ fontSize: "50px" }}>{train.trainName}</span>
+        <p>아래에 인증키와 기차에서의 닉네임을 입력하세요</p>
+        <br></br>
         <input
-          style={{ marginInline: "5px" }}
+          style={{
+            margin: "5px",
+            border: "1px solid black",
+            width: "300px",
+            padding: "5px",
+            height: "30px",
+          }}
           value={joinKey}
           onChange={(e) => setJoinKey(e.target.value)}
           placeholder="인증키"
         ></input>
         <input
-          style={{ marginInline: "5px" }}
+          style={{
+            margin: "5px",
+            border: "1px solid black",
+            padding: "5px",
+            width: "300px",
+            height: "30px",
+          }}
           value={nickName}
           onChange={(e) => setNickName(e.target.value)}
-          placeholder="보여질이름"
+          placeholder="닉네임"
         ></input>
         <button
+          style={{
+            width: "310px",
+            height: "40px",
+          }}
           onClick={async () => {
             try {
               await joinTrainApi(trainId, joinKey, nickName);

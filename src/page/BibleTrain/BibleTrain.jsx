@@ -70,7 +70,7 @@ const BibleTrain = () => {
           <HeaderWithBack
             title={bibleTrain?.trainName || ""}
             subtitle={`정원수 : ${bibleTrain?.memberCount || 0}명 - 트랙수 : ${
-              bibleTrain?.trackAmount || ""
+              bibleTrain?.trackAmount || 0
             }개`}
             path="/myBibleTrainProfiles"
             right={<TrainProfileUi />}

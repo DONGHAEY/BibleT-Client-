@@ -86,25 +86,20 @@ const TrackList = () => {
 
   /** 트랙을 완료하거나 취소 할 때 실행 */
   const checkHandler = async (e, date) => {
-    if (date !== getStringDate(new Date())) {
-      // alert("오늘 항목만 완료 및 취소 할 수 있습니다.");
-      // e.target.checked = false;
-    } else {
-      try {
-        //1. 트랙을 현재 체크상태에 따라 완료 또는 취소를 서버에 요청한다.
-        if (e.target.checked) {
-          // 트랙을 완료한다
-          await completeTrackApi(trainId, date);
-        } else {
-          // 트랙을 완료 취소한다.
-          await cancelTrackApi(trainId, date);
-        }
-        //2. 작업이 완료된 트랙 하나를 업데이트한다.
-        await updateTrack(date);
-      } catch (e) {
-        alert(e);
-        e.target.checked = false;
+    try {
+      //1. 트랙을 현재 체크상태에 따라 완료 또는 취소를 서버에 요청한다.
+      if (e.target.checked) {
+        // 트랙을 완료한다
+        await completeTrackApi(trainId, date);
+      } else {
+        // 트랙을 완료 취소한다.
+        await cancelTrackApi(trainId, date);
       }
+      //2. 작업이 완료된 트랙 하나를 업데이트한다.
+      await updateTrack(date);
+    } catch (e) {
+      alert(e);
+      e.target.checked = false;
     }
   };
 
@@ -127,7 +122,7 @@ const TrackList = () => {
             setStdDate((prev) => new Date(prev.setDate(prev.getDate() - 7)))
           }
         >
-          {before.startDate} ~ {before.endDate}
+          {before.startDate} ~ {before.endDate} 저번주
         </PageMoveBtn>
         {bibleTracks.length ? (
           bibleTracks?.map((track, i) => (
@@ -142,19 +137,17 @@ const TrackList = () => {
         ) : (
           <NoTrackDiv>
             <IMG src={"/png/checkList.png"}></IMG>
-            <h3>트랙이 아무것도 없네요..</h3>
+            <h3>트랙이 아무것도 없습니다</h3>
           </NoTrackDiv>
         )}
-
         <PageMoveBtn
           onClick={() =>
             setStdDate((prev) => new Date(prev.setDate(prev.getDate() + 7)))
           }
         >
-          {after.startDate} ~ {after.endDate}
+          {after.startDate} ~ {after.endDate} 다음주
         </PageMoveBtn>
       </TrackListMain>
-
       {popup && (
         <CreateTrack onClose={handlePopup} loadTracksData={loadTracksData} />
       )}
